@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+
+# Env / IDE / OS
+.env
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Наши заметки, в репо не нужны
+_materials/

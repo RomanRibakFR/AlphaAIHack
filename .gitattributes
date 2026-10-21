@@ -1,0 +1,12 @@
+# Везде LF, иначе с Windows в контейнерах ломаются скрипты
+* text=auto eol=lf
+
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+
+*.png  binary
+*.jpg  binary
+*.ico  binary
+*.pdf  binary
+*.docx binary

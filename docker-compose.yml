@@ -1,0 +1,49 @@
+name: alfa-credit
+
+services:
+  db:
+    image: postgres:16.6-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-credit}
+      POSTGRES_USER: ${POSTGRES_USER:-credit}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-credit}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  mocks:
+    build: ./mocks
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-credit}:${POSTGRES_PASSWORD:-credit}@db:5432/${POSTGRES_DB:-credit}
+      MOCKS_URL: http://mocks:8001
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      mocks:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  db-data:
