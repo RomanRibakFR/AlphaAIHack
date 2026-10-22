@@ -1,0 +1,67 @@
+/* Токены alfabank.ru поверх официальных токенов Альфа-Банка.
+ *
+ * Базу (цвета, радиусы, отступы, типографика) даёт пакет
+ * @alfalab/core-components-vars — это их настоящая дизайн-система.
+ * Тема сайта — bluetint: совпали все замеренные с живого сайта значения,
+ * см. docs/design-system/README.md.
+ *
+ * Здесь только то, чего в пакете нет: размеры страницы и «промо»-типографика
+ * маркетинговых блоков. Все значения замерены на alfabank.ru при ширине 1280.
+ */
+
+@import "@alfalab/core-components-vars/index.css";
+
+:root {
+  /* ——— страница ——— */
+  --alfa-container: 1140px; /* ширина контентной колонки */
+  --alfa-page-pad: 24px; /* поля по краям окна */
+  --alfa-header-h: 104px; /* высота шапки */
+  --alfa-shell-bg: var(--color-light-base-bg-primary-inverted); /* #121213 */
+  --alfa-shell-radius: var(--border-radius-64); /* скругление белого блока и футера */
+  --alfa-card-radius: var(--border-radius-32); /* крупные карточки */
+  --alfa-tile-radius: var(--border-radius-24); /* плитки в сетках */
+  --alfa-control-radius: var(--border-radius-10); /* кнопки шапки */
+
+  /* ——— шрифт ——— */
+  --alfa-font: var(--font-family-alfasans);
+
+  /* ——— промо-типографика (жирнее продуктовой headline_*) ——— */
+  --alfa-hero-size: 48px;
+  --alfa-hero-lh: 52px;
+  --alfa-h2-size: 40px;
+  --alfa-h2-lh: 48px;
+  --alfa-h3-size: 30px;
+  --alfa-h3-lh: 36px;
+  --alfa-card-title-size: 22px;
+  --alfa-card-title-lh: 26px;
+  --alfa-promo-weight: 700;
+
+  /* ——— фирменные «цветные» подложки карточек ——— */
+  --alfa-promo-lavender: #dfbfff;
+  --alfa-promo-lilac: #e9e0ff;
+  --alfa-promo-blue: #5297ff;
+  --alfa-promo-navy: #000058;
+  --alfa-promo-pink: #ffcac7;
+  --alfa-promo-sky: #e5ecff;
+  --alfa-promo-grey: var(--color-light-base-bg-secondary); /* #f2f3f5 */
+}
+
+/* Тёмные блоки страницы: внутри них текст инвертируется.
+   Правила повторяют то, как сайт красит шапку, геро-блок и футер. */
+.alfa-on-dark {
+  background: var(--alfa-shell-bg);
+  color: var(--color-light-text-primary-inverted);
+}
+
+.alfa-on-dark .alfa-text-secondary {
+  color: var(--color-light-text-secondary-inverted);
+}
+
+.alfa-on-light {
+  background: var(--color-light-base-bg-primary);
+  color: var(--color-light-text-primary);
+}
+
+.alfa-on-light .alfa-text-secondary {
+  color: var(--color-light-text-secondary);
+}

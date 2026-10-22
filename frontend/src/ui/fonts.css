@@ -1,0 +1,27 @@
+/* Alfa Interface Sans — фирменный шрифт alfabank.ru.
+   Файлы скачаны с их CDN: https://alfabank.servicecdn.ru/media/fonts/
+   На CDN лежат только эти три начертания, других весов нет. */
+
+@font-face {
+  font-family: "Alfa Interface Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/alfa/fonts/alfa-interface-sans_regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alfa Interface Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/alfa/fonts/alfa-interface-sans_medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alfa Interface Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/alfa/fonts/alfa-interface-sans_bold.woff2") format("woff2");
+}
