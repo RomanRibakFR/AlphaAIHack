@@ -2,6 +2,7 @@ import httpx
 from fastapi import APIRouter, FastAPI
 from sqlalchemy import text
 
+from app.api import applications, companies, products
 from app.config import settings
 from app.db import engine
 
@@ -30,5 +31,9 @@ def health() -> dict:
         status["mocks"] = "unavailable"
     return status
 
+
+api.include_router(products.router)
+api.include_router(companies.router)
+api.include_router(applications.router)
 
 app.include_router(api)

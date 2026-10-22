@@ -52,8 +52,9 @@ class Application(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"))
     product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
-    amount: Mapped[Decimal] = mapped_column(Money)
-    term_months: Mapped[int]
+    # в черновике могут быть пустыми, проверяем при отправке
+    amount: Mapped[Decimal | None] = mapped_column(Money)
+    term_months: Mapped[int | None]
     purpose: Mapped[str] = mapped_column(String(255), default="")
     status: Mapped[Status] = mapped_column(str_enum(Status), default=Status.DRAFT, index=True)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
