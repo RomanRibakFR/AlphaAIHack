@@ -118,6 +118,7 @@ class Offer(BaseModel):
     monthly_payment: Decimal
     total_payment: Decimal
     is_counter: bool
+    advice: str = ""
     text: str
 
 

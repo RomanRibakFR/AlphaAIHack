@@ -127,16 +127,29 @@ def offer_for(app: Application) -> Offer | None:
         return None
     is_counter = d.amount < app.amount
     if is_counter:
-        text = f"Мы готовы выдать {rub(d.amount)} вместо {rub(app.amount)}. Причина: {d.reason}. Можно принять предложение или отказаться."
+        text = f"Мы готовы выдать {rub(d.amount)} вместо {rub(app.amount)}. Причина: {d.reason}."
+        if d.advice:
+            text += f" Что можно сделать: {d.advice}."
+        text += " Можно принять предложение или отказаться."
     else:
         text = (f"Кредит одобрен: {rub(d.amount)} на {d.term_months} мес. под {d.rate}% годовых, "
                 f"платёж {rub(d.monthly_payment)} в месяц. Проверьте условия и подпишите в кабинете.")
     return Offer(amount=d.amount, requested_amount=app.amount, term_months=d.term_months, rate=d.rate,
                  monthly_payment=d.monthly_payment, total_payment=d.monthly_payment * d.term_months,
-                 is_counter=is_counter, text=text)
+                 is_counter=is_counter, advice=d.advice if is_counter else "", text=text)
 
 
-def to_out(app: Application) -> ApplicationOut:
+def history_items(app: Application, internal: bool) -> list[HistoryItem]:
+    items = [HistoryItem.model_validate(h) for h in app.history]
+    if not internal:
+        # комментарии системы и специалиста — служебные (PD, причины ручной проверки), клиенту не нужны
+        for item in items:
+            if item.actor != Actor.CLIENT:
+                item.comment = None
+    return items
+
+
+def to_out(app: Application, internal: bool = False) -> ApplicationOut:
     d = app.last_decision
     offer = offer_for(app)
     rejection = None
@@ -172,7 +185,7 @@ def to_out(app: Application) -> ApplicationOut:
         sign_code=app.sign_code if app.status == Status.SIGNING else None,
         contract_number=f"КД-{app.id:06d}" if app.status in {Status.SIGNING, Status.ISSUED} else None,
         schedule=schedule,
-        history=[HistoryItem.model_validate(h) for h in app.history],
+        history=history_items(app, internal),
         created_at=app.created_at,
         updated_at=app.updated_at,
         submitted_at=app.submitted_at,

@@ -39,7 +39,7 @@ def details(app_id: int, session: Session = Depends(get_session)):
     for c in app.checks:
         checks[c.source] = c.payload  # последние ответы перезаписывают старые
     return BackofficeApplication(
-        application=to_out(app), checks=checks,
+        application=to_out(app, internal=True), checks=checks,
         decisions=[DecisionOut.model_validate(d) for d in app.decisions],
     )
 
