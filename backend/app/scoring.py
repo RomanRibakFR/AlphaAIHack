@@ -198,7 +198,7 @@ def decide(inp: Inputs) -> Result:
     by_load = amount_for_payment(free_payment, rate, inp.term_months) if free_payment > 0 else D(0)
 
     offer = min(inp.amount, by_load)
-    reason = texts.COUNTER_BY_LOAD if offer < inp.amount else ""
+    reason, advice = (texts.COUNTER_BY_LOAD, texts.COUNTER_BY_LOAD_ADVICE) if offer < inp.amount else ("", "")
     if pd >= cfg.PD_APPROVE and offer > inp.amount * cfg.COUNTER_SHARE:
         offer = inp.amount * cfg.COUNTER_SHARE
         reason = reason or texts.COUNTER_BY_RISK
@@ -213,5 +213,5 @@ def decide(inp: Inputs) -> Result:
     res.monthly_payment = annuity(offer, rate, inp.term_months)
     if offer < inp.amount:
         res.outcome = Status.COUNTER_OFFER
-        res.reason = reason
+        res.reason, res.advice = reason, advice
     return res

@@ -47,7 +47,12 @@ def test_counter_offer_and_decline(client):
     offer = app["offer"]
     assert offer["is_counter"] is True
     assert Decimal(offer["amount"]) < Decimal("3000000")
-    assert "платежи по кредитам" in offer["text"]
+    assert "платежи по текущим кредитам" in offer["text"]
+    assert "срок подольше" in offer["advice"]
+    # клиент не видит служебных комментариев (PD и т.п.), специалист — видит
+    assert all(h["comment"] is None for h in app["history"] if h["actor"] != "client")
+    internal = client.get(f"/api/backoffice/applications/{app['id']}").json()["application"]["history"]
+    assert internal[-1]["comment"].startswith("PD ")
 
     app = client.post(f"/api/applications/{app['id']}/decline").json()
     assert app["status"]["code"] == "declined_by_client"
@@ -56,7 +61,8 @@ def test_counter_offer_and_decline(client):
 def test_stop_factor_rejects_with_reason(client):
     app = submit(client, full_draft(client, "7711234560", amount="2000000", annual_revenue="13000000"))
     assert app["status"]["code"] == "rejected"
-    assert "ликвидации" in app["rejection"]["reason"]
+    assert "прекращает работу" in app["rejection"]["reason"]
+    assert "ошибочные сведения" in app["rejection"]["advice"]
     assert app["rejection"]["advice"]
     assert app["offer"] is None
 
