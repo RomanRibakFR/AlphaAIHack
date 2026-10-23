@@ -1,0 +1,197 @@
+/* Анимации лендинга. Вся механика — в lib/motion.ts, здесь только внешний вид.
+   Эффекты и их названия — словарь 60fps.design, реализация веб-своя.
+
+   Одно общее правило в конце файла: при prefers-reduced-motion всё движение
+   выключается, элементы сразу в конечном состоянии. */
+
+/* ——— reveal: появление снизу с затуханием ——— */
+.mo-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.mo-reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* вариант для крупных карточек: чуть подрастает, а не выезжает */
+.mo-reveal-grow {
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mo-reveal-grow[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ——— spring на нажатие: кнопки и карточки проседают под пальцем ——— */
+.mo-press {
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mo-press:active {
+  transform: scale(0.97);
+}
+
+/* ——— карточка: подъём и наезд картинки на ховере ——— */
+.mo-lift {
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mo-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(3, 3, 6, 0.12);
+}
+
+.mo-zoom-media {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mo-lift:hover .mo-zoom-media {
+  transform: scale(1.04);
+}
+
+/* ——— shimmer: заглушка, пока грузятся данные ——— */
+.mo-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-light-base-bg-secondary);
+}
+
+.mo-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+  animation: mo-shimmer 1.4s infinite;
+}
+
+@keyframes mo-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ——— draw: линия конвейера прочерчивается при прокрутке ——— */
+.mo-draw {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mo-draw[data-shown="true"] {
+  transform: scaleX(1);
+}
+
+/* ——— pulse: точка «идёт обработка» ——— */
+.mo-pulse {
+  animation: mo-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes mo-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+/* ——— модалка входа ——— */
+.mo-backdrop {
+  animation: mo-backdrop-in 0.25s ease forwards;
+}
+
+@keyframes mo-backdrop-in {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(6px);
+  }
+}
+
+.mo-dialog {
+  animation: mo-dialog-in 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes mo-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ——— геро: въезд при загрузке страницы ——— */
+.mo-enter {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: mo-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes mo-enter {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ——— уважение к системной настройке ——— */
+@media (prefers-reduced-motion: reduce) {
+  .mo-reveal,
+  .mo-reveal-grow,
+  .mo-draw {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .mo-enter,
+  .mo-dialog,
+  .mo-backdrop {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .mo-press,
+  .mo-lift,
+  .mo-zoom-media {
+    transition: none;
+  }
+
+  .mo-lift:hover {
+    transform: none;
+  }
+
+  .mo-shimmer::after,
+  .mo-pulse {
+    animation: none;
+  }
+}

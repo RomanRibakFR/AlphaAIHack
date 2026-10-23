@@ -1,0 +1,88 @@
+/* Стили скелета кабинета: голые рамки, чтобы блоки не слипались.
+   Выбрасываются, когда кабинет переведём на дизайн-систему.
+
+   Важно: всё, кроме утилит, ограничено `.layout` — обёрткой кабинета.
+   Без этого правило для голого `section` красило рамкой каждую секцию
+   лендинга, а `table` и `label` лезли в чужую вёрстку.
+   За шрифт и отступы body отвечает ui/base.css. */
+
+.layout {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: system-ui, sans-serif;
+  line-height: 1.45;
+}
+
+.layout header.topbar {
+  border-bottom: 1px solid #ccc;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.layout header.topbar nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.layout header.topbar .who {
+  margin-left: auto;
+}
+
+.layout section {
+  border: 1px solid #ccc;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+.layout section > h2:first-child,
+.layout section > h3:first-child {
+  margin-top: 0;
+}
+
+.layout table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.layout th,
+.layout td {
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.layout label {
+  display: block;
+  margin: 8px 0;
+}
+
+.layout .field-error {
+  color: #b00;
+}
+
+/* Маркер нереализованного: всё, что в рамке, — заглушка, а не готовый блок */
+.layout .stub {
+  border: 2px dashed #b00;
+  background: #fff6f6;
+}
+
+.layout .stub::before {
+  content: "ЗАГЛУШКА — " attr(data-why);
+  display: block;
+  font-weight: bold;
+  color: #b00;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.layout .muted {
+  color: #666;
+  font-size: 13px;
+}

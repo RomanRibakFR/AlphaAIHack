@@ -9,6 +9,8 @@ __pycache__/
 # Node
 node_modules/
 dist/
+dist-snapshot/
+*.tsbuildinfo
 
 # Env / IDE / OS
 .env

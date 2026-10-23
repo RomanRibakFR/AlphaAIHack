@@ -1,0 +1,137 @@
+/* Базовый слой: шрифт на страницу, сброс и утилиты-раскладки,
+   которые повторяют сетку alfabank.ru. Подключается один раз в ui/index.css. */
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: var(--alfa-font);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-light-text-primary);
+  background: var(--color-light-base-bg-primary);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Контентная колонка: 1140px по центру, поля 24px на узких окнах. */
+.alfa-container {
+  width: 100%;
+  max-width: calc(var(--alfa-container) + var(--alfa-page-pad) * 2);
+  margin: 0 auto;
+  padding-inline: var(--alfa-page-pad);
+}
+
+/* ——— промо-заголовки ——— */
+.alfa-hero-title {
+  margin: 0;
+  font-size: var(--alfa-hero-size);
+  line-height: var(--alfa-hero-lh);
+  font-weight: var(--alfa-promo-weight);
+  letter-spacing: -0.5px;
+}
+
+.alfa-h2 {
+  margin: 0;
+  font-size: var(--alfa-h2-size);
+  line-height: var(--alfa-h2-lh);
+  font-weight: var(--alfa-promo-weight);
+  letter-spacing: -0.4px;
+}
+
+.alfa-h3 {
+  margin: 0;
+  font-size: var(--alfa-h3-size);
+  line-height: var(--alfa-h3-lh);
+  font-weight: var(--alfa-promo-weight);
+}
+
+.alfa-card-title {
+  margin: 0;
+  font-size: var(--alfa-card-title-size);
+  line-height: var(--alfa-card-title-lh);
+  font-weight: var(--alfa-promo-weight);
+}
+
+/* ——— продуктовая типографика (= миксины core-components) ——— */
+.alfa-text-primary-medium {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.alfa-text-primary-small {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.alfa-text-secondary-medium {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.alfa-text-secondary-small {
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.alfa-text-secondary {
+  color: var(--color-light-text-secondary);
+}
+
+/* ——— сетка плиток ——— */
+.alfa-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.alfa-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.alfa-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.alfa-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* ——— карточка-плитка ——— */
+.alfa-tile {
+  position: relative;
+  display: block;
+  border-radius: var(--alfa-tile-radius);
+  background: var(--alfa-promo-grey);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.alfa-tile:hover {
+  transform: translateY(-2px);
+}
+
+.alfa-link {
+  color: var(--color-light-text-primary);
+  text-decoration: none;
+}
+
+.alfa-link:hover {
+  color: var(--color-light-text-primary-hover);
+}
+
+/* Сайт отдаёт десктопную вёрстку фиксированной ширины (meta viewport width=1280),
+   поэтому на узких окнах страница скроллится, а не перестраивается.
+   Клон ведёт себя так же — чтобы не выдумывать мобильный макет, которого нет. */
+.alfa-fixed-desktop {
+  min-width: 1280px;
+}
