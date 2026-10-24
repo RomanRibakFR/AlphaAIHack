@@ -1,0 +1,300 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C15",
+    "title": "Продукты оптом — расхождение снято выпиской, автоодобрение",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 5000000,
+      "term_months": 24,
+      "purpose": "Закупка продукции у новых поставщиков",
+      "declared_revenue_12m": 48000000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": {
+        "doc_type": "other_bank_statement",
+        "turnover_12m": 15000000
+      }
+    },
+    "expected": {
+      "scenario_id": "S15",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T22",
+        "T05",
+        "T03",
+        "T07",
+        "T10",
+        "T17",
+        "T19"
+      ],
+      "outcome": "AUTO_APPROVED",
+      "reason": null,
+      "assumed_grade": "A",
+      "assumed_pd": 0.02,
+      "note": "Заявлено 48 млн, по счёту 30 млн (+60%) → запрос выписки; с выпиской 45 млн, расхождение 7% — снято",
+      "features": {
+        "F1_business_age_months": 126,
+        "F2_avg_monthly_turnover": 2500000,
+        "F3_turnover_cv": 0.066,
+        "F4_debt_load": 0.04,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 2.0
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000155",
+    "kpp": "000101001",
+    "ogrn": "1160001000158",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Продовольственная компания Обь»",
+      "short_with_opf": "ООО «Продовольственная компания Обь»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2016-04-11",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "46.39",
+    "okved_name": "Торговля оптовая неспециализированная пищевыми продуктами, напитками и табачными изделиями",
+    "management": {
+      "name": "Павлов Константин Юрьевич",
+      "inn": "000100014511",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2016-04-11"
+    },
+    "founders": [
+      {
+        "name": "Павлов Константин Юрьевич",
+        "inn": "000100014511",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2016-04-11"
+      }
+    ],
+    "address": {
+      "value": "630005, г. Новосибирск, ул. Оптовая, д. 18"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "OSNO",
+    "employee_count": 22,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000155",
+      "name": "ООО «Продовольственная компания Обь»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "e08e3428-4d0a-4b96-832d-2a671a90074b",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-07-03",
+        "planned_close_at": "2028-07-03",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 2800000,
+        "rate": 0.17,
+        "outstanding": 1805000,
+        "monthly_payment": 100000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 3
+    }
+  },
+  "bank": {
+    "client_since": "2016-05-11",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 2706887,
+        "credit_net": 2591825,
+        "excluded": {
+          "own_transfers": 97670,
+          "loans_received": 0,
+          "refunds": 17392
+        },
+        "debit_total": 2513152,
+        "avg_balance": 502931
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 2499701,
+        "credit_net": 2353962,
+        "excluded": {
+          "own_transfers": 125009,
+          "loans_received": 0,
+          "refunds": 20730
+        },
+        "debit_total": 2232675,
+        "avg_balance": 380728
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 2451765,
+        "credit_net": 2353669,
+        "excluded": {
+          "own_transfers": 78091,
+          "loans_received": 0,
+          "refunds": 20005
+        },
+        "debit_total": 2364253,
+        "avg_balance": 532729
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 2294998,
+        "credit_net": 2203398,
+        "excluded": {
+          "own_transfers": 76551,
+          "loans_received": 0,
+          "refunds": 15049
+        },
+        "debit_total": 2153723,
+        "avg_balance": 604302
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 2529071,
+        "credit_net": 2348477,
+        "excluded": {
+          "own_transfers": 166343,
+          "loans_received": 0,
+          "refunds": 14251
+        },
+        "debit_total": 2222611,
+        "avg_balance": 680987
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 2709239,
+        "credit_net": 2599824,
+        "excluded": {
+          "own_transfers": 97392,
+          "loans_received": 0,
+          "refunds": 12023
+        },
+        "debit_total": 2527283,
+        "avg_balance": 560299
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 2681232,
+        "credit_net": 2528330,
+        "excluded": {
+          "own_transfers": 145096,
+          "loans_received": 0,
+          "refunds": 7806
+        },
+        "debit_total": 2396316,
+        "avg_balance": 415819
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 2781228,
+        "credit_net": 2538572,
+        "excluded": {
+          "own_transfers": 217440,
+          "loans_received": 0,
+          "refunds": 25216
+        },
+        "debit_total": 2549444,
+        "avg_balance": 333410
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 2765863,
+        "credit_net": 2630183,
+        "excluded": {
+          "own_transfers": 116570,
+          "loans_received": 0,
+          "refunds": 19110
+        },
+        "debit_total": 2566265,
+        "avg_balance": 601688
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 2577704,
+        "credit_net": 2455292,
+        "excluded": {
+          "own_transfers": 95574,
+          "loans_received": 0,
+          "refunds": 26838
+        },
+        "debit_total": 2385468,
+        "avg_balance": 309124
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 3108865,
+        "credit_net": 2858603,
+        "excluded": {
+          "own_transfers": 230491,
+          "loans_received": 0,
+          "refunds": 19771
+        },
+        "debit_total": 2841130,
+        "avg_balance": 852868
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 2683485,
+        "credit_net": 2537865,
+        "excluded": {
+          "own_transfers": 134742,
+          "loans_received": 0,
+          "refunds": 10878
+        },
+        "debit_total": 2491076,
+        "avg_balance": 648750
+      }
+    ],
+    "own_loans": []
+  }
+}

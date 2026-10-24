@@ -1,0 +1,291 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C12",
+    "title": "Ресторан — текущая просрочка, отказ",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 2000000,
+      "term_months": 18,
+      "purpose": "Ремонт зала",
+      "declared_revenue_12m": 27700000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S03",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T08"
+      ],
+      "outcome": "REJECTED",
+      "reason": "SF02_CURRENT_OVERDUE",
+      "assumed_grade": null,
+      "assumed_pd": null,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 108,
+        "F2_avg_monthly_turnover": 2200000,
+        "F3_turnover_cv": 0.092,
+        "F4_debt_load": 0.043,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 29,
+        "F6_amount_to_turnover": 0.91
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000123",
+    "kpp": "000101001",
+    "ogrn": "1170001000124",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Ресторан Полёт»",
+      "short_with_opf": "ООО «Ресторан Полёт»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2017-10-02",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "56.10",
+    "okved_name": "Деятельность ресторанов и услуги по доставке продуктов питания",
+    "management": {
+      "name": "Ким Евгений Валентинович",
+      "inn": "000100013638",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2017-10-02"
+    },
+    "founders": [
+      {
+        "name": "Ким Евгений Валентинович",
+        "inn": "000100013638",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2017-10-02"
+      }
+    ],
+    "address": {
+      "value": "690000, г. Владивосток, ул. Морская, д. 5"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 25,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000123",
+      "name": "ООО «Ресторан Полёт»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "67474bfe-2512-4ffe-a890-98e456a65d64",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-01-15",
+        "planned_close_at": "2028-01-15",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 2630000,
+        "rate": 0.18,
+        "outstanding": 1268000,
+        "monthly_payment": 95000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 95000,
+        "current_overdue_days": 12,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "A11111111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 3,
+      "last_24m": 6
+    }
+  },
+  "bank": {
+    "client_since": "2017-11-02",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 2311424,
+        "credit_net": 2093041,
+        "excluded": {
+          "own_transfers": 202986,
+          "loans_received": 0,
+          "refunds": 15397
+        },
+        "debit_total": 2006904,
+        "avg_balance": 313783
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 2210514,
+        "credit_net": 2039437,
+        "excluded": {
+          "own_transfers": 148729,
+          "loans_received": 0,
+          "refunds": 22348
+        },
+        "debit_total": 1988081,
+        "avg_balance": 291035
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 2123493,
+        "credit_net": 1961590,
+        "excluded": {
+          "own_transfers": 146435,
+          "loans_received": 0,
+          "refunds": 15468
+        },
+        "debit_total": 1859676,
+        "avg_balance": 492655
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 2556290,
+        "credit_net": 2302003,
+        "excluded": {
+          "own_transfers": 229878,
+          "loans_received": 0,
+          "refunds": 24409
+        },
+        "debit_total": 2316419,
+        "avg_balance": 649611
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 2184269,
+        "credit_net": 1983375,
+        "excluded": {
+          "own_transfers": 185821,
+          "loans_received": 0,
+          "refunds": 15073
+        },
+        "debit_total": 1880318,
+        "avg_balance": 417692
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 2302897,
+        "credit_net": 2171758,
+        "excluded": {
+          "own_transfers": 120721,
+          "loans_received": 0,
+          "refunds": 10418
+        },
+        "debit_total": 2181521,
+        "avg_balance": 612415
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 2617821,
+        "credit_net": 2393699,
+        "excluded": {
+          "own_transfers": 200019,
+          "loans_received": 0,
+          "refunds": 24103
+        },
+        "debit_total": 2322524,
+        "avg_balance": 661813
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 2714838,
+        "credit_net": 2513158,
+        "excluded": {
+          "own_transfers": 182296,
+          "loans_received": 0,
+          "refunds": 19384
+        },
+        "debit_total": 2513935,
+        "avg_balance": 548444
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 2310808,
+        "credit_net": 2133638,
+        "excluded": {
+          "own_transfers": 164330,
+          "loans_received": 0,
+          "refunds": 12840
+        },
+        "debit_total": 2072199,
+        "avg_balance": 411670
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 2707449,
+        "credit_net": 2586550,
+        "excluded": {
+          "own_transfers": 94745,
+          "loans_received": 0,
+          "refunds": 26154
+        },
+        "debit_total": 2534299,
+        "avg_balance": 381442
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 2170677,
+        "credit_net": 1982434,
+        "excluded": {
+          "own_transfers": 169747,
+          "loans_received": 0,
+          "refunds": 18496
+        },
+        "debit_total": 1848123,
+        "avg_balance": 492573
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 2460347,
+        "credit_net": 2239317,
+        "excluded": {
+          "own_transfers": 209709,
+          "loans_received": 0,
+          "refunds": 11321
+        },
+        "debit_total": 2207799,
+        "avg_balance": 608433
+      }
+    ],
+    "own_loans": []
+  }
+}

@@ -1,3 +1,8 @@
+"""
+Статусы и переходы заявки — ровно по docs/application-states.md (T01…T22).
+Таблица переходов здесь — единственный источник правды для бэкенда.
+"""
+from dataclasses import dataclass
 from enum import StrEnum
 
 
@@ -5,17 +10,15 @@ class Status(StrEnum):
     DRAFT = "draft"
     SUBMITTED = "submitted"
     VALIDATION = "validation"
-    NEEDS_INFO = "needs_info"
-    EXTERNAL_CHECKS = "external_checks"
+    INFO_REQUESTED = "info_requested"
+    CHECKS = "checks"
     SCORING = "scoring"
     MANUAL_REVIEW = "manual_review"
-    APPROVED = "approved"
-    COUNTER_OFFER = "counter_offer"
+    OFFER_PROPOSED = "offer_proposed"
     SIGNING = "signing"
     ISSUED = "issued"
     REJECTED = "rejected"
-    DECLINED_BY_CLIENT = "declined_by_client"
-    WITHDRAWN = "withdrawn"
+    CANCELLED = "cancelled"
     EXPIRED = "expired"
 
 
@@ -23,94 +26,100 @@ class Actor(StrEnum):
     CLIENT = "client"
     SYSTEM = "system"
     UNDERWRITER = "underwriter"
+    TIMER = "timer"
 
 
 S, A = Status, Actor
+FINAL = {S.ISSUED, S.REJECTED, S.CANCELLED, S.EXPIRED}
 
-# кто может перевести заявку из одного статуса в другой
-TRANSITIONS: dict[tuple[Status, Status], set[Actor]] = {
-    (S.DRAFT, S.SUBMITTED): {A.CLIENT},
-    (S.SUBMITTED, S.VALIDATION): {A.SYSTEM},
-    (S.VALIDATION, S.EXTERNAL_CHECKS): {A.SYSTEM},
-    (S.VALIDATION, S.NEEDS_INFO): {A.SYSTEM},
-    (S.NEEDS_INFO, S.SUBMITTED): {A.CLIENT},
-    (S.EXTERNAL_CHECKS, S.SCORING): {A.SYSTEM},
-    (S.EXTERNAL_CHECKS, S.NEEDS_INFO): {A.SYSTEM},  # данные анкеты не сошлись с внешними
-    (S.EXTERNAL_CHECKS, S.MANUAL_REVIEW): {A.SYSTEM},  # внешний сервис не ответил
-    (S.SCORING, S.APPROVED): {A.SYSTEM},
-    (S.SCORING, S.COUNTER_OFFER): {A.SYSTEM},
-    (S.SCORING, S.REJECTED): {A.SYSTEM},
-    (S.SCORING, S.MANUAL_REVIEW): {A.SYSTEM},
-    (S.MANUAL_REVIEW, S.APPROVED): {A.UNDERWRITER},
-    (S.MANUAL_REVIEW, S.COUNTER_OFFER): {A.UNDERWRITER},
-    (S.MANUAL_REVIEW, S.REJECTED): {A.UNDERWRITER},
-    (S.MANUAL_REVIEW, S.NEEDS_INFO): {A.UNDERWRITER},
-    (S.APPROVED, S.SIGNING): {A.CLIENT},
-    (S.COUNTER_OFFER, S.SIGNING): {A.CLIENT},
-    (S.APPROVED, S.DECLINED_BY_CLIENT): {A.CLIENT},
-    (S.COUNTER_OFFER, S.DECLINED_BY_CLIENT): {A.CLIENT},
-    (S.SIGNING, S.ISSUED): {A.CLIENT},
-    # клиент не ответил вовремя
-    (S.NEEDS_INFO, S.EXPIRED): {A.SYSTEM},
-    (S.APPROVED, S.EXPIRED): {A.SYSTEM},
-    (S.COUNTER_OFFER, S.EXPIRED): {A.SYSTEM},
-}
 
-# отозвать можно в любой момент до решения
-for _s in (S.DRAFT, S.SUBMITTED, S.VALIDATION, S.NEEDS_INFO, S.EXTERNAL_CHECKS, S.SCORING, S.MANUAL_REVIEW):
-    TRANSITIONS[(_s, S.WITHDRAWN)] = {A.CLIENT}
+@dataclass(frozen=True)
+class Transition:
+    id: str
+    src: Status | None  # None — из любого нефинального
+    event: str
+    dst: Status
+    actor: Actor
 
-FINAL = {S.ISSUED, S.REJECTED, S.DECLINED_BY_CLIENT, S.WITHDRAWN, S.EXPIRED}
+
+TRANSITIONS = [
+    Transition("T01", S.DRAFT, "submit", S.SUBMITTED, A.CLIENT),
+    Transition("T02", S.SUBMITTED, "processing_started", S.VALIDATION, A.SYSTEM),
+    Transition("T03", S.VALIDATION, "validation_passed", S.CHECKS, A.SYSTEM),
+    Transition("T04", S.VALIDATION, "info_required", S.INFO_REQUESTED, A.SYSTEM),
+    Transition("T05", S.INFO_REQUESTED, "info_provided", S.VALIDATION, A.CLIENT),
+    Transition("T06", S.INFO_REQUESTED, "info_expired", S.EXPIRED, A.TIMER),
+    Transition("T07", S.CHECKS, "checks_passed", S.SCORING, A.SYSTEM),
+    Transition("T08", S.CHECKS, "stop_factor_found", S.REJECTED, A.SYSTEM),
+    Transition("T09", S.CHECKS, "checks_incomplete", S.MANUAL_REVIEW, A.SYSTEM),
+    Transition("T22", S.CHECKS, "data_mismatch", S.INFO_REQUESTED, A.SYSTEM),
+    Transition("T10", S.SCORING, "auto_approved", S.OFFER_PROPOSED, A.SYSTEM),
+    Transition("T11", S.SCORING, "counter_offer_made", S.OFFER_PROPOSED, A.SYSTEM),
+    Transition("T12", S.SCORING, "sent_to_review", S.MANUAL_REVIEW, A.SYSTEM),
+    Transition("T13", S.SCORING, "auto_rejected", S.REJECTED, A.SYSTEM),
+    Transition("T14", S.MANUAL_REVIEW, "underwriter_approved", S.OFFER_PROPOSED, A.UNDERWRITER),
+    Transition("T15", S.MANUAL_REVIEW, "underwriter_rejected", S.REJECTED, A.UNDERWRITER),
+    Transition("T16", S.MANUAL_REVIEW, "underwriter_requested_info", S.INFO_REQUESTED, A.UNDERWRITER),
+    Transition("T17", S.OFFER_PROPOSED, "offer_accepted", S.SIGNING, A.CLIENT),
+    Transition("T18", S.OFFER_PROPOSED, "offer_expired", S.EXPIRED, A.TIMER),
+    Transition("T19", S.SIGNING, "signed", S.ISSUED, A.CLIENT),
+    Transition("T20", S.SIGNING, "signing_expired", S.EXPIRED, A.TIMER),
+    Transition("T21", None, "cancelled", S.CANCELLED, A.CLIENT),
+]
 
 
 class TransitionError(Exception):
     pass
 
 
-def check_transition(current: Status, target: Status, actor: Actor) -> None:
-    allowed = TRANSITIONS.get((current, target))
-    if allowed is None:
-        raise TransitionError(f"Нельзя перейти из {current} в {target}")
-    if actor not in allowed:
-        raise TransitionError(f"{actor} не может перевести заявку из {current} в {target}")
+def find_transition(current: Status, event: str, actor: Actor) -> Transition:
+    for t in TRANSITIONS:
+        if t.event == event and (t.src == current or (t.src is None and current not in FINAL)):
+            if t.actor != actor:
+                raise TransitionError(f"{actor} не может выполнить «{event}» (только {t.actor})")
+            return t
+    raise TransitionError(f"Событие «{event}» недопустимо в статусе {current}")
 
 
-def next_statuses(current: Status, actor: Actor) -> list[Status]:
-    return [to for (frm, to), actors in TRANSITIONS.items() if frm == current and actor in actors]
+def events_for(current: Status, actor: Actor) -> list[str]:
+    return [
+        t.event for t in TRANSITIONS
+        if t.actor == actor and (t.src == current or (t.src is None and current not in FINAL))
+    ]
 
 
-# что видит клиент: внутренние шаги банка склеены в один «рассматриваем» (тексты — от Полины)
-_REVIEWING = (
+# ---- что видит клиент (тексты — исследование Полины, раздел 6 статусной модели) ----
+
+REVIEWING = {S.SUBMITTED, S.VALIDATION, S.CHECKS, S.SCORING}
+
+_REVIEWING_TEXT = (
     "Рассматриваем заявку",
     "Проверяем данные компании → смотрим кредитную историю → готовим решение. "
     "Мы сообщим здесь, как только решение будет готово.",
 )
 
 CLIENT_VIEW: dict[Status, tuple[str, str]] = {
-    S.DRAFT: ("Черновик", "Заполните заявку и отправьте её в банк"),
-    S.SUBMITTED: _REVIEWING,
-    S.VALIDATION: _REVIEWING,
-    S.EXTERNAL_CHECKS: _REVIEWING,
-    S.SCORING: _REVIEWING,
+    S.DRAFT: ("Черновик", "Заполните заявку и отправьте её в банк."),
+    S.SUBMITTED: _REVIEWING_TEXT,
+    S.VALIDATION: _REVIEWING_TEXT,
+    S.CHECKS: _REVIEWING_TEXT,
+    S.SCORING: _REVIEWING_TEXT,
     S.MANUAL_REVIEW: (
-        "Рассматривает специалист",
+        "Рассматриваем заявку",
         "Заявку смотрит специалист банка — так бывает с крупными суммами или нестандартными данными. "
         "Если что-то понадобится, напишем здесь.",
     ),
-    S.NEEDS_INFO: ("Требуется дополнение", "Чтобы продолжить, загрузите документ из запроса. Заявка продолжится с того же места."),
-    S.APPROVED: ("Одобрено", "Проверьте условия и подпишите в кабинете."),
-    S.COUNTER_OFFER: ("Есть предложение", "Мы готовы выдать кредит на других условиях. Можно принять предложение или отказаться."),
-    S.SIGNING: ("Подписание", "Проверьте договор и подтвердите подпись кодом."),
-    S.ISSUED: ("Кредит выдан", "Деньги зачислены на счёт, график платежей — в карточке заявки."),
+    S.INFO_REQUESTED: ("Требуется дополнение", "Чтобы продолжить, загрузите то, что мы запросили. Заявка продолжится с того же места."),
+    S.OFFER_PROPOSED: ("Есть предложение", "Проверьте условия и примите предложение или откажитесь."),  # заголовок уточняется по типу
+    S.SIGNING: ("Подпишите документы", "Введите код подтверждения, чтобы подписать договор."),
+    S.ISSUED: ("Кредит выдан", "Деньги зачислены на расчётный счёт."),
     S.REJECTED: ("Отказ", "Сейчас мы не можем выдать кредит. Причина и что можно сделать — ниже."),
-    S.DECLINED_BY_CLIENT: ("Вы отказались", "Предложение отклонено. Можно подать новую заявку в любой момент."),
-    S.WITHDRAWN: ("Отозвана", "Вы отозвали заявку."),
-    S.EXPIRED: ("Истекла", "Срок ответа истёк, можно подать новую заявку."),
+    S.CANCELLED: ("Заявка отменена", "Можно подать новую заявку в любой момент."),
+    S.EXPIRED: ("Срок истёк", "Мы не получили ответ вовремя, поэтому заявка закрыта. Можно подать новую."),
 }
 
-# подшаги «Рассматриваем заявку», чтобы клиент видел прогресс
-REVIEW_STEPS = [
-    (S.VALIDATION, "Проверяем данные компании"),
-    (S.EXTERNAL_CHECKS, "Смотрим кредитную историю"),
-    (S.SCORING, "Готовим решение"),
+CLIENT_STAGES = [
+    ("company_check", "Проверяем данные компании"),
+    ("credit_history", "Смотрим кредитную историю"),
+    ("decision", "Готовим решение"),
 ]

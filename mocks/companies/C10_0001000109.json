@@ -1,0 +1,317 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C10",
+    "title": "Стройка — высокий риск, отказ",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 2000000,
+      "term_months": 24,
+      "purpose": "Пополнение оборотных средств на объект",
+      "declared_revenue_12m": 26400000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S04",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T13"
+      ],
+      "outcome": "REJECTED",
+      "reason": "HIGH_RISK",
+      "assumed_grade": "D",
+      "assumed_pd": 0.22,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 14,
+        "F2_avg_monthly_turnover": 2000000,
+        "F3_turnover_cv": 0.336,
+        "F4_debt_load": 0.0,
+        "F5_overdue_30plus_count_24m": 4,
+        "F5_max_overdue_days_24m": 89,
+        "F6_amount_to_turnover": 1.0
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000109",
+    "kpp": "000101001",
+    "ogrn": "1250001000105",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Монолит-Строй»",
+      "short_with_opf": "ООО «Монолит-Строй»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2025-08-20",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "41.20",
+    "okved_name": "Строительство жилых и нежилых зданий",
+    "management": {
+      "name": "Ахметов Ринат Ильдарович",
+      "inn": "000100013003",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2025-08-20"
+    },
+    "founders": [
+      {
+        "name": "Ахметов Ринат Ильдарович",
+        "inn": "000100013003",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2025-08-20"
+      }
+    ],
+    "address": {
+      "value": "400000, г. Волгоград, ул. Строителей, д. 30"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "OSNO",
+    "employee_count": 27,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "YELLOW",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000109",
+      "name": "ООО «Монолит-Строй»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "d29b8652-db47-479a-9a9e-7f65abc703cc",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "MFO",
+        "opened_at": "2025-09-01",
+        "planned_close_at": "2026-03-01",
+        "status": "CLOSED",
+        "closed_at": "2026-03-20",
+        "currency": "RUB",
+        "credit_limit": 310000,
+        "rate": 0.5,
+        "outstanding": 0,
+        "monthly_payment": 0,
+        "next_payment_date": null,
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 1,
+          "d60_89": 1,
+          "d90_plus": 0
+        },
+        "payment_string": "32A111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "69248f67-154b-441e-88c9-6e053f3a2987",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-10-01",
+        "planned_close_at": "2026-10-01",
+        "status": "CLOSED",
+        "closed_at": "2026-08-01",
+        "currency": "RUB",
+        "credit_limit": 950000,
+        "rate": 0.24,
+        "outstanding": 0,
+        "monthly_payment": 0,
+        "next_payment_date": null,
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 2,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "121A211111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 9,
+      "last_24m": 20
+    }
+  },
+  "bank": {
+    "client_since": "2025-09-20",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 2427384,
+        "credit_net": 1355083,
+        "excluded": {
+          "own_transfers": 113743,
+          "loans_received": 950000,
+          "refunds": 8558
+        },
+        "debit_total": 1268508,
+        "avg_balance": 291285
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 1895334,
+        "credit_net": 1764388,
+        "excluded": {
+          "own_transfers": 121120,
+          "loans_received": 0,
+          "refunds": 9826
+        },
+        "debit_total": 1740669,
+        "avg_balance": 258814
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 654087,
+        "credit_net": 607571,
+        "excluded": {
+          "own_transfers": 39719,
+          "loans_received": 0,
+          "refunds": 6797
+        },
+        "debit_total": 613575,
+        "avg_balance": 159008
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 2233859,
+        "credit_net": 2013331,
+        "excluded": {
+          "own_transfers": 201185,
+          "loans_received": 0,
+          "refunds": 19343
+        },
+        "debit_total": 1903128,
+        "avg_balance": 398645
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 2226415,
+        "credit_net": 2057366,
+        "excluded": {
+          "own_transfers": 162566,
+          "loans_received": 0,
+          "refunds": 6483
+        },
+        "debit_total": 2054570,
+        "avg_balance": 589901
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 3145512,
+        "credit_net": 3025004,
+        "excluded": {
+          "own_transfers": 96695,
+          "loans_received": 0,
+          "refunds": 23813
+        },
+        "debit_total": 2959497,
+        "avg_balance": 672758
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 1275528,
+        "credit_net": 1221177,
+        "excluded": {
+          "own_transfers": 41137,
+          "loans_received": 0,
+          "refunds": 13214
+        },
+        "debit_total": 1158007,
+        "avg_balance": 160376
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 2216375,
+        "credit_net": 2041375,
+        "excluded": {
+          "own_transfers": 158423,
+          "loans_received": 0,
+          "refunds": 16577
+        },
+        "debit_total": 1937365,
+        "avg_balance": 439392
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 3117554,
+        "credit_net": 2973216,
+        "excluded": {
+          "own_transfers": 131669,
+          "loans_received": 0,
+          "refunds": 12669
+        },
+        "debit_total": 2991857,
+        "avg_balance": 404427
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 2227460,
+        "credit_net": 2071410,
+        "excluded": {
+          "own_transfers": 131829,
+          "loans_received": 0,
+          "refunds": 24221
+        },
+        "debit_total": 1933014,
+        "avg_balance": 315482
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 2638176,
+        "credit_net": 2435314,
+        "excluded": {
+          "own_transfers": 179551,
+          "loans_received": 0,
+          "refunds": 23311
+        },
+        "debit_total": 2430550,
+        "avg_balance": 674700
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 2520385,
+        "credit_net": 2434765,
+        "excluded": {
+          "own_transfers": 77303,
+          "loans_received": 0,
+          "refunds": 8317
+        },
+        "debit_total": 2385416,
+        "avg_balance": 341999
+      }
+    ],
+    "own_loans": []
+  }
+}

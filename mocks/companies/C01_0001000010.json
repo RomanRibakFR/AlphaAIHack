@@ -1,0 +1,294 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C01",
+    "title": "Кофейня — автоодобрение",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 3000000,
+      "term_months": 24,
+      "purpose": "Оборудование и запасы для второй кофейни",
+      "declared_revenue_12m": 31500000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S01",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T10",
+        "T17",
+        "T19"
+      ],
+      "outcome": "AUTO_APPROVED",
+      "reason": null,
+      "assumed_grade": "A",
+      "assumed_pd": 0.02,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 102,
+        "F2_avg_monthly_turnover": 2500000,
+        "F3_turnover_cv": 0.059,
+        "F4_debt_load": 0.04,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 1.2
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000010",
+    "kpp": "000101001",
+    "ogrn": "1180001000013",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Утренний кофе»",
+      "short_with_opf": "ООО «Утренний кофе»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2018-04-12",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "56.10",
+    "okved_name": "Деятельность ресторанов и услуги по доставке продуктов питания",
+    "management": {
+      "name": "Смирнова Анна Викторовна",
+      "inn": "000100010355",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2018-04-12"
+    },
+    "founders": [
+      {
+        "name": "Смирнова Анна Викторовна",
+        "inn": "000100010355",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2018-04-12"
+      }
+    ],
+    "address": {
+      "value": "630099, г. Новосибирск, ул. Примерная, д. 12, офис 3"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 18,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000010",
+      "name": "ООО «Утренний кофе»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "c2b9546e-0f02-40f3-adb7-f1d5cbf15150",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-03-14",
+        "planned_close_at": "2028-03-14",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 2800000,
+        "rate": 0.17,
+        "outstanding": 1501000,
+        "monthly_payment": 100000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "1111111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 3
+    }
+  },
+  "bank": {
+    "client_since": "2018-05-12",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 2681081,
+        "credit_net": 2457514,
+        "excluded": {
+          "own_transfers": 200524,
+          "loans_received": 0,
+          "refunds": 23043
+        },
+        "debit_total": 2466788,
+        "avg_balance": 611157
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 2330276,
+        "credit_net": 2146655,
+        "excluded": {
+          "own_transfers": 162940,
+          "loans_received": 0,
+          "refunds": 20681
+        },
+        "debit_total": 2028596,
+        "avg_balance": 451562
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 2876777,
+        "credit_net": 2605801,
+        "excluded": {
+          "own_transfers": 241433,
+          "loans_received": 0,
+          "refunds": 29543
+        },
+        "debit_total": 2427354,
+        "avg_balance": 724391
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 2748648,
+        "credit_net": 2542220,
+        "excluded": {
+          "own_transfers": 189498,
+          "loans_received": 0,
+          "refunds": 16930
+        },
+        "debit_total": 2390618,
+        "avg_balance": 699832
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 2608657,
+        "credit_net": 2470082,
+        "excluded": {
+          "own_transfers": 117985,
+          "loans_received": 0,
+          "refunds": 20590
+        },
+        "debit_total": 2312053,
+        "avg_balance": 543831
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 2529761,
+        "credit_net": 2379383,
+        "excluded": {
+          "own_transfers": 136674,
+          "loans_received": 0,
+          "refunds": 13704
+        },
+        "debit_total": 2244452,
+        "avg_balance": 300723
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 2681931,
+        "credit_net": 2438986,
+        "excluded": {
+          "own_transfers": 222286,
+          "loans_received": 0,
+          "refunds": 20659
+        },
+        "debit_total": 2269362,
+        "avg_balance": 547034
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 2983515,
+        "credit_net": 2741042,
+        "excluded": {
+          "own_transfers": 229302,
+          "loans_received": 0,
+          "refunds": 13171
+        },
+        "debit_total": 2752954,
+        "avg_balance": 744487
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 2695491,
+        "credit_net": 2496740,
+        "excluded": {
+          "own_transfers": 169052,
+          "loans_received": 0,
+          "refunds": 29699
+        },
+        "debit_total": 2365517,
+        "avg_balance": 316908
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 2871607,
+        "credit_net": 2707626,
+        "excluded": {
+          "own_transfers": 151417,
+          "loans_received": 0,
+          "refunds": 12564
+        },
+        "debit_total": 2723056,
+        "avg_balance": 381008
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 2701182,
+        "credit_net": 2535194,
+        "excluded": {
+          "own_transfers": 138687,
+          "loans_received": 0,
+          "refunds": 27301
+        },
+        "debit_total": 2366092,
+        "avg_balance": 344933
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 2658608,
+        "credit_net": 2478757,
+        "excluded": {
+          "own_transfers": 164397,
+          "loans_received": 0,
+          "refunds": 15454
+        },
+        "debit_total": 2309483,
+        "avg_balance": 596640
+      }
+    ],
+    "own_loans": []
+  }
+}

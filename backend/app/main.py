@@ -2,8 +2,10 @@ import logging
 from contextlib import asynccontextmanager
 
 import httpx
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, FastAPI, Request
+from fastapi.responses import JSONResponse
 from sqlalchemy import text
+from sqlalchemy.orm.exc import StaleDataError
 
 from app.api import applications, backoffice, companies, products
 from app.config import settings
@@ -24,11 +26,17 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(
     title="Умный кредитный кабинет — API",
-    version="0.2.0",
+    version="0.3.0",
     docs_url="/api/docs",
     openapi_url="/api/openapi.json",
     lifespan=lifespan,
 )
+
+
+@app.exception_handler(StaleDataError)
+async def concurrent_change(_: Request, __: StaleDataError):
+    # двое меняли заявку одновременно (например, специалист одобряет, а клиент отменяет) — выиграл первый
+    return JSONResponse(status_code=409, content={"detail": "Заявку только что изменили, обновите страницу"})
 
 api = APIRouter(prefix="/api")
 

@@ -1,0 +1,329 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C03",
+    "title": "Перевозчик — предложение с бо́льшим сроком",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 8000000,
+      "term_months": 18,
+      "purpose": "Пополнение оборотных средств: топливо и ремонт парка",
+      "declared_revenue_12m": 38900000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S02",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T11",
+        "T17",
+        "T19"
+      ],
+      "outcome": "COUNTER_OFFER",
+      "reason": "TERM_EXTENDED",
+      "assumed_grade": "B",
+      "assumed_pd": 0.04,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 121,
+        "F2_avg_monthly_turnover": 3000000,
+        "F3_turnover_cv": 0.068,
+        "F4_debt_load": 0.05,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 2.67
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000035",
+    "kpp": "000101001",
+    "ogrn": "1160001000037",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Сибирский маршрут»",
+      "short_with_opf": "ООО «Сибирский маршрут»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2016-09-01",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "49.41",
+    "okved_name": "Деятельность автомобильного грузового транспорта",
+    "management": {
+      "name": "Орлов Павел Андреевич",
+      "inn": "000100010997",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2016-09-01"
+    },
+    "founders": [
+      {
+        "name": "Орлов Павел Андреевич",
+        "inn": "000100010997",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2016-09-01"
+      }
+    ],
+    "address": {
+      "value": "644000, г. Омск, ул. Складская, д. 7"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "OSNO",
+    "employee_count": 42,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000035",
+      "name": "ООО «Сибирский маршрут»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "38b1f9a3-5c28-45ba-8f0f-9d8c7f51c46e",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OWN_BANK",
+        "opened_at": "2024-05-16",
+        "planned_close_at": "2028-05-16",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 3180000,
+        "rate": 0.16,
+        "outstanding": 1502000,
+        "monthly_payment": 90000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "8a0cb201-725c-4338-b690-be1eb8d90a1b",
+        "account_type": "LEASING",
+        "relationship": "BORROWER",
+        "creditor_kind": "LEASING_COMPANY",
+        "opened_at": "2025-01-22",
+        "planned_close_at": "2028-01-22",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 1610000,
+        "rate": 0.2,
+        "outstanding": 791000,
+        "monthly_payment": 60000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111",
+        "collateral": true
+      }
+    ],
+    "inquiries": {
+      "last_30d": 2,
+      "last_24m": 5
+    }
+  },
+  "bank": {
+    "client_since": "2016-10-01",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 3000226,
+        "credit_net": 2846957,
+        "excluded": {
+          "own_transfers": 130939,
+          "loans_received": 0,
+          "refunds": 22330
+        },
+        "debit_total": 2661626,
+        "avg_balance": 459169
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 3046205,
+        "credit_net": 2841093,
+        "excluded": {
+          "own_transfers": 196567,
+          "loans_received": 0,
+          "refunds": 8545
+        },
+        "debit_total": 2731321,
+        "avg_balance": 356956
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 2838017,
+        "credit_net": 2682694,
+        "excluded": {
+          "own_transfers": 125657,
+          "loans_received": 0,
+          "refunds": 29666
+        },
+        "debit_total": 2577888,
+        "avg_balance": 451267
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 3348287,
+        "credit_net": 3031492,
+        "excluded": {
+          "own_transfers": 284341,
+          "loans_received": 0,
+          "refunds": 32454
+        },
+        "debit_total": 2881097,
+        "avg_balance": 596877
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 2958088,
+        "credit_net": 2807377,
+        "excluded": {
+          "own_transfers": 122973,
+          "loans_received": 0,
+          "refunds": 27738
+        },
+        "debit_total": 2712872,
+        "avg_balance": 726061
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 3271027,
+        "credit_net": 3009194,
+        "excluded": {
+          "own_transfers": 249205,
+          "loans_received": 0,
+          "refunds": 12628
+        },
+        "debit_total": 2831311,
+        "avg_balance": 763119
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 3307218,
+        "credit_net": 3018628,
+        "excluded": {
+          "own_transfers": 274612,
+          "loans_received": 0,
+          "refunds": 13978
+        },
+        "debit_total": 3014560,
+        "avg_balance": 472397
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 3527275,
+        "credit_net": 3319453,
+        "excluded": {
+          "own_transfers": 178826,
+          "loans_received": 0,
+          "refunds": 28996
+        },
+        "debit_total": 3126673,
+        "avg_balance": 703604
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 3653046,
+        "credit_net": 3432188,
+        "excluded": {
+          "own_transfers": 207546,
+          "loans_received": 0,
+          "refunds": 13312
+        },
+        "debit_total": 3208250,
+        "avg_balance": 677826
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 3159974,
+        "credit_net": 2945686,
+        "excluded": {
+          "own_transfers": 191984,
+          "loans_received": 0,
+          "refunds": 22304
+        },
+        "debit_total": 2754586,
+        "avg_balance": 582377
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 3450968,
+        "credit_net": 3115172,
+        "excluded": {
+          "own_transfers": 306590,
+          "loans_received": 0,
+          "refunds": 29206
+        },
+        "debit_total": 2977770,
+        "avg_balance": 763436
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 3144328,
+        "credit_net": 2950066,
+        "excluded": {
+          "own_transfers": 170273,
+          "loans_received": 0,
+          "refunds": 23989
+        },
+        "debit_total": 2773624,
+        "avg_balance": 355183
+      }
+    ],
+    "own_loans": [
+      {
+        "contract_uid": "38b1f9a3-5c28-45ba-8f0f-9d8c7f51c46e",
+        "product": "BUSINESS_LOAN",
+        "opened_at": "2024-05-16",
+        "amount": 3180000,
+        "outstanding": 1502000,
+        "monthly_payment": 90000,
+        "current_overdue_days": 0
+      }
+    ]
+  }
+}
