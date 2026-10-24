@@ -1,0 +1,265 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C13",
+    "title": "Рекламное агентство — в ликвидации, отказ",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 1500000,
+      "term_months": 12,
+      "purpose": "Пополнение оборотных средств",
+      "declared_revenue_12m": 8800000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S03",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T08"
+      ],
+      "outcome": "REJECTED",
+      "reason": "SF01_COMPANY_INACTIVE",
+      "assumed_grade": null,
+      "assumed_pd": null,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 150,
+        "F2_avg_monthly_turnover": 700000,
+        "F3_turnover_cv": 0.14,
+        "F4_debt_load": 0.0,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 2.14
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000130",
+    "kpp": "000101001",
+    "ogrn": "1140001000138",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Реклама Медиа Групп»",
+      "short_with_opf": "ООО «Реклама Медиа Групп»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "LIQUIDATING",
+      "code": null,
+      "registration_date": "2014-03-27",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "73.11",
+    "okved_name": "Деятельность рекламных агентств",
+    "management": {
+      "name": "Соколов Андрей Михайлович",
+      "inn": "000100013959",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2014-03-27"
+    },
+    "founders": [
+      {
+        "name": "Соколов Андрей Михайлович",
+        "inn": "000100013959",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2014-03-27"
+      }
+    ],
+    "address": {
+      "value": "344000, г. Ростов-на-Дону, ул. Издательская, д. 11"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 6,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000130",
+      "name": "ООО «Реклама Медиа Групп»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 1
+    }
+  },
+  "bank": {
+    "client_since": "2014-04-27",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 915767,
+        "credit_net": 849323,
+        "excluded": {
+          "own_transfers": 63325,
+          "loans_received": 0,
+          "refunds": 3119
+        },
+        "debit_total": 820179,
+        "avg_balance": 152436
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 611729,
+        "credit_net": 582385,
+        "excluded": {
+          "own_transfers": 26042,
+          "loans_received": 0,
+          "refunds": 3302
+        },
+        "debit_total": 576578,
+        "avg_balance": 86828
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 677665,
+        "credit_net": 614522,
+        "excluded": {
+          "own_transfers": 59502,
+          "loans_received": 0,
+          "refunds": 3641
+        },
+        "debit_total": 617994,
+        "avg_balance": 155143
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 552754,
+        "credit_net": 524853,
+        "excluded": {
+          "own_transfers": 23157,
+          "loans_received": 0,
+          "refunds": 4744
+        },
+        "debit_total": 504558,
+        "avg_balance": 102069
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 860730,
+        "credit_net": 780861,
+        "excluded": {
+          "own_transfers": 74142,
+          "loans_received": 0,
+          "refunds": 5727
+        },
+        "debit_total": 770920,
+        "avg_balance": 103598
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 621855,
+        "credit_net": 571911,
+        "excluded": {
+          "own_transfers": 44713,
+          "loans_received": 0,
+          "refunds": 5231
+        },
+        "debit_total": 546472,
+        "avg_balance": 131189
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 779445,
+        "credit_net": 710614,
+        "excluded": {
+          "own_transfers": 64891,
+          "loans_received": 0,
+          "refunds": 3940
+        },
+        "debit_total": 698857,
+        "avg_balance": 149582
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 788960,
+        "credit_net": 736194,
+        "excluded": {
+          "own_transfers": 47600,
+          "loans_received": 0,
+          "refunds": 5166
+        },
+        "debit_total": 715612,
+        "avg_balance": 131250
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 819652,
+        "credit_net": 775521,
+        "excluded": {
+          "own_transfers": 38319,
+          "loans_received": 0,
+          "refunds": 5812
+        },
+        "debit_total": 750573,
+        "avg_balance": 103029
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 758888,
+        "credit_net": 719471,
+        "excluded": {
+          "own_transfers": 36191,
+          "loans_received": 0,
+          "refunds": 3226
+        },
+        "debit_total": 684006,
+        "avg_balance": 182047
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 765153,
+        "credit_net": 735661,
+        "excluded": {
+          "own_transfers": 23659,
+          "loans_received": 0,
+          "refunds": 5833
+        },
+        "debit_total": 709015,
+        "avg_balance": 145666
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 830352,
+        "credit_net": 798684,
+        "excluded": {
+          "own_transfers": 27984,
+          "loans_received": 0,
+          "refunds": 3684
+        },
+        "debit_total": 802263,
+        "avg_balance": 143853
+      }
+    ],
+    "own_loans": []
+  }
+}

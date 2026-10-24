@@ -1,0 +1,294 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C08",
+    "title": "Оптовая торговля — овердрафт меньше запрошенного",
+    "scenario": {
+      "product": "OVERDRAFT",
+      "amount": 3000000,
+      "term_months": 12,
+      "purpose": "Кассовые разрывы при отсрочке платежа покупателям",
+      "declared_revenue_12m": 49900000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S02",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T11",
+        "T17",
+        "T19"
+      ],
+      "outcome": "COUNTER_OFFER",
+      "reason": "AMOUNT_REDUCED",
+      "assumed_grade": "B",
+      "assumed_pd": 0.03,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 116,
+        "F2_avg_monthly_turnover": 4000000,
+        "F3_turnover_cv": 0.073,
+        "F4_debt_load": 0.0,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 0.75
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000081",
+    "kpp": "000101001",
+    "ogrn": "1170001000080",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Оптовик Плюс»",
+      "short_with_opf": "ООО «Оптовик Плюс»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2017-02-14",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "46.90",
+    "okved_name": "Торговля оптовая неспециализированная",
+    "management": {
+      "name": "Никитин Олег Валерьевич",
+      "inn": "000100012433",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2017-02-14"
+    },
+    "founders": [
+      {
+        "name": "Никитин Олег Валерьевич",
+        "inn": "000100012433",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2017-02-14"
+      }
+    ],
+    "address": {
+      "value": "603000, г. Нижний Новгород, ул. Торговая, д. 3"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 12,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000081",
+      "name": "ООО «Оптовик Плюс»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "71f2223f-f559-40f9-b659-23cd85132c85",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2022-03-01",
+        "planned_close_at": "2025-03-01",
+        "status": "CLOSED",
+        "closed_at": "2025-03-01",
+        "currency": "RUB",
+        "credit_limit": 1730000,
+        "rate": 0.15,
+        "outstanding": 0,
+        "monthly_payment": 0,
+        "next_payment_date": null,
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 2
+    }
+  },
+  "bank": {
+    "client_since": "2017-03-14",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 3888309,
+        "credit_net": 3675338,
+        "excluded": {
+          "own_transfers": 194594,
+          "loans_received": 0,
+          "refunds": 18377
+        },
+        "debit_total": 3461217,
+        "avg_balance": 467932
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 4300630,
+        "credit_net": 4119531,
+        "excluded": {
+          "own_transfers": 164903,
+          "loans_received": 0,
+          "refunds": 16196
+        },
+        "debit_total": 3906968,
+        "avg_balance": 753764
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 4210826,
+        "credit_net": 3845501,
+        "excluded": {
+          "own_transfers": 348681,
+          "loans_received": 0,
+          "refunds": 16644
+        },
+        "debit_total": 3645201,
+        "avg_balance": 633577
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 3982266,
+        "credit_net": 3769069,
+        "excluded": {
+          "own_transfers": 173758,
+          "loans_received": 0,
+          "refunds": 39439
+        },
+        "debit_total": 3637590,
+        "avg_balance": 757375
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 3876784,
+        "credit_net": 3640212,
+        "excluded": {
+          "own_transfers": 196150,
+          "loans_received": 0,
+          "refunds": 40422
+        },
+        "debit_total": 3513425,
+        "avg_balance": 736604
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 3879021,
+        "credit_net": 3596585,
+        "excluded": {
+          "own_transfers": 249871,
+          "loans_received": 0,
+          "refunds": 32565
+        },
+        "debit_total": 3534638,
+        "avg_balance": 1020852
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 4630332,
+        "credit_net": 4298856,
+        "excluded": {
+          "own_transfers": 302503,
+          "loans_received": 0,
+          "refunds": 28973
+        },
+        "debit_total": 4120910,
+        "avg_balance": 934954
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 4121018,
+        "credit_net": 3920327,
+        "excluded": {
+          "own_transfers": 183859,
+          "loans_received": 0,
+          "refunds": 16832
+        },
+        "debit_total": 3664558,
+        "avg_balance": 823096
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 4611593,
+        "credit_net": 4341413,
+        "excluded": {
+          "own_transfers": 227069,
+          "loans_received": 0,
+          "refunds": 43111
+        },
+        "debit_total": 4206097,
+        "avg_balance": 882607
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 4628881,
+        "credit_net": 4290725,
+        "excluded": {
+          "own_transfers": 290200,
+          "loans_received": 0,
+          "refunds": 47956
+        },
+        "debit_total": 4295690,
+        "avg_balance": 1078357
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 4708090,
+        "credit_net": 4496353,
+        "excluded": {
+          "own_transfers": 166858,
+          "loans_received": 0,
+          "refunds": 44879
+        },
+        "debit_total": 4276814,
+        "avg_balance": 608538
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 4158825,
+        "credit_net": 4006090,
+        "excluded": {
+          "own_transfers": 135042,
+          "loans_received": 0,
+          "refunds": 17693
+        },
+        "debit_total": 3864078,
+        "avg_balance": 937304
+      }
+    ],
+    "own_loans": []
+  }
+}

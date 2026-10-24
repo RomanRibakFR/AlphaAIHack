@@ -1,0 +1,320 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C05",
+    "title": "Мебельная мастерская — серая зона, к специалисту",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 2000000,
+      "term_months": 24,
+      "purpose": "Материалы под крупный заказ",
+      "declared_revenue_12m": 26900000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S05",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T12",
+        "T14",
+        "T17",
+        "T19"
+      ],
+      "outcome": "MANUAL_REVIEW",
+      "reason": "M1_GREY_ZONE",
+      "assumed_grade": "C",
+      "assumed_pd": 0.11,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 43,
+        "F2_avg_monthly_turnover": 2000000,
+        "F3_turnover_cv": 0.369,
+        "F4_debt_load": 0.025,
+        "F5_overdue_30plus_count_24m": 1,
+        "F5_max_overdue_days_24m": 59,
+        "F6_amount_to_turnover": 1.0
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000050",
+    "kpp": "000101001",
+    "ogrn": "1230001000052",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Мастерская Кедр»",
+      "short_with_opf": "ООО «Мастерская Кедр»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2023-03-10",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "31.09",
+    "okved_name": "Производство прочей мебели",
+    "management": {
+      "name": "Лебедев Артём Николаевич",
+      "inn": "000100011550",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2023-03-10"
+    },
+    "founders": [
+      {
+        "name": "Лебедев Артём Николаевич",
+        "inn": "000100011550",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2023-03-10"
+      }
+    ],
+    "address": {
+      "value": "664000, г. Иркутск, ул. Деревообработчиков, д. 4"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 11,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000050",
+      "name": "ООО «Мастерская Кедр»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "662e0001-e6f5-4713-8a1e-bac97bad1f68",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2024-06-03",
+        "planned_close_at": "2027-06-03",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 1330000,
+        "rate": 0.21,
+        "outstanding": 370000,
+        "monthly_payment": 50000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 1,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "11111111111A211111111111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "f1657729-e04a-42fd-a919-ffeb8996cb6e",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "MFO",
+        "opened_at": "2024-01-15",
+        "planned_close_at": "2024-07-15",
+        "status": "CLOSED",
+        "closed_at": "2024-07-15",
+        "currency": "RUB",
+        "credit_limit": 210000,
+        "rate": 0.45,
+        "outstanding": 0,
+        "monthly_payment": 0,
+        "next_payment_date": null,
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "11AA11",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 4,
+      "last_24m": 11
+    }
+  },
+  "bank": {
+    "client_since": "2023-04-10",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 617733,
+        "credit_net": 566654,
+        "excluded": {
+          "own_transfers": 47644,
+          "loans_received": 0,
+          "refunds": 3435
+        },
+        "debit_total": 531298,
+        "avg_balance": 91677
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 1327981,
+        "credit_net": 1259035,
+        "excluded": {
+          "own_transfers": 63778,
+          "loans_received": 0,
+          "refunds": 5168
+        },
+        "debit_total": 1218592,
+        "avg_balance": 349141
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 1637183,
+        "credit_net": 1518525,
+        "excluded": {
+          "own_transfers": 108728,
+          "loans_received": 0,
+          "refunds": 9930
+        },
+        "debit_total": 1455508,
+        "avg_balance": 413008
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 2960687,
+        "credit_net": 2721622,
+        "excluded": {
+          "own_transfers": 217633,
+          "loans_received": 0,
+          "refunds": 21432
+        },
+        "debit_total": 2588976,
+        "avg_balance": 782375
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 1539859,
+        "credit_net": 1416402,
+        "excluded": {
+          "own_transfers": 108396,
+          "loans_received": 0,
+          "refunds": 15061
+        },
+        "debit_total": 1348336,
+        "avg_balance": 322630
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 2478712,
+        "credit_net": 2320945,
+        "excluded": {
+          "own_transfers": 143866,
+          "loans_received": 0,
+          "refunds": 13901
+        },
+        "debit_total": 2309365,
+        "avg_balance": 527711
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 2130916,
+        "credit_net": 1919582,
+        "excluded": {
+          "own_transfers": 191258,
+          "loans_received": 0,
+          "refunds": 20076
+        },
+        "debit_total": 1788034,
+        "avg_balance": 441142
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 3586319,
+        "credit_net": 3382312,
+        "excluded": {
+          "own_transfers": 169548,
+          "loans_received": 0,
+          "refunds": 34459
+        },
+        "debit_total": 3366740,
+        "avg_balance": 521192
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 3080491,
+        "credit_net": 2793862,
+        "excluded": {
+          "own_transfers": 264737,
+          "loans_received": 0,
+          "refunds": 21892
+        },
+        "debit_total": 2785263,
+        "avg_balance": 652938
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 1767252,
+        "credit_net": 1685694,
+        "excluded": {
+          "own_transfers": 68488,
+          "loans_received": 0,
+          "refunds": 13070
+        },
+        "debit_total": 1629506,
+        "avg_balance": 215120
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 2325557,
+        "credit_net": 2230967,
+        "excluded": {
+          "own_transfers": 86576,
+          "loans_received": 0,
+          "refunds": 8014
+        },
+        "debit_total": 2234968,
+        "avg_balance": 457549
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 2292277,
+        "credit_net": 2184400,
+        "excluded": {
+          "own_transfers": 94590,
+          "loans_received": 0,
+          "refunds": 13287
+        },
+        "debit_total": 2070806,
+        "avg_balance": 377489
+      }
+    ],
+    "own_loans": []
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C11",
+    "title": "ИП автосервис — долг по налогам, отказ",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 1000000,
+      "term_months": 12,
+      "purpose": "Диагностическое оборудование",
+      "declared_revenue_12m": 11300000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S03",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T08"
+      ],
+      "outcome": "REJECTED",
+      "reason": "SF03_TAX_DEBT",
+      "assumed_grade": null,
+      "assumed_pd": null,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 89,
+        "F2_avg_monthly_turnover": 900000,
+        "F3_turnover_cv": 0.054,
+        "F4_debt_load": 0.031,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 1.11
+      }
+    }
+  },
+  "egrul": {
+    "type": "INDIVIDUAL",
+    "inn": "000100001128",
+    "ogrn": "319000000000110",
+    "name": {
+      "full_with_opf": "Индивидуальный предприниматель Захаров Игорь Петрович",
+      "short_with_opf": "ИП Захаров И. П."
+    },
+    "fio": {
+      "surname": "Захаров",
+      "name": "Игорь",
+      "patronymic": "Петрович"
+    },
+    "opf": {
+      "code": "50102",
+      "short": "ИП"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2019-05-15",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "45.20",
+    "okved_name": "Техническое обслуживание и ремонт автотранспортных средств",
+    "address": {
+      "value": "г. Тюмень"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "PSN",
+    "employee_count": 3,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": true,
+      "amount": 184300,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [
+      {
+        "decision_number": "4512",
+        "decision_date": "2026-10-07",
+        "reason_code": "1",
+        "bank": "OTHER_BANK",
+        "active": true
+      }
+    ],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "INDIVIDUAL",
+      "inn": "000100001128",
+      "name": "ИП Захаров И. П."
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "6a08e488-07e0-4ce6-80ec-c38b5dee8521",
+        "account_type": "CONSUMER_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2024-10-10",
+        "planned_close_at": "2027-10-10",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 740000,
+        "rate": 0.21,
+        "outstanding": 301000,
+        "monthly_payment": 28000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 2,
+      "last_24m": 5
+    }
+  },
+  "bank": {
+    "client_since": "2019-06-15",
+    "account_type": "40802",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 971939,
+        "credit_net": 924155,
+        "excluded": {
+          "own_transfers": 41434,
+          "loans_received": 0,
+          "refunds": 6350
+        },
+        "debit_total": 901539,
+        "avg_balance": 190328
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 983115,
+        "credit_net": 943565,
+        "excluded": {
+          "own_transfers": 29592,
+          "loans_received": 0,
+          "refunds": 9958
+        },
+        "debit_total": 940014,
+        "avg_balance": 204139
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 958967,
+        "credit_net": 883317,
+        "excluded": {
+          "own_transfers": 68785,
+          "loans_received": 0,
+          "refunds": 6865
+        },
+        "debit_total": 833171,
+        "avg_balance": 219929
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 833952,
+        "credit_net": 795627,
+        "excluded": {
+          "own_transfers": 29244,
+          "loans_received": 0,
+          "refunds": 9081
+        },
+        "debit_total": 754823,
+        "avg_balance": 219726
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 929404,
+        "credit_net": 843730,
+        "excluded": {
+          "own_transfers": 82149,
+          "loans_received": 0,
+          "refunds": 3525
+        },
+        "debit_total": 832704,
+        "avg_balance": 115072
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 969074,
+        "credit_net": 910736,
+        "excluded": {
+          "own_transfers": 53523,
+          "loans_received": 0,
+          "refunds": 4815
+        },
+        "debit_total": 860625,
+        "avg_balance": 193293
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 960181,
+        "credit_net": 875300,
+        "excluded": {
+          "own_transfers": 78551,
+          "loans_received": 0,
+          "refunds": 6330
+        },
+        "debit_total": 817906,
+        "avg_balance": 131157
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 1007130,
+        "credit_net": 965015,
+        "excluded": {
+          "own_transfers": 37961,
+          "loans_received": 0,
+          "refunds": 4154
+        },
+        "debit_total": 909156,
+        "avg_balance": 148741
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 1049120,
+        "credit_net": 978286,
+        "excluded": {
+          "own_transfers": 65623,
+          "loans_received": 0,
+          "refunds": 5211
+        },
+        "debit_total": 924636,
+        "avg_balance": 274520
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 918438,
+        "credit_net": 883405,
+        "excluded": {
+          "own_transfers": 28803,
+          "loans_received": 0,
+          "refunds": 6230
+        },
+        "debit_total": 826389,
+        "avg_balance": 137971
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 959375,
+        "credit_net": 908642,
+        "excluded": {
+          "own_transfers": 46895,
+          "loans_received": 0,
+          "refunds": 3838
+        },
+        "debit_total": 880345,
+        "avg_balance": 181485
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 939032,
+        "credit_net": 888222,
+        "excluded": {
+          "own_transfers": 45416,
+          "loans_received": 0,
+          "refunds": 5394
+        },
+        "debit_total": 849895,
+        "avg_balance": 178076
+      }
+    ],
+    "own_loans": []
+  }
+}

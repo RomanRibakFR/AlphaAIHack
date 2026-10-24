@@ -26,10 +26,18 @@ services:
       retries: 10
 
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-credit}:${POSTGRES_PASSWORD:-credit}@db:5432/${POSTGRES_DB:-credit}
       MOCKS_URL: http://mocks:8001
+      # данные моков выгружены на эту дату — от неё считаем срок бизнеса, чтобы исходы не уплывали со временем
+      DATA_AS_OF: ${DATA_AS_OF:-2026-10-24}
+      # для демо истечения срока можно сократить ожидание клиента до минут
+      TIMEOUT_INFO_REQUESTED_MINUTES: ${TIMEOUT_INFO_REQUESTED_MINUTES:-}
+      TIMEOUT_OFFER_MINUTES: ${TIMEOUT_OFFER_MINUTES:-}
+      TIMEOUT_SIGNING_MINUTES: ${TIMEOUT_SIGNING_MINUTES:-}
     ports:
       - "8000:8000"
     depends_on:

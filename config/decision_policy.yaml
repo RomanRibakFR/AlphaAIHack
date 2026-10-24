@@ -1,0 +1,94 @@
+# Кредитная политика: параметры автоматического решения по заявке.
+# Описание логики — docs/decision-policy.md. Все числа — допущения прототипа,
+# меняются здесь без правки кода. Версия политики сохраняется в каждом решении.
+
+version: "0.1-draft"
+
+market:
+  key_rate: 0.14            # ключевая ставка Банка России, сохранена 23.10.2026
+  key_rate_date: "2026-10-23"
+
+# Ставка = ключевая + маржа банка + PD × LGD (ожидаемый убыток),
+# затем ограничивается диапазоном продукта и округляется до 0,1 п.п.
+pricing:
+  bank_margin: 0.01         # операционные расходы и прибыль банка
+  rate_rounding: 0.001
+
+products:
+  OVERDRAFT:
+    name: "Овердрафт"
+    secured: false
+    amount_min: 100000
+    amount_max: 10000000
+    term_months_min: 12     # лимит устанавливается на 12 месяцев
+    term_months_max: 12
+    min_business_age_months: 6
+    rate_floor: 0.13
+    rate_cap: 0.22
+    lgd: 0.60
+    limit_rule: turnover_share
+    turnover_share: 0.50    # лимит ≤ 50% среднемесячного оборота (рынок 30–70%)
+
+  WORKING_CAPITAL:
+    name: "Оборотный кредит без залога"
+    secured: false
+    amount_min: 300000
+    amount_max: 30000000
+    term_months_min: 6
+    term_months_max: 36
+    min_business_age_months: 9
+    rate_floor: 0.14
+    rate_cap: 0.25
+    lgd: 0.60
+    limit_rule: payment_capacity
+    max_amount_to_monthly_turnover: 4   # сумма ≤ 4 среднемесячных оборотов
+
+  INVESTMENT:
+    name: "Инвестиционный кредит с залогом"
+    secured: true
+    amount_min: 1000000
+    amount_max: 100000000
+    term_months_min: 12
+    term_months_max: 120
+    min_business_age_months: 12
+    rate_floor: 0.14
+    rate_cap: 0.22
+    lgd: 0.30               # залог снижает потери банка при дефолте
+    limit_rule: payment_capacity
+    max_ltv: 0.70           # сумма ≤ 70% стоимости залога
+
+# Границы классов риска по PD из модели (задача 2). Подбираются после калибровки модели.
+risk_grades:
+  - {grade: A, pd_max: 0.03, route: auto}
+  - {grade: B, pd_max: 0.08, route: auto}
+  - {grade: C, pd_max: 0.15, route: manual}   # серая зона — к специалисту
+  - {grade: D, pd_max: 1.00, route: reject}
+
+limits:
+  max_debt_service_to_turnover: 0.20   # все платежи по кредитам ≤ 20% среднемесячного оборота
+  amount_rounding: 10000               # суммы округляются вниз до 10 000 ₽
+  term_step_months: 6                  # при подборе срока перебираем 6, 12, 18, … месяцев
+  min_counter_offer_share: 0.30        # предложение меньше 30% запрошенного не делаем
+
+manual_review:
+  auto_approval_max_amount: 10000000   # запросы выше 10 млн ₽ решает специалист
+
+validation:
+  financial_statements_required_above: 10000000   # для суммы выше — отчётность за последний год
+
+data_mismatch:
+  tolerance: 0.30           # выручка из анкеты выше оборотов по счёту больше чем на 30% → запрос документа
+  document_type: other_bank_statement
+
+stop_factors:
+  - {code: SF01_COMPANY_INACTIVE,  source: egrul,    enabled: true}
+  - {code: SF02_CURRENT_OVERDUE,   source: bki,      enabled: true}
+  - {code: SF03_TAX_DEBT,          source: fns,      enabled: true, tax_debt_threshold: 10000}
+  - {code: SF04_BUSINESS_TOO_YOUNG, source: egrul,   enabled: true}
+  - {code: SF05_ZSK_RED,           source: zsk,      enabled: true}
+  - {code: SF06_EGRUL_UNRELIABLE,  source: egrul,    enabled: true}
+
+timeouts_days:
+  info_requested: 14
+  offer_proposed: 30
+  signing: 5

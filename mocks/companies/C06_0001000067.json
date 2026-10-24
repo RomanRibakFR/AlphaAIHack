@@ -1,0 +1,332 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C06",
+    "title": "IT-компания — крупная сумма, к специалисту",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 15000000,
+      "term_months": 36,
+      "purpose": "Финансирование разработки по крупному контракту",
+      "declared_revenue_12m": 74200000,
+      "collateral": null,
+      "documents_at_submit": [
+        "financial_statements"
+      ],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S05",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T12",
+        "T14",
+        "T17",
+        "T19"
+      ],
+      "outcome": "MANUAL_REVIEW",
+      "reason": "M2_LARGE_AMOUNT",
+      "assumed_grade": "A",
+      "assumed_pd": 0.02,
+      "note": "Без загруженной отчётности заявка сначала уйдёт в «Требуется дополнение» (T04, правило V03)",
+      "features": {
+        "F1_business_age_months": 131,
+        "F2_avg_monthly_turnover": 6000000,
+        "F3_turnover_cv": 0.039,
+        "F4_debt_load": 0.033,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 2.5
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000067",
+    "kpp": "000101001",
+    "ogrn": "1150001000060",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Цифровые решения»",
+      "short_with_opf": "ООО «Цифровые решения»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2015-11-05",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "62.01",
+    "okved_name": "Разработка компьютерного программного обеспечения",
+    "management": {
+      "name": "Волкова Мария Сергеевна",
+      "inn": "000100011870",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2015-11-05"
+    },
+    "founders": [
+      {
+        "name": "Волкова Мария Сергеевна",
+        "inn": "000100011870",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2015-11-05"
+      }
+    ],
+    "address": {
+      "value": "630090, г. Новосибирск, ул. Инженерная, д. 20"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "OSNO",
+    "employee_count": 60,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000067",
+      "name": "ООО «Цифровые решения»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "71985eb1-3a88-4919-8e4b-d00558bc15e5",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OWN_BANK",
+        "opened_at": "2024-09-12",
+        "planned_close_at": "2027-09-12",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 3410000,
+        "rate": 0.16,
+        "outstanding": 1220000,
+        "monthly_payment": 120000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "93dfb4b3-ee4a-4e02-b485-b84b032c273f",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-04-08",
+        "planned_close_at": "2027-04-08",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 1620000,
+        "rate": 0.17,
+        "outstanding": 457000,
+        "monthly_payment": 80000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 3
+    }
+  },
+  "bank": {
+    "client_since": "2015-12-05",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 6369712,
+        "credit_net": 5835115,
+        "excluded": {
+          "own_transfers": 476703,
+          "loans_received": 0,
+          "refunds": 57894
+        },
+        "debit_total": 5769658,
+        "avg_balance": 742342
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 6341132,
+        "credit_net": 5781856,
+        "excluded": {
+          "own_transfers": 490471,
+          "loans_received": 0,
+          "refunds": 68805
+        },
+        "debit_total": 5833570,
+        "avg_balance": 789115
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 6312674,
+        "credit_net": 5821820,
+        "excluded": {
+          "own_transfers": 426091,
+          "loans_received": 0,
+          "refunds": 64763
+        },
+        "debit_total": 5786209,
+        "avg_balance": 1094345
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 6423210,
+        "credit_net": 6051244,
+        "excluded": {
+          "own_transfers": 331840,
+          "loans_received": 0,
+          "refunds": 40126
+        },
+        "debit_total": 5881761,
+        "avg_balance": 1173494
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 6344815,
+        "credit_net": 5855413,
+        "excluded": {
+          "own_transfers": 437852,
+          "loans_received": 0,
+          "refunds": 51550
+        },
+        "debit_total": 5782199,
+        "avg_balance": 1188192
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 6321475,
+        "credit_net": 5724729,
+        "excluded": {
+          "own_transfers": 551332,
+          "loans_received": 0,
+          "refunds": 45414
+        },
+        "debit_total": 5562716,
+        "avg_balance": 1714819
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 6656888,
+        "credit_net": 6069600,
+        "excluded": {
+          "own_transfers": 536739,
+          "loans_received": 0,
+          "refunds": 50549
+        },
+        "debit_total": 5901166,
+        "avg_balance": 1815105
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 6531992,
+        "credit_net": 6155645,
+        "excluded": {
+          "own_transfers": 348725,
+          "loans_received": 0,
+          "refunds": 27622
+        },
+        "debit_total": 5902168,
+        "avg_balance": 828271
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 6874569,
+        "credit_net": 6247228,
+        "excluded": {
+          "own_transfers": 554544,
+          "loans_received": 0,
+          "refunds": 72797
+        },
+        "debit_total": 5852784,
+        "avg_balance": 819726
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 6372805,
+        "credit_net": 5935970,
+        "excluded": {
+          "own_transfers": 378815,
+          "loans_received": 0,
+          "refunds": 58020
+        },
+        "debit_total": 5788913,
+        "avg_balance": 865197
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 6509616,
+        "credit_net": 5919350,
+        "excluded": {
+          "own_transfers": 551637,
+          "loans_received": 0,
+          "refunds": 38629
+        },
+        "debit_total": 5526167,
+        "avg_balance": 1197816
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 7029877,
+        "credit_net": 6602030,
+        "excluded": {
+          "own_transfers": 403336,
+          "loans_received": 0,
+          "refunds": 24511
+        },
+        "debit_total": 6339377,
+        "avg_balance": 1087816
+      }
+    ],
+    "own_loans": [
+      {
+        "contract_uid": "71985eb1-3a88-4919-8e4b-d00558bc15e5",
+        "product": "BUSINESS_LOAN",
+        "opened_at": "2024-09-12",
+        "amount": 3410000,
+        "outstanding": 1220000,
+        "monthly_payment": 120000,
+        "current_overdue_days": 0
+      }
+    ]
+  }
+}

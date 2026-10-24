@@ -1,0 +1,342 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C09",
+    "title": "Салон красоты — просит слишком много, отказ",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 10000000,
+      "term_months": 24,
+      "purpose": "Открытие второго салона",
+      "declared_revenue_12m": 12600000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S04",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T13"
+      ],
+      "outcome": "REJECTED",
+      "reason": "NO_VIABLE_OFFER",
+      "assumed_grade": "B",
+      "assumed_pd": 0.06,
+      "note": "Исход не зависит от оценки модели: даже при классе B/C лимит меньше 30% запрошенного",
+      "features": {
+        "F1_business_age_months": 74,
+        "F2_avg_monthly_turnover": 1000000,
+        "F3_turnover_cv": 0.109,
+        "F4_debt_load": 0.18,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 10.0
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000099",
+    "kpp": "000101001",
+    "ogrn": "1200001000099",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Салон Лаванда»",
+      "short_with_opf": "ООО «Салон Лаванда»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2020-08-03",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "96.02",
+    "okved_name": "Предоставление услуг парикмахерскими и салонами красоты",
+    "management": {
+      "name": "Галиева Алина Рустемовна",
+      "inn": "000100012754",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2020-08-03"
+    },
+    "founders": [
+      {
+        "name": "Галиева Алина Рустемовна",
+        "inn": "000100012754",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2020-08-03"
+      }
+    ],
+    "address": {
+      "value": "420000, г. Казань, ул. Цветочная, д. 9"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 9,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000099",
+      "name": "ООО «Салон Лаванда»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "fecef707-7cc3-4602-830c-06ab2e21172d",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-05-20",
+        "planned_close_at": "2027-05-20",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 2160000,
+        "rate": 0.2,
+        "outstanding": 721000,
+        "monthly_payment": 110000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "11111111111111111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "7a7c7ca4-85c6-4ecd-bd37-c64d13dd0cb9",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "MFO",
+        "opened_at": "2026-06-01",
+        "planned_close_at": "2027-06-01",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 390000,
+        "rate": 0.4,
+        "outstanding": 277000,
+        "monthly_payment": 40000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "1111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "2add81c2-e051-4baf-9cfb-bb5eeb6dbeda",
+        "account_type": "CREDIT_CARD",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2024-02-01",
+        "planned_close_at": "2027-02-01",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 500000,
+        "rate": 0.29,
+        "outstanding": 420000,
+        "monthly_payment": 30000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 5,
+      "last_24m": 14
+    }
+  },
+  "bank": {
+    "client_since": "2020-09-03",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 859702,
+        "credit_net": 803491,
+        "excluded": {
+          "own_transfers": 52829,
+          "loans_received": 0,
+          "refunds": 3382
+        },
+        "debit_total": 785530,
+        "avg_balance": 236795
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 1012800,
+        "credit_net": 965597,
+        "excluded": {
+          "own_transfers": 38297,
+          "loans_received": 0,
+          "refunds": 8906
+        },
+        "debit_total": 933316,
+        "avg_balance": 250936
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 1054383,
+        "credit_net": 985305,
+        "excluded": {
+          "own_transfers": 59140,
+          "loans_received": 0,
+          "refunds": 9938
+        },
+        "debit_total": 952087,
+        "avg_balance": 171433
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 952556,
+        "credit_net": 902490,
+        "excluded": {
+          "own_transfers": 43997,
+          "loans_received": 0,
+          "refunds": 6069
+        },
+        "debit_total": 903976,
+        "avg_balance": 163368
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 1120000,
+        "credit_net": 1050192,
+        "excluded": {
+          "own_transfers": 64140,
+          "loans_received": 0,
+          "refunds": 5668
+        },
+        "debit_total": 992743,
+        "avg_balance": 285231
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 1108149,
+        "credit_net": 1058439,
+        "excluded": {
+          "own_transfers": 41336,
+          "loans_received": 0,
+          "refunds": 8374
+        },
+        "debit_total": 1042687,
+        "avg_balance": 186704
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 1007510,
+        "credit_net": 920586,
+        "excluded": {
+          "own_transfers": 77968,
+          "loans_received": 0,
+          "refunds": 8956
+        },
+        "debit_total": 907281,
+        "avg_balance": 112174
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 1091966,
+        "credit_net": 998507,
+        "excluded": {
+          "own_transfers": 82946,
+          "loans_received": 0,
+          "refunds": 10513
+        },
+        "debit_total": 1000227,
+        "avg_balance": 196209
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 1628728,
+        "credit_net": 1173581,
+        "excluded": {
+          "own_transfers": 59628,
+          "loans_received": 390000,
+          "refunds": 5519
+        },
+        "debit_total": 1159435,
+        "avg_balance": 320805
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 1273449,
+        "credit_net": 1218787,
+        "excluded": {
+          "own_transfers": 45247,
+          "loans_received": 0,
+          "refunds": 9415
+        },
+        "debit_total": 1169455,
+        "avg_balance": 177521
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 1046433,
+        "credit_net": 949830,
+        "excluded": {
+          "own_transfers": 89110,
+          "loans_received": 0,
+          "refunds": 7493
+        },
+        "debit_total": 915286,
+        "avg_balance": 253551
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 1070476,
+        "credit_net": 973195,
+        "excluded": {
+          "own_transfers": 87708,
+          "loans_received": 0,
+          "refunds": 9573
+        },
+        "debit_total": 973992,
+        "avg_balance": 141319
+      }
+    ],
+    "own_loans": []
+  }
+}

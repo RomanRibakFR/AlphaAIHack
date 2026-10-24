@@ -17,16 +17,16 @@ class ProductOut(BaseModel):
     max_amount: Decimal
     min_term_months: int
     max_term_months: int
-    base_rate: Decimal
-    max_rate: Decimal
+    base_rate: Decimal = Field(description="Ставка от, % годовых")
+    max_rate: Decimal = Field(description="Ставка до, % годовых")
     requires_collateral: bool
     min_business_age_months: int
 
 
-class RegistryCompany(BaseModel):
+class CompanyCard(BaseModel):
     inn: str
     ogrn: str | None = None
-    kind: str
+    kind: Literal["ul", "ip"]
     name: str
     okved: str | None = None
     okved_name: str | None = None
@@ -36,21 +36,27 @@ class RegistryCompany(BaseModel):
     director: str | None = None
 
 
-class ApplicationCreate(BaseModel):
-    inn: str
-    product_code: str
-    amount: Decimal | None = Field(None, gt=0)
-    term_months: int | None = Field(None, gt=0)
-    purpose: str = ""
-    annual_revenue: Decimal | None = Field(None, gt=0)
-
-
-class ApplicationUpdate(BaseModel):
-    product_code: str | None = None
+class _ApplicationFields(BaseModel):
     amount: Decimal | None = Field(None, gt=0)
     term_months: int | None = Field(None, gt=0)
     purpose: str | None = None
-    annual_revenue: Decimal | None = Field(None, gt=0)
+    annual_revenue: Decimal | None = Field(None, gt=0, description="Выручка за последние 12 месяцев")
+    collateral_type: str | None = Field(None, description="Вид залога, для инвестиционного кредита (REAL_ESTATE, EQUIPMENT, VEHICLE)")
+    collateral_description: str | None = None
+    collateral_value: Decimal | None = Field(None, gt=0, description="Стоимость залога, ₽")
+
+
+class ApplicationCreate(_ApplicationFields):
+    inn: str
+    product_code: str
+
+
+class ApplicationUpdate(_ApplicationFields):
+    product_code: str | None = None
+
+
+class AcceptBody(BaseModel):
+    alternative: int | None = Field(None, description="Номер варианта из offer.alternatives; пусто — основной")
 
 
 class SignBody(BaseModel):
@@ -79,6 +85,7 @@ class StatusView(BaseModel):
 
 
 class ReviewStep(BaseModel):
+    code: str
     title: str
     state: Literal["done", "current", "pending"]
 
@@ -86,17 +93,26 @@ class ReviewStep(BaseModel):
 class HistoryItem(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    transition_id: str
     from_status: Status | None
     to_status: Status
     actor: Actor
+    reason_code: str | None
     comment: str | None
     created_at: datetime
 
 
-class InfoRequestOut(BaseModel):
-    document_kind: str
-    document_title: str
+class RequestItem(BaseModel):
+    kind: Literal["document", "field"]
+    code: str
+    title: str
     message: str
+
+
+class InfoRequestOut(BaseModel):
+    id: int
+    reason_code: str
+    items: list[RequestItem]
     created_at: datetime
 
 
@@ -104,21 +120,35 @@ class DocumentOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    kind: str
+    doc_type: str
     filename: str
     size: int
+    declared_values: dict
     uploaded_at: datetime
 
 
-class Offer(BaseModel):
+class OfferVariant(BaseModel):
     amount: Decimal
-    requested_amount: Decimal
     term_months: int
-    rate: Decimal
+    monthly_payment: Decimal
+
+
+class OfferOut(BaseModel):
+    type: Literal["AS_REQUESTED", "COUNTER"]
+    counter_kind: str | None
+    amount: Decimal
+    term_months: int
+    requested_amount: Decimal
+    requested_term_months: int
+    rate: Decimal = Field(description="% годовых")
     monthly_payment: Decimal
     total_payment: Decimal
-    is_counter: bool
-    advice: str = ""
+    alternatives: list[OfferVariant]
+    conditions: list[str]
+    chosen_alternative: int | None
+    valid_until: datetime
+    reason: str
+    advice: str
     text: str
 
 
@@ -147,16 +177,21 @@ class ApplicationOut(BaseModel):
     term_months: int | None
     purpose: str
     annual_revenue: Decimal | None
+    collateral_type: str | None
+    collateral_description: str | None
+    collateral_value: Decimal | None
     estimated_payment: Decimal | None
     available_actions: list[str]
     info_requests: list[InfoRequestOut]
     documents: list[DocumentOut]
-    offer: Offer | None = None
+    offer: OfferOut | None = None
     rejection: Rejection | None = None
     sign_code: str | None = Field(None, description="В реальном банке пришёл бы в SMS — у нас показываем в кабинете")
     contract_number: str | None = None
     schedule: list[Payment] | None = None
+    deadline_at: datetime | None
     history: list[HistoryItem]
+    version: int
     created_at: datetime
     updated_at: datetime
     submitted_at: datetime | None
@@ -179,26 +214,34 @@ class Problem(BaseModel):
 
 # ---- для сотрудника банка ----
 
-class Factor(BaseModel):
-    code: str
-    label: str
-    value: str
-    points: int
-    max_points: int
+class CheckOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    source: str
+    status: str
+    attempts: int
+    response: dict | None
+    error: str | None
+    started_at: datetime
+    finished_at: datetime
 
 
 class DecisionOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    outcome: Status
-    score: int | None
+    outcome: str
+    policy_version: str
+    model_version: str | None
     pd: Decimal | None
-    factors: list[Factor]
+    grade: str | None
+    features: dict
+    contributions: dict
     stop_factors: list[dict]
-    amount: Decimal | None
-    term_months: int | None
-    rate: Decimal | None
-    monthly_payment: Decimal | None
+    manual_triggers: list[str]
+    reason_codes: list[str]
+    max_amount: Decimal | None
+    limit_binding: str | None
+    recommendation: dict | None
     reason: str
     advice: str
     decided_by: Actor
@@ -214,23 +257,25 @@ class QueueItem(BaseModel):
     term_months: int | None
     status: Status
     pd: Decimal | None
-    reason: str | None
+    grade: str | None
+    triggers: list[str] = Field(description="Почему заявка у специалиста")
     submitted_at: datetime | None
 
 
 class BackofficeApplication(BaseModel):
     application: ApplicationOut
-    checks: dict[str, dict]
+    checks: list[CheckOut]
     decisions: list[DecisionOut]
 
 
 class UnderwriterDecision(BaseModel):
-    action: Literal["approve", "counter_offer", "reject", "request_info"]
-    amount: Decimal | None = Field(None, gt=0, description="Для контрпредложения")
+    action: Literal["approve", "reject", "request_info"]
+    comment: str = Field(..., min_length=1, description="Комментарий специалиста — обязателен (внутренний)")
+    amount: Decimal | None = Field(None, gt=0, description="approve: сумма; по умолчанию — рекомендация системы")
     term_months: int | None = Field(None, gt=0)
-    rate: Decimal | None = Field(None, gt=0, description="% годовых; по умолчанию — расчётная ставка скоринга")
-    reason: str | None = Field(None, description="Причина для клиента (контрпредложение, отказ)")
-    advice: str | None = Field(None, description="Что можно сделать (для отказа)")
-    document_kind: str | None = Field(None, description="Для дозапроса: bank_statement, financial_report, tax_return, other")
-    message: str | None = Field(None, description="Для дозапроса: что и зачем нужно")
-    comment: str | None = Field(None, description="Внутренний комментарий, клиент не видит")
+    rate: Decimal | None = Field(None, gt=0, description="approve: % годовых; по умолчанию — рекомендация системы")
+    reason_code: str | None = Field(None, description="reject: код причины")
+    reason: str | None = Field(None, description="reject: причина для клиента")
+    advice: str | None = Field(None, description="reject: что можно сделать")
+    items: list[str] | None = Field(None, description="request_info: other_bank_statement, financial_statements, other, collateral")
+    message: str | None = Field(None, description="request_info: что и зачем нужно — увидит клиент")
