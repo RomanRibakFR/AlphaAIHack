@@ -2,7 +2,7 @@ import httpx
 from fastapi import APIRouter, FastAPI
 from sqlalchemy import text
 
-from app.api import applications, companies, products
+from app.api import applications, chat, companies, products
 from app.config import settings
 from app.db import engine
 
@@ -33,6 +33,8 @@ def health() -> dict:
 
 
 api.include_router(products.router)
+api.include_router(chat.router)
+api.include_router(chat.backoffice_router)
 api.include_router(companies.router)
 api.include_router(applications.router)
 
