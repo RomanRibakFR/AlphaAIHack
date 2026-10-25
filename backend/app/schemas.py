@@ -279,3 +279,34 @@ class UnderwriterDecision(BaseModel):
     advice: str | None = Field(None, description="reject: что можно сделать")
     items: list[str] | None = Field(None, description="request_info: other_bank_statement, financial_statements, other, collateral")
     message: str | None = Field(None, description="request_info: что и зачем нужно — увидит клиент")
+
+
+# ---- чат с поддержкой ----
+
+class ChatMessageOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    author: Literal["client", "support"]
+    text: str
+    created_at: datetime
+
+
+class ChatThread(BaseModel):
+    inn: str
+    company_name: str
+    messages: list[ChatMessageOut]
+    unread: int = Field(description="Сколько сообщений другой стороны ещё не прочитано")
+
+
+class ChatSummary(BaseModel):
+    inn: str
+    company_name: str
+    last_text: str
+    last_author: Literal["client", "support"]
+    last_at: datetime
+    unread: int
+
+
+class ChatIn(BaseModel):
+    text: str = Field(..., min_length=1, max_length=2000)

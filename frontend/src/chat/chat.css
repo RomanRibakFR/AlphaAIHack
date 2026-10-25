@@ -1,0 +1,145 @@
+/* Чат с поддержкой. Один вид на два места: правая колонка кабинета клиента
+   и рабочее место сотрудника, поэтому высоту задаёт тот, кто вставляет. */
+
+.ch-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.ch-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 160px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.ch-empty {
+  margin: auto 0;
+}
+
+.ch-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 85%;
+}
+
+/* Свои сообщения — справа, как принято в переписке. */
+.ch-msg[data-mine="true"] {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.ch-bubble {
+  padding: 10px 14px;
+  border-radius: 16px 16px 16px 4px;
+  background: var(--color-light-base-bg-primary);
+  font-size: 14px;
+  line-height: 20px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ch-msg[data-mine="true"] .ch-bubble {
+  border-radius: 16px 16px 4px 16px;
+  background: var(--color-light-accent-primary);
+  color: var(--color-light-text-primary-inverted);
+}
+
+.ch-time {
+  margin-top: 4px;
+  color: var(--color-light-text-secondary);
+  font-size: 12px;
+}
+
+.ch-form {
+  display: grid;
+  gap: 8px;
+}
+
+/* ——— рабочее место: список диалогов и переписка рядом ——— */
+
+.ch-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+.ch-threads {
+  display: grid;
+  gap: 8px;
+}
+
+.ch-thread {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #e4e6ea;
+  border-radius: var(--border-radius-10);
+  background: var(--color-light-base-bg-primary);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.ch-thread:hover {
+  border-color: #c9ccd3;
+}
+
+.ch-thread[aria-pressed="true"] {
+  border-color: var(--color-light-accent-primary);
+  background: #fff5f5;
+}
+
+.ch-thread-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ch-thread-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Счётчик неотвеченных — то, ради чего сотрудник вообще смотрит список. */
+.ch-badge {
+  flex: none;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--color-light-accent-primary);
+  color: var(--color-light-text-primary-inverted);
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.ch-thread-last {
+  margin-top: 6px;
+  color: var(--color-light-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ch-thread-time {
+  margin-top: 6px;
+  color: var(--color-light-text-secondary);
+  font-size: 12px;
+}

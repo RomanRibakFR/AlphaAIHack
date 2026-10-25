@@ -1,0 +1,671 @@
+/* Кабинет. Тёмная шапка как на лендинге, светлое полотно с контентом —
+   чтобы переход с сайта в кабинет не выглядел сменой продукта. */
+
+.cb-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-width: calc(var(--alfa-container) + var(--alfa-page-pad) * 2);
+  background: var(--alfa-shell-bg);
+  font-family: var(--alfa-font);
+}
+
+.cb-header {
+  flex: 0 0 auto;
+  color: var(--color-light-text-primary-inverted);
+}
+
+.cb-header-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: var(--alfa-header-h);
+}
+
+.cb-header-title {
+  padding-left: 20px;
+  border-left: 1px solid rgba(222, 222, 238, 0.22);
+}
+
+.cb-header-who {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* светлое полотно */
+.cb-main {
+  flex: 1 0 auto;
+  background: var(--color-light-base-bg-primary);
+  color: var(--color-light-text-primary);
+  border-radius: var(--alfa-shell-radius) var(--alfa-shell-radius) 0 0;
+  padding: 48px 0 80px;
+}
+
+.cb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-light-text-secondary);
+  text-decoration: none;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.cb-back:hover {
+  color: var(--color-light-text-primary);
+}
+
+.cb-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* ——— карточки ——— */
+.cb-card {
+  background: var(--color-light-base-bg-secondary);
+  border-radius: var(--alfa-card-radius);
+  padding: 28px;
+}
+
+.cb-card-white {
+  background: var(--color-light-base-bg-primary);
+  border: 1px solid #e4e6ea;
+  border-radius: var(--alfa-card-radius);
+  padding: 28px;
+}
+
+.cb-grid-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ——— плашка статуса ——— */
+.cb-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--border-radius-pill);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cb-chip[data-tone="grey"] {
+  background: #e9eaee;
+  color: var(--color-light-text-secondary);
+}
+
+.cb-chip[data-tone="blue"] {
+  background: #e5ecff;
+  color: #2a62d6;
+}
+
+.cb-chip[data-tone="green"] {
+  background: #e3f5e9;
+  color: var(--color-light-text-positive);
+}
+
+.cb-chip[data-tone="orange"] {
+  background: #fff1e0;
+  color: #b2660a;
+}
+
+.cb-chip[data-tone="red"] {
+  background: #fdeceb;
+  color: var(--color-light-text-negative);
+}
+
+/* ——— подшаги «рассматриваем заявку» ——— */
+.cb-steps {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+
+.cb-steps li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+}
+
+.cb-steps li[data-state="todo"] {
+  color: var(--color-light-text-secondary);
+}
+
+.cb-steps li[data-state="current"] {
+  font-weight: 700;
+}
+
+.cb-step-dot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #dfe1e6;
+}
+
+.cb-steps li[data-state="done"] .cb-step-dot,
+.cb-steps li[data-state="current"] .cb-step-dot {
+  background: var(--color-light-accent-primary);
+}
+
+.cb-steps li[data-state="done"] .cb-step-dot::after {
+  content: "";
+  position: absolute;
+  inset: 3px auto auto 6px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.cb-steps li[data-state="current"] .cb-step-dot::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--color-light-accent-primary);
+  animation: cb-ring 1.6s ease-out infinite;
+}
+
+@keyframes cb-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+/* ——— таблица заявок ——— */
+.cb-rows {
+  display: grid;
+  gap: 8px;
+}
+
+.cb-row {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) 150px 210px 12px;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 24px;
+  border-radius: var(--alfa-tile-radius);
+  background: var(--color-light-base-bg-secondary);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease;
+}
+
+.cb-row:hover {
+  background: #e9eaee;
+}
+
+/* Суммы выравниваем по правому краю: так столбец цифр читается сверху вниз. */
+.cb-row-amount {
+  text-align: right;
+}
+
+/* Статус и следующий шаг — одной колонкой справа. */
+.cb-row-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+/* Плашка — grid-элемент, а он по умолчанию растягивается на всю колонку.
+   Без этого у короткого статуса вроде «Черновик» оставался длинный пустой
+   хвост. Прижимаем её к своему содержимому. */
+.cb-chip {
+  justify-self: start;
+  align-self: center;
+}
+
+.cb-row-chevron {
+  color: #b9bcc4;
+  display: flex;
+  align-items: center;
+}
+
+.cb-empty {
+  padding: 48px 28px;
+  text-align: center;
+  border-radius: var(--alfa-card-radius);
+  background: var(--color-light-base-bg-secondary);
+}
+
+/* ——— пары «поле — значение» ——— */
+.cb-pairs {
+  display: grid;
+  gap: 12px;
+}
+
+.cb-pair {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e4e6ea;
+  font-size: 15px;
+}
+
+.cb-pair:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Подпись не переносим: в русском короткий предлог, оторвавшийся на другую
+   строку, читается как опечатка — «В реестре» / «с». Переносится значение,
+   места под него достаточно. */
+.cb-pair span:first-child {
+  color: var(--color-light-text-secondary);
+  white-space: nowrap;
+}
+
+.cb-pair span:last-child {
+  font-weight: 500;
+  text-align: right;
+}
+
+/* ——— предпроверка по ИНН ——— */
+.cb-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cb-check-mark {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+/* ——— выбор задачи ——— */
+.cb-goals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.cb-goal {
+  text-align: left;
+  border: 1px solid #e4e6ea;
+  background: var(--color-light-base-bg-primary);
+  border-radius: var(--alfa-card-radius);
+  padding: 28px;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    border-color 0.15s ease,
+    transform 0.2s ease;
+  height: 100%;
+}
+
+.cb-goal:hover {
+  border-color: var(--color-light-accent-primary);
+  transform: translateY(-2px);
+}
+
+.cb-goal[aria-pressed="true"] {
+  border-color: var(--color-light-accent-primary);
+  box-shadow: 0 0 0 1px var(--color-light-accent-primary) inset;
+}
+
+/* ——— форма заявки ——— */
+.cb-field {
+  margin-bottom: 24px;
+}
+
+.cb-field:last-child {
+  margin-bottom: 0;
+}
+
+.cb-hint {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-light-text-secondary);
+}
+
+.cb-save {
+  min-height: 20px;
+  font-size: 13px;
+  color: var(--color-light-text-secondary);
+}
+
+/* ——— история ——— */
+.cb-history {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 16px;
+}
+
+.cb-history li {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 16px;
+  font-size: 14px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e4e6ea;
+}
+
+.cb-history li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* ——— маркер нереализованного ———
+   Видно, что блок — заглушка, а не готовая функция. Нужен, чтобы на защите
+   никто не принял рыбу за работающее. */
+.cb-stub {
+  border: 1px dashed var(--color-light-text-negative);
+  background: #fffafa;
+}
+
+.cb-stub::before {
+  content: "ЗАГЛУШКА — " attr(data-why);
+  display: block;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--color-light-text-negative);
+}
+
+
+/* ——— фильтр списка: вкладки по группам статусов ———
+   Выпадающий список прятал счётчики, а они здесь и есть главное:
+   «Нужно действие · 1» должно попадаться на глаза само. */
+.cb-tabs {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.cb-tab {
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  /* тот же радиус, что у строк заявок ниже */
+  border-radius: var(--alfa-tile-radius);
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-light-text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.cb-tab:hover {
+  background: var(--color-light-base-bg-secondary);
+}
+
+.cb-tab[aria-selected="true"] {
+  background: #121213;
+  color: var(--color-light-text-primary-inverted);
+}
+
+.cb-tab-count {
+  margin-left: 6px;
+  opacity: 0.55;
+}
+
+/* пустая группа: счётчик не должен притягивать взгляд */
+.cb-tab-count[data-zero="true"] {
+  opacity: 0.3;
+}
+
+/* ——— новости ——— */
+.cb-news-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cb-news-all {
+  flex: 0 0 auto;
+  font-size: 14px;
+  color: var(--color-light-accent-primary);
+  text-decoration: none;
+}
+
+.cb-news-all:hover {
+  text-decoration: underline;
+}
+
+.cb-news {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.cb-news-item {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e4e6ea;
+}
+
+.cb-news-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.cb-news-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-light-text-secondary);
+}
+
+.cb-news-dot {
+  opacity: 0.5;
+}
+
+/* подпись, ради которой лента и считается «под клиента» */
+.cb-news-audience {
+  color: var(--color-light-accent-primary);
+}
+
+/* ——— решение банка ——— */
+
+/* Варианты условий: выбор влияет на то, что уйдёт в accept,
+   поэтому выбранный должен читаться с одного взгляда. */
+.cb-variants {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cb-variant {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #e4e6ea;
+  border-radius: var(--border-radius-10);
+  background: var(--color-light-base-bg-primary);
+  font-family: inherit;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.cb-variant:hover {
+  border-color: #c9ccd3;
+}
+
+.cb-variant[aria-pressed="true"] {
+  border-color: var(--color-light-accent-primary);
+  background: #fff5f5;
+}
+
+.cb-variant span:first-child {
+  font-weight: 600;
+}
+
+.cb-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 15px;
+}
+
+.cb-list li + li {
+  margin-top: 6px;
+}
+
+.cb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.cb-table th {
+  padding: 8px 0;
+  border-bottom: 1px solid #e4e6ea;
+  color: var(--color-light-text-secondary);
+  font-weight: 400;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cb-table th:first-child,
+.cb-table td:first-child {
+  text-align: left;
+}
+
+.cb-table td {
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f2f4;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cb-table tr:last-child td {
+  border-bottom: none;
+}
+
+.cb-more {
+  margin-top: 16px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-light-accent-primary);
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.cb-more:hover {
+  text-decoration: underline;
+}
+
+/* Код подписания: по условиям кейса он не выходит за пределы продукта,
+   поэтому показан прямо над полем ввода. */
+.cb-sign {
+  padding: 16px;
+  border-radius: var(--border-radius-10);
+  background: var(--color-light-base-bg-primary);
+}
+
+.cb-sign-code {
+  margin: 4px 0 8px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.18em;
+}
+
+/* ——— дозапрос данных ——— */
+
+.cb-request {
+  padding: 20px;
+  border: 1px solid #e4e6ea;
+  border-radius: var(--border-radius-10);
+}
+
+/* Закрытый пункт гасим, но не прячем: видно, что из списка сделано. */
+.cb-request[data-done="true"] {
+  border-color: #cfe6d7;
+  background: #f5fbf7;
+}
+
+.cb-request-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cb-request-done {
+  flex: none;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #e8f5ec;
+  font-size: 13px;
+}
+
+/* Системный выбор файла: прячем кнопку браузера за своим оформлением,
+   не подменяя сам input — он доступен с клавиатуры как есть. */
+.cb-file {
+  width: 100%;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.cb-file::file-selector-button {
+  margin-right: 12px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-light-base-bg-secondary);
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.cb-file::file-selector-button:hover {
+  background: #e4e6ea;
+}
+
+.cb-missing {
+  color: var(--color-light-text-negative);
+}
+
+/* Чат в правой колонке: ограничиваем высоту, иначе длинная переписка
+   растянет колонку и уедет за экран. */
+.cb-chat {
+  display: flex;
+  flex-direction: column;
+  max-height: 520px;
+}
+
+.cb-chat .ch-panel {
+  margin-top: 16px;
+}

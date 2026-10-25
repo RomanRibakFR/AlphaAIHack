@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.orm.exc import StaleDataError
 
-from app.api import applications, backoffice, companies, products
+from app.api import applications, backoffice, chat, companies, products
 from app.config import settings
 from app.db import engine
 from app.pipeline import resume_unfinished
@@ -58,6 +58,8 @@ def health() -> dict:
 
 
 api.include_router(products.router)
+api.include_router(chat.router)
+api.include_router(chat.backoffice_router)
 api.include_router(companies.router)
 api.include_router(applications.router)
 api.include_router(backoffice.router)

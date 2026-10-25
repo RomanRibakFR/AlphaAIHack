@@ -1,0 +1,312 @@
+/* Рабочее место кредитного специалиста.
+   Опирается на cabinet.css: те же карточки, пары и таблицы — это один продукт. */
+
+.uw-exit {
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--color-light-text-primary-inverted);
+  font-size: 15px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.uw-exit:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ——— очередь ——— */
+
+.uw-queue {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.uw-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 28px;
+  border: 1px solid #e4e6ea;
+  border-radius: var(--alfa-card-radius);
+  background: var(--color-light-base-bg-primary);
+  color: inherit;
+  text-decoration: none;
+}
+
+.uw-row-main {
+  min-width: 0;
+}
+
+.uw-row-side {
+  flex: none;
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  text-align: right;
+}
+
+/* Почему заявка на разборе — главное, ради чего специалист смотрит очередь. */
+.uw-triggers {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uw-triggers li {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--color-light-base-bg-secondary);
+  font-size: 13px;
+}
+
+/* ——— класс риска ——— */
+
+.uw-grade {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--color-light-base-bg-secondary);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.uw-grade b {
+  font-size: 15px;
+}
+
+.uw-grade[data-grade="A"] {
+  background: #e8f5ec;
+}
+
+.uw-grade[data-grade="B"] {
+  background: #eef3fb;
+}
+
+.uw-grade[data-grade="C"] {
+  background: #fdf3e5;
+}
+
+.uw-grade[data-grade="D"] {
+  background: #fdeceb;
+}
+
+/* ——— разбор оценки ——— */
+
+.uw-scoring-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.uw-features {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.uw-features th {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e4e6ea;
+  color: var(--color-light-text-secondary);
+  font-weight: 400;
+  text-align: left;
+}
+
+.uw-features th:nth-child(2),
+.uw-features td:nth-child(2) {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Заголовок «Вклад в оценку» отодвинут на ту же величину, что и полоса,
+   иначе он слипается с колонкой значений. */
+.uw-features th:last-child,
+.uw-features td:last-child {
+  width: 40%;
+  padding-left: 16px;
+}
+
+.uw-features td {
+  padding: 14px 0;
+  border-bottom: 1px solid #f1f2f4;
+  vertical-align: middle;
+}
+
+.uw-features tr:last-child td {
+  border-bottom: none;
+}
+
+.uw-feature-title {
+  display: block;
+}
+
+.uw-feature-hint {
+  display: block;
+  margin-top: 2px;
+  color: var(--color-light-text-secondary);
+  font-size: 12px;
+}
+
+.uw-feature-value {
+  font-weight: 500;
+}
+
+/* Полоса вклада: ось по центру, вправо риск повышается, влево понижается. */
+.uw-bar {
+  position: relative;
+  display: block;
+  height: 14px;
+}
+
+.uw-bar-axis {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: 50%;
+  width: 1px;
+  background: #d8dade;
+}
+
+.uw-bar-fill {
+  position: absolute;
+  top: 2px;
+  height: 10px;
+  border-radius: 3px;
+  background: #4a9d6a;
+}
+
+.uw-bar-fill[data-risky="true"] {
+  background: var(--color-light-accent-primary);
+}
+
+.uw-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 16px;
+  color: var(--color-light-text-secondary);
+  font-size: 13px;
+}
+
+.uw-legend i {
+  display: inline-block;
+  width: 12px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 3px;
+  background: #4a9d6a;
+}
+
+.uw-legend i[data-risky="true"] {
+  background: var(--color-light-accent-primary);
+}
+
+.uw-stop {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: var(--border-radius-10);
+  background: #fdeceb;
+}
+
+/* ——— ответы источников ——— */
+
+.uw-check {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--color-light-base-bg-secondary);
+  font-size: 13px;
+}
+
+.uw-check[data-tone="ok"] {
+  background: #e8f5ec;
+}
+
+.uw-check[data-tone="warn"] {
+  background: #fdf3e5;
+}
+
+.uw-check[data-tone="bad"] {
+  background: #fdeceb;
+}
+
+/* ——— форма решения ——— */
+
+.uw-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--color-light-base-bg-primary);
+}
+
+.uw-action {
+  flex: 1;
+  padding: 10px 8px;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.uw-action:hover {
+  background: var(--color-light-base-bg-secondary);
+}
+
+.uw-action[aria-selected="true"] {
+  background: var(--color-light-text-primary);
+  color: var(--color-light-text-primary-inverted);
+}
+
+/* Ошибка источника приходит технической строкой с URL — она длинная.
+   В таблице с nowrap такая строка растягивает колонки, поэтому переносим. */
+.uw-features .uw-feature-hint,
+.cb-table .uw-feature-hint {
+  max-width: 320px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Ссылка в чаты из очереди — со счётчиком неотвеченных. */
+.uw-chats-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--color-light-base-bg-secondary);
+  color: inherit;
+  font-size: 15px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.uw-chats-link:hover {
+  background: #e4e6ea;
+}
+
+/* Переписка в рабочем месте выше, чем в кабинете: места больше. */
+.cb-chat-wide {
+  display: flex;
+  flex-direction: column;
+  height: 620px;
+}
+
+.cb-chat-wide .ch-panel {
+  margin-top: 16px;
+  flex: 1;
+}

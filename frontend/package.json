@@ -6,11 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "snapshot": "vite build --mode snapshot --outDir dist-snapshot --emptyOutDir && node scripts/snapshot.mjs"
   },
   "dependencies": {
+    "@alfalab/core-components": "^50.37.0",
+    "@alfalab/core-components-config": "^1.1.0",
+    "@alfalab/core-components-stack-context": "^1.0.1",
+    "@alfalab/core-components-vars": "^11.4.1",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "react-router-dom": "7.18.4"
   },
   "devDependencies": {
     "@types/react": "18.3.12",

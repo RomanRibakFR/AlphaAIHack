@@ -216,3 +216,17 @@ class Document(Base):
     content: Mapped[bytes] = mapped_column(LargeBinary)  # для прототипа храним прямо в БД
     declared_values: Mapped[dict] = mapped_column(JSON, default=dict)  # например, обороты по выписке
     uploaded_at: Mapped[datetime] = mapped_column(server_default=func.now())
+
+
+class ChatMessage(Base):
+    """Сообщение в чате с поддержкой. Привязано к компании по ИНН, а не к заявке."""
+
+    __tablename__ = "chat_messages"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    inn: Mapped[str] = mapped_column(String(12), index=True)
+    author: Mapped[str] = mapped_column(String(8))  # "client" или "support"
+    text: Mapped[str] = mapped_column(Text)
+    read_by_support: Mapped[bool] = mapped_column(default=False)
+    read_by_client: Mapped[bool] = mapped_column(default=False)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())

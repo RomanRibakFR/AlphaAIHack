@@ -1,0 +1,8 @@
+/* Единая точка входа дизайн-системы. Подключается один раз в main.tsx.
+
+   Порядок важен: сначала токены (они же тянут пакет
+   @alfalab/core-components-vars), потом базовый слой. */
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./motion.css";
