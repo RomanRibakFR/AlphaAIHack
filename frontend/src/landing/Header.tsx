@@ -1,5 +1,5 @@
 import { Button } from "@alfalab/core-components/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AlfaLogo from "../ui/AlfaLogo";
 import { Container } from "../ui/primitives";
 import { useScrollProgress, useScrolled } from "../lib/motion";
@@ -14,6 +14,7 @@ import { NAV } from "./content";
  */
 export default function Header() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const scrolled = useScrolled();
   const progress = useScrollProgress();
 
@@ -26,17 +27,16 @@ export default function Header() {
           </Link>
 
           <nav className="lp-nav">
-            {NAV.map((item) =>
-              item.external ? (
-                <a key={item.label} href={item.href}>
-                  {item.label}
-                </a>
-              ) : (
-                <Link key={item.label} to={item.href} aria-current="page">
-                  {item.label}
-                </Link>
-              ),
-            )}
+            {NAV.map((item) => (
+              <Link
+                key={item.label}
+                to={item.href}
+                // подсвечен тот раздел, на котором мы сейчас
+                aria-current={item.href === pathname ? "page" : undefined}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
           <div className="lp-header-right">

@@ -189,7 +189,10 @@
 /* ——— калькулятор ——— */
 .lp-calc {
   display: grid;
-  grid-template-columns: 1fr 460px;
+  /* minmax(0, 1fr), а не 1fr: иначе колонка не может стать уже своего
+     содержимого, и длинные названия продуктов выталкивают правую карточку
+     за край страницы. */
+  grid-template-columns: minmax(0, 1fr) 460px;
   background: var(--color-light-base-bg-secondary);
   border-radius: var(--alfa-card-radius);
   padding: 8px;
@@ -197,7 +200,20 @@
 }
 
 .lp-calc-controls {
+  display: flex;
+  flex-direction: column;
   padding: 32px;
+}
+
+/* Поля растягиваются на свободную высоту колонки: у овердрафта второго
+   ползунка нет, и без этого под ним оставалась бы заметная пустота. */
+.lp-calc-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 28px;
+  margin-top: 32px;
 }
 
 .lp-calc-result {
@@ -209,11 +225,37 @@
 }
 
 .lp-calc-field {
-  margin-bottom: 32px;
+  display: grid;
+  gap: 12px;
 }
 
-.lp-calc-field:last-child {
-  margin-bottom: 0;
+/* Границы ползунка — мелким, по краям дорожки. */
+.lp-calc-range {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-light-text-secondary);
+  font-size: 13px;
+}
+
+/* Пояснение, как устроен возврат по продукту. */
+.lp-calc-note {
+  margin-top: 24px;
+  padding: 14px 16px;
+  border-radius: var(--border-radius-10);
+  background: var(--color-light-base-bg-primary);
+  color: var(--color-light-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* Плашка вместо ползунка там, где двигать нечего. */
+.lp-calc-fixed {
+  padding: 14px 16px;
+  border-radius: var(--border-radius-10);
+  background: var(--color-light-base-bg-primary);
+  color: var(--color-light-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .lp-calc-field-head {
@@ -490,6 +532,17 @@
   background: #e4e6ea;
 }
 
+/* ИНН не переносится и не сжимается: это то, что проверяющий вводит руками */
+.lp-demo-row code {
+  flex: none;
+  white-space: nowrap;
+}
+
+.lp-demo-group {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 /* ——— демонстрационная карточка заявки в геро ——— */
 .lp-flow {
   background: var(--color-light-base-bg-primary);
@@ -536,27 +589,47 @@
   color: var(--color-light-text-positive);
 }
 
-.lp-flow-amount {
-  margin: 24px 0 28px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--color-light-base-bg-secondary);
-}
-
 .lp-flow-steps {
-  margin: 0;
-  padding: 0;
+  margin: 24px 0 0;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--color-light-base-bg-secondary);
   list-style: none;
   display: grid;
-  gap: 16px;
+  gap: 18px;
 }
 
 .lp-flow-steps li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   font-size: 15px;
   line-height: 20px;
   transition: color 0.35s ease;
+}
+
+/* Подпись раскрывается только у текущего шага. Высоту карточки держим
+   постоянной: без этого она дёргалась бы на каждом переключении. */
+.lp-flow-hint {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-light-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+  animation: lp-flow-hint-in 0.35s ease both;
+}
+
+@keyframes lp-flow-hint-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-flow-hint {
+    animation: none;
+  }
 }
 
 .lp-flow-steps li[data-state="todo"] {
@@ -628,8 +701,17 @@
 
 /* ——— пилюли-вкладки ——— */
 .lp-tabs {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   gap: 4px;
+}
+
+/* Названия продуктов из каталога длинные («Инвестиционный кредит с залогом»),
+   и в колонке калькулятора три кнопки в обычных отступах не помещаются.
+   Поджимаем их здесь, а не везде: в других местах вкладки короткие. */
+.lp-calc .lp-tab {
+  padding: 0 12px;
+  font-size: 13px;
 }
 
 .lp-tab {
@@ -698,3 +780,31 @@
 .lp-btn-ghost:hover {
   background: rgba(222, 222, 238, 0.24);
 }
+
+/* ——— страница 404 ——— */
+
+/* Короткая страница: тянем тёмную подложку на всю высоту окна и прижимаем
+   подвал к низу. Без этого под подвалом оставалась белая полоса —
+   это просвечивал фон body. */
+.lp-page-short {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-page-short > .alfa-container {
+  flex: 1 0 auto;
+}
+
+.lp-404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 120px 0 140px;
+}
+
+.lp-404 .lp-hero-cta {
+  justify-content: center;
+}
+

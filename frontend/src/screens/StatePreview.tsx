@@ -1,5 +1,18 @@
-import StatusBlock from "../components/StatusBlock";
-import type { StatusCode } from "../api/types";
+import type { StatusCode, StatusView } from "../api/types";
+
+/** Блок статуса в том виде, в каком его видел скелет кабинета.
+ *  Живёт здесь, потому что нужен только этой служебной странице. */
+function StatusBlock({ status }: { status: StatusView }) {
+  return (
+    <section>
+      <h2>{status.title}</h2>
+      <p>{status.hint}</p>
+      <p className="muted">
+        внутренний код: <code>{status.code}</code> (на проде клиенту не показываем)
+      </p>
+    </section>
+  );
+}
 
 /**
  * Инструмент для вёрстки, не часть кабинета.
@@ -27,7 +40,7 @@ const CLIENT_VIEW: Record<StatusCode, { title: string; hint: string; group: stri
     hint: "Проверяем данные, обычно это занимает пару минут",
     group: "внутри банка (клиенту не видно)",
   },
-  external_checks: {
+  checks: {
     title: "Рассматриваем заявку",
     hint: "Проверяем данные, обычно это занимает пару минут",
     group: "внутри банка (клиенту не видно)",
@@ -42,19 +55,14 @@ const CLIENT_VIEW: Record<StatusCode, { title: string; hint: string; group: stri
     hint: "Заявку смотрит кредитный специалист, обычно до 1 рабочего дня",
     group: "у сотрудника банка",
   },
-  needs_info: {
+  info_requested: {
     title: "Нужно дополнить",
     hint: "Банку не хватает данных — посмотрите, что нужно добавить",
     group: "вернулось клиенту",
   },
-  approved: {
-    title: "Одобрено",
-    hint: "Ознакомьтесь с условиями и примите предложение",
-    group: "решение принято",
-  },
-  counter_offer: {
+  offer_proposed: {
     title: "Есть предложение",
-    hint: "Можем выдать кредит на других условиях",
+    hint: "Ознакомьтесь с условиями и примите предложение или откажитесь",
     group: "решение принято",
   },
   signing: {
@@ -72,12 +80,11 @@ const CLIENT_VIEW: Record<StatusCode, { title: string; hint: string; group: stri
     hint: "К сожалению, сейчас банк не может выдать кредит",
     group: "финал",
   },
-  declined_by_client: {
-    title: "Вы отказались",
-    hint: "Предложение отклонено",
+  cancelled: {
+    title: "Отменена",
+    hint: "Заявка отозвана или предложение отклонено",
     group: "финал",
   },
-  withdrawn: { title: "Отозвана", hint: "Вы отозвали заявку", group: "финал" },
   expired: {
     title: "Истекла",
     hint: "Срок ответа истёк, можно подать новую заявку",
@@ -94,7 +101,7 @@ export default function StatePreview() {
         <h2>Все 15 состояний заявки</h2>
         <p>
           Пока нет логики решения, живьём достижимы только <code>draft</code>,{" "}
-          <code>submitted</code> и <code>withdrawn</code>. Остальные — здесь, чтобы было что
+          <code>submitted</code> и <code>cancelled</code>. Остальные — здесь, чтобы было что
           верстать.
         </p>
       </section>

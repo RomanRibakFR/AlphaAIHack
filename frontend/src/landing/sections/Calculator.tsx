@@ -7,6 +7,7 @@ import { Reveal } from "../../ui/Reveal";
 import { useCountUp } from "../../lib/motion";
 import type { Product } from "../../api/types";
 import { months } from "../../lib/format";
+import { PRODUCT_NOTE } from "../content";
 
 const SECONDARY = "var(--color-light-text-secondary)";
 const AMOUNT_STEP = 100_000;
@@ -20,16 +21,40 @@ function annuity(principal: number, annualRate: number, termMonths: number) {
   return (principal * i) / (1 - Math.pow(1 + i, -termMonths));
 }
 
-const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
+/**
+ * Овердрафт гасится иначе: каждый месяц платят только проценты, тело
+ * возвращают в конце. Бэкенд считает именно так (limit_rule turnover_share),
+ * и аннуитет здесь завысил бы платёж в несколько раз.
+ */
+const INTEREST_ONLY = "OVERDRAFT";
+
+function interestOnly(principal: number, annualRate: number) {
+  return (principal * annualRate) / 100 / 12;
+}
+
+const clamp = (v: number, min: number, max: number) =>
+  Math.min(Math.max(v, min), max);
 
 /** Сумма по умолчанию — ближе к началу диапазона, округлённая до шага слайдера. */
 function defaultAmount(p: Product) {
   const min = Number(p.min_amount);
   const max = Number(p.max_amount);
-  return clamp(Math.round((min + (max - min) * 0.2) / AMOUNT_STEP) * AMOUNT_STEP, min, max);
+  return clamp(
+    Math.round((min + (max - min) * 0.2) / AMOUNT_STEP) * AMOUNT_STEP,
+    min,
+    max,
+  );
 }
 
-function Row({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
+function Row({
+  label,
+  value,
+  strong,
+}: {
+  label: string;
+  value: string;
+  strong?: boolean;
+}) {
   return (
     <div className="lp-calc-row">
       <span style={{ color: SECONDARY }}>{label}</span>
@@ -43,8 +68,8 @@ function Panel({ products }: { products: Product[] }) {
   const navigate = useNavigate();
   const [code, setCode] = useState(products[0].code);
   const [amount, setAmount] = useState(() => defaultAmount(products[0]));
-  const [term, setTerm] = useState(
-    () => Math.round((products[0].min_term_months + products[0].max_term_months) / 2),
+  const [term, setTerm] = useState(() =>
+    Math.round((products[0].min_term_months + products[0].max_term_months) / 2),
   );
 
   const product = products.find((p) => p.code === code) ?? products[0];
@@ -53,10 +78,21 @@ function Panel({ products }: { products: Product[] }) {
   const rateValue = Number(product.base_rate);
 
   const safeAmount = clamp(amount, minAmount, maxAmount);
-  const safeTerm = clamp(term, product.min_term_months, product.max_term_months);
+  const safeTerm = clamp(
+    term,
+    product.min_term_months,
+    product.max_term_months,
+  );
+  const fixedTerm = product.min_term_months === product.max_term_months;
 
-  const payment = annuity(safeAmount, rateValue, safeTerm);
-  const total = payment * safeTerm;
+  const interestOnlyProduct = product.code === INTEREST_ONLY;
+  const payment = interestOnlyProduct
+    ? interestOnly(safeAmount, rateValue)
+    : annuity(safeAmount, rateValue, safeTerm);
+  // У овердрафта тело возвращают в конце, поэтому к процентам добавляем сумму
+  const total = interestOnlyProduct
+    ? payment * safeTerm + safeAmount
+    : payment * safeTerm;
 
   /** Ticker: при движении слайдера платёж добегает до нового значения. */
   const shownPayment = useCountUp(payment, { duration: 320 });
@@ -64,7 +100,9 @@ function Panel({ products }: { products: Product[] }) {
   function pickProduct(next: Product) {
     setCode(next.code);
     // переносим выставленное человеком в границы нового продукта
-    setAmount(clamp(safeAmount, Number(next.min_amount), Number(next.max_amount)));
+    setAmount(
+      clamp(safeAmount, Number(next.min_amount), Number(next.max_amount)),
+    );
     setTerm(clamp(safeTerm, next.min_term_months, next.max_term_months));
   }
 
@@ -72,7 +110,11 @@ function Panel({ products }: { products: Product[] }) {
     <Reveal variant="grow">
       <div className="lp-calc">
         <div className="lp-calc-controls">
-          <div className="lp-tabs" role="tablist" aria-label="Кредитный продукт">
+          <div
+            className="lp-tabs"
+            role="tablist"
+            aria-label="Кредитный продукт"
+          >
             {products.map((p) => (
               <button
                 key={p.code}
@@ -86,42 +128,66 @@ function Panel({ products }: { products: Product[] }) {
             ))}
           </div>
 
-          <div className="lp-calc-field" style={{ marginTop: 32 }}>
-            <div className="lp-calc-field-head">
-              <Text view="primary-small" color={SECONDARY}>
-                Сумма
-              </Text>
-              <Text view="accent-primary-large">{rub(safeAmount)}</Text>
+          <div className="lp-calc-fields">
+            <div className="lp-calc-field">
+              <div className="lp-calc-field-head">
+                <Text view="primary-small" color={SECONDARY}>
+                  Сумма
+                </Text>
+                <Text view="accent-primary-large">{rub(safeAmount)}</Text>
+              </div>
+              <Slider
+                min={minAmount}
+                max={maxAmount}
+                step={AMOUNT_STEP}
+                value={safeAmount}
+                onChange={({ value }) => setAmount(value)}
+              />
+              {/* Границы под ползунком: иначе непонятно, докуда его можно тянуть
+                и чем один продукт отличается от другого. */}
+              <div className="lp-calc-range">
+                <span>{rub(minAmount)}</span>
+                <span>{rub(maxAmount)}</span>
+              </div>
             </div>
-            <Slider
-              min={minAmount}
-              max={maxAmount}
-              step={AMOUNT_STEP}
-              value={safeAmount}
-              onChange={({ value }) => setAmount(value)}
-            />
-          </div>
 
-          <div className="lp-calc-field">
-            <div className="lp-calc-field-head">
-              <Text view="primary-small" color={SECONDARY}>
-                Срок
-              </Text>
-              <Text view="accent-primary-large">{months(safeTerm)}</Text>
+            <div className="lp-calc-field">
+              <div className="lp-calc-field-head">
+                <Text view="primary-small" color={SECONDARY}>
+                  Срок
+                </Text>
+                <Text view="accent-primary-large">{months(safeTerm)}</Text>
+              </div>
+              {/* У овердрафта срок один и тот же — лимит ставится на 12 месяцев,
+                двигать нечего, поэтому ползунка нет. */}
+              {!fixedTerm && (
+                <>
+                  <Slider
+                    min={product.min_term_months}
+                    max={product.max_term_months}
+                    step={1}
+                    value={safeTerm}
+                    onChange={({ value }) => setTerm(value)}
+                  />
+                  <div className="lp-calc-range">
+                    <span>{months(product.min_term_months)}</span>
+                    <span>{months(product.max_term_months)}</span>
+                  </div>
+                </>
+              )}
             </div>
-            <Slider
-              min={product.min_term_months}
-              max={product.max_term_months}
-              step={1}
-              value={safeTerm}
-              onChange={({ value }) => setTerm(value)}
-            />
+
+            {/* Пояснение есть у каждого продукта, а не только там, где нет
+                ползунка: иначе вкладки выглядят по-разному без причины. */}
+            {PRODUCT_NOTE[product.code] && (
+              <div className="lp-calc-note">{PRODUCT_NOTE[product.code]}</div>
+            )}
           </div>
         </div>
 
         <div className="lp-calc-result">
           <Text view="primary-small" color={SECONDARY}>
-            Ежемесячный платёж
+            {interestOnlyProduct ? "Проценты в месяц" : "Ежемесячный платёж"}
           </Text>
           <Text view="promo-h2" tag="div" style={{ marginTop: 4 }}>
             {rub(shownPayment)}
@@ -129,8 +195,14 @@ function Panel({ products }: { products: Product[] }) {
 
           <div className="lp-calc-rows">
             <Row label="Продукт" value={product.name} />
-            <Row label="Ставка" value={`${rateValue.toLocaleString("ru-RU")}% годовых`} />
-            <Row label="Залог" value={product.requires_collateral ? "нужен" : "не нужен"} />
+            <Row
+              label="Ставка от"
+              value={`${rateValue.toLocaleString("ru-RU")}% годовых`}
+            />
+            <Row
+              label="Залог"
+              value={product.requires_collateral ? "нужен" : "не нужен"}
+            />
             <Row label="Вернуть за весь срок" value={rub(total)} strong />
           </div>
 
@@ -151,7 +223,11 @@ function Panel({ products }: { products: Product[] }) {
   );
 }
 
-export default function Calculator({ products }: { products: Product[] | null }) {
+export default function Calculator({
+  products,
+}: {
+  products: Product[] | null;
+}) {
   return (
     <section className="lp-section" id="calculator">
       <Container>
@@ -161,8 +237,9 @@ export default function Calculator({ products }: { products: Product[] | null })
               Сколько придётся платить
             </Text>
             <Text view="primary-large" color={SECONDARY} tag="p">
-              Расчёт по базовой ставке продукта. Окончательные условия банк назовёт после
-              проверки — они могут отличаться.
+              Расчёт по нижней ставке продукта — её получает заёмщик без риска.
+              Окончательные условия банк назовёт после проверки, ставка зависит
+              от оценки.
             </Text>
           </div>
         </Reveal>

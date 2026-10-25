@@ -5,17 +5,61 @@ import { useNavigate } from "react-router-dom";
 import { ApiError, api } from "../api/client";
 import type { RegistryCompany } from "../api/types";
 import { Text } from "../ui/primitives";
-import { date } from "../lib/format";
+import { date, duration } from "../lib/format";
+import { businessAgeMonths, isActive, statusLabel } from "../cabinet/precheck";
 
 const SECONDARY = "var(--color-light-text-secondary)";
 
-/** Тестовые ИНН из мока реестра — чтобы на демо не искать их в README. */
-const DEMO = [
-  { inn: "7701123451", name: "ООО «Северный ветер»", hint: "должно одобрить" },
-  { inn: "7802543212", name: "ООО «Пекарня Колосок»", hint: "другие условия" },
-  { inn: "540612345667", name: "ИП Смирнова Анна", hint: "ручная проверка" },
-  { inn: "5403987653", name: "ООО «Быстрый старт»", hint: "отказ" },
-  { inn: "7711234560", name: "ООО «Закат»", hint: "ликвидация" },
+/**
+ * Тестовые компании мок-сервиса — чтобы на демо не искать их в README.
+ *
+ * Все семнадцать сценариев из `mocks/companies/`, по исходам: проверяющему
+ * нужна конкретная ветка, а не перебор ИНН подряд. Что вводить в анкету
+ * под каждую компанию — в `docs/mocks-format.md`.
+ */
+const DEMO: Array<{ title: string; rows: Array<{ inn: string; name: string; hint: string }> }> = [
+  {
+    title: "Одобрят сразу",
+    rows: [
+      { inn: "0001000010", name: "ООО «Утренний кофе»", hint: "кофейня" },
+      { inn: "000100000244", name: "ИП Кузнецов Д. О.", hint: "торговля" },
+    ],
+  },
+  {
+    title: "Предложат другие условия",
+    rows: [
+      { inn: "0001000035", name: "ООО «Сибирский маршрут»", hint: "срок больше" },
+      { inn: "0001000042", name: "ООО «СтройБаза Юг»", hint: "сумма меньше" },
+      { inn: "0001000081", name: "ООО «Оптовик Плюс»", hint: "овердрафт меньше" },
+    ],
+  },
+  {
+    title: "Попросят выписку",
+    rows: [
+      { inn: "0001000155", name: "ООО «Продовольственная компания Обь»", hint: "потом одобрят" },
+      { inn: "000100001696", name: "ИП Белова О. С.", hint: "потом к специалисту" },
+    ],
+  },
+  {
+    title: "Посмотрит специалист",
+    rows: [
+      { inn: "0001000050", name: "ООО «Мастерская Кедр»", hint: "пограничная оценка" },
+      { inn: "0001000067", name: "ООО «Цифровые решения»", hint: "крупная сумма" },
+      { inn: "0001000074", name: "ООО «Хлебный дом»", hint: "залог" },
+      { inn: "0001000170", name: "ООО «Склад-Сервис»", hint: "бюро не ответило" },
+    ],
+  },
+  {
+    title: "Откажут",
+    rows: [
+      { inn: "0001000099", name: "ООО «Салон Лаванда»", hint: "обороты не позволяют" },
+      { inn: "0001000109", name: "ООО «Монолит-Строй»", hint: "высокий риск" },
+      { inn: "000100001128", name: "ИП Захаров И. П.", hint: "долг по налогам" },
+      { inn: "0001000123", name: "ООО «Ресторан Полёт»", hint: "текущая просрочка" },
+      { inn: "0001000130", name: "ООО «Реклама Медиа Групп»", hint: "ликвидация" },
+      { inn: "0001000148", name: "ООО «Маркетплейс-Старт»", hint: "бизнесу 7 месяцев" },
+    ],
+  },
 ];
 
 type Props = {
@@ -137,15 +181,23 @@ export default function AuthModal({ mode, onSignIn }: Props) {
                 <Text view="secondary-medium" color={SECONDARY} style={{ marginTop: 4 }}>
                   {found.kind === "ul" ? "Юридическое лицо" : "Индивидуальный предприниматель"}
                   {found.okved_name && ` · ${found.okved_name}`}
-                  {found.registered_at && ` · с ${date(found.registered_at)}`}
                 </Text>
-                {found.status !== "active" && (
+                {found.registered_at && (
+                  <Text view="secondary-medium" color={SECONDARY} style={{ marginTop: 4 }}>
+                    В реестре с {date(found.registered_at)}
+                    {(() => {
+                      const age = businessAgeMonths(found.registered_at);
+                      return age === null ? "" : ` · бизнес работает ${duration(age)}`;
+                    })()}
+                  </Text>
+                )}
+                {!isActive(found) && (
                   <Text
                     view="secondary-medium"
                     color="var(--color-light-text-negative)"
                     style={{ marginTop: 6 }}
                   >
-                    Статус в реестре: {found.status}
+                    Статус в реестре: {statusLabel(found.status)}
                   </Text>
                 )}
                 <Button
@@ -162,27 +214,34 @@ export default function AuthModal({ mode, onSignIn }: Props) {
             )}
 
             <div style={{ marginTop: 24 }}>
-              <Text view="secondary-medium" color={SECONDARY} style={{ marginBottom: 8 }}>
+              <Text view="secondary-medium" color={SECONDARY}>
                 Тестовые компании
               </Text>
-              <div style={{ display: "grid", gap: 6 }}>
-                {DEMO.map((d) => (
-                  <button
-                    key={d.inn}
-                    className="lp-demo-row"
-                    onClick={() => {
-                      setInn(d.inn);
-                      void check(d.inn);
-                    }}
-                  >
-                    <span>
-                      <span style={{ fontWeight: 500 }}>{d.name}</span>
-                      <span style={{ color: SECONDARY }}> · {d.hint}</span>
-                    </span>
-                    <code style={{ color: SECONDARY, fontSize: 12 }}>{d.inn}</code>
-                  </button>
-                ))}
-              </div>
+              {DEMO.map((group) => (
+                <div key={group.title} style={{ marginTop: 16 }}>
+                  <Text view="secondary-small" color={SECONDARY} className="lp-demo-group">
+                    {group.title}
+                  </Text>
+                  <div style={{ display: "grid", gap: 6, marginTop: 6 }}>
+                    {group.rows.map((d) => (
+                      <button
+                        key={d.inn}
+                        className="lp-demo-row"
+                        onClick={() => {
+                          setInn(d.inn);
+                          void check(d.inn);
+                        }}
+                      >
+                        <span>
+                          <span style={{ fontWeight: 500 }}>{d.name}</span>
+                          <span style={{ color: SECONDARY }}> · {d.hint}</span>
+                        </span>
+                        <code style={{ color: SECONDARY, fontSize: 12 }}>{d.inn}</code>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </>
         )}
@@ -203,8 +262,8 @@ function StaffBody({ onEnter }: { onEnter: () => void }) {
 
       <div className="lp-staff-note">
         <Text view="secondary-medium">
-          Ролей и паролей на бэкенде пока нет, экран наполняется. Пускаем сразу — функциональность
-          обсуждаем отдельно.
+          Ролей и паролей на бэкенде нет: это прототип, вход свободный. В рабочем месте видно
+          очередь заявок, разбор оценки и решение специалиста.
         </Text>
       </div>
 

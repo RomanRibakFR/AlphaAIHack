@@ -1,6 +1,7 @@
 import AlfaLogo from "../ui/AlfaLogo";
 import { Container, Text } from "../ui/primitives";
 import { FOOTER_COLUMNS, FOOTER_LEGAL } from "./content";
+import "./landing.css";
 
 const INVERTED_2 = "var(--color-light-text-secondary-inverted)";
 

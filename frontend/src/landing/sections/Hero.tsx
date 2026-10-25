@@ -8,12 +8,38 @@ import { HERO, STATS } from "../content";
 const INVERTED = "var(--color-light-text-primary-inverted)";
 const INVERTED_2 = "var(--color-light-text-secondary-inverted)";
 
-/** Этапы в демонстрационной карточке — те же, что видит клиент в кабинете. */
+/**
+ * Этапы заявки — те же, что клиент видит у себя в кабинете.
+ *
+ * Карточка намеренно без компании, номера и суммы: это не чья-то заявка,
+ * а схема пути. Выдуманное ООО с конкретной суммой читалось бы как реальный
+ * пример и обещало бы условия, которых банк не называл.
+ */
 const FLOW = [
-  { label: "Заявка отправлена", chip: "Отправлена", tone: "grey" },
-  { label: "Проверка данных", chip: "Рассматриваем заявку", tone: "blue" },
-  { label: "Оценка риска", chip: "Рассматриваем заявку", tone: "blue" },
-  { label: "Решение принято", chip: "Одобрено", tone: "green" },
+  {
+    label: "Заявка отправлена",
+    hint: "Сумма, срок и цель — остальное банк подставит по ИНН",
+    chip: "Отправлена",
+    tone: "grey",
+  },
+  {
+    label: "Проверка данных",
+    hint: "Сверяем с ЕГРЮЛ, ФНС и бюро кредитных историй",
+    chip: "Проверяем",
+    tone: "blue",
+  },
+  {
+    label: "Оценка риска",
+    hint: "Считаем сумму и ставку по вашим оборотам",
+    chip: "Оцениваем",
+    tone: "blue",
+  },
+  {
+    label: "Решение принято",
+    hint: "Условия в кабинете: принять, подписать, получить деньги",
+    chip: "Готово",
+    tone: "green",
+  },
 ] as const;
 
 const STEP_MS = 1600;
@@ -43,23 +69,14 @@ function FlowCard() {
     <div className="lp-flow mo-enter" style={{ animationDelay: "240ms" }}>
       <div className="lp-flow-head">
         <div>
-          <Text view="accent-primary-medium">Заявка № 1042</Text>
+          <Text view="accent-primary-medium">Путь заявки</Text>
           <Text view="secondary-medium" color="var(--color-light-text-secondary)">
-            ООО «Северный ветер» · Оборотный кредит
+            От анкеты до денег на счёте — обычно пара минут
           </Text>
         </div>
         <span className="lp-flow-chip" data-tone={current.tone}>
           {current.chip}
         </span>
-      </div>
-
-      <div className="lp-flow-amount">
-        <Text view="promo-h3" tag="div">
-          2 000 000 ₽
-        </Text>
-        <Text view="primary-small" color="var(--color-light-text-secondary)">
-          на 12 месяцев · платёж 182 410 ₽
-        </Text>
       </div>
 
       <ol className="lp-flow-steps">
@@ -69,7 +86,12 @@ function FlowCard() {
             data-state={i < active ? "done" : i === active ? "current" : "todo"}
           >
             <span className="lp-flow-dot" />
-            <span>{step.label}</span>
+            <span>
+              {step.label}
+              {/* Подпись только у текущего шага: иначе карточка превращается
+                  в стену текста и перестаёт читаться с одного взгляда. */}
+              {i === active && <span className="lp-flow-hint">{step.hint}</span>}
+            </span>
           </li>
         ))}
       </ol>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Text } from "../../ui/primitives";
 import { Reveal, Stagger } from "../../ui/Reveal";
 import type { Product } from "../../api/types";
-import { money, rate } from "../../lib/format";
+import { money, rateRange, termRange } from "../../lib/format";
 import { PRODUCT_STYLE } from "../content";
 
 const SECONDARY = "var(--color-light-text-secondary)";
@@ -61,17 +61,14 @@ export default function Products({ products }: { products: Product[] | null }) {
 
                   <div className="lp-product-rows">
                     <Row label="Сумма" value={`${money(p.min_amount)} — ${money(p.max_amount)}`} />
-                    <Row
-                      label="Срок"
-                      value={`${p.min_term_months}—${p.max_term_months} мес.`}
-                    />
+                    <Row label="Срок" value={termRange(p.min_term_months, p.max_term_months)} />
                     <Row label="Залог" value={p.requires_collateral ? "нужен" : "не нужен"} />
                     <Row label="Бизнесу от" value={`${p.min_business_age_months} мес.`} />
                   </div>
 
                   <div className="lp-product-rate">
                     <Text view="accent-primary-large" tag="div">
-                      {rate(p.base_rate)}
+                      {rateRange(p.base_rate, p.max_rate)}
                     </Text>
                     <Button
                       view="primary"

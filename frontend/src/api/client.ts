@@ -1,9 +1,15 @@
 import type {
   Application,
   ApplicationListItem,
+  BackofficeApplication,
+  ChatSummary,
+  ChatThread,
   FieldProblem,
   Product,
+  QueueItem,
   RegistryCompany,
+  StatusCode,
+  UnderwriterDecision,
 } from "./types";
 
 /**
@@ -46,11 +52,13 @@ function parseError(status: number, body: unknown): ApiError {
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  // У multipart заголовок ставит браузер: в нём граница частей, её не угадать.
+  const json = init?.body !== undefined && !(init.body instanceof FormData);
   let response: Response;
   try {
     response = await fetch(`/api${path}`, {
       ...init,
-      headers: init?.body ? { "Content-Type": "application/json" } : undefined,
+      headers: json ? { "Content-Type": "application/json" } : undefined,
     });
   } catch {
     // сеть/бэкенд лежит — до HTTP-кода дело не дошло
@@ -88,16 +96,95 @@ export const api = {
       amount?: string | null;
       term_months?: number | null;
       purpose?: string;
+      annual_revenue?: string | null;
+      collateral_type?: string | null;
+      collateral_description?: string | null;
+      collateral_value?: string | null;
     },
   ) => request<Application>(`/applications/${id}`, { method: "PATCH", body: JSON.stringify(patch) }),
 
   submit: (id: number) => request<Application>(`/applications/${id}/submit`, { method: "POST" }),
 
-  withdraw: (id: number) => request<Application>(`/applications/${id}/withdraw`, { method: "POST" }),
+  /** Отозвать заявку. Раньше ручка называлась withdraw. */
+  cancel: (id: number) => request<Application>(`/applications/${id}/cancel`, { method: "POST" }),
 
-  // ── Ручек ниже на бэкенде ПОКА НЕТ (есть только в available_actions). ──
-  // Как появятся — раскомментировать и убрать заглушку в components/Actions.tsx.
-  // accept:  (id: number) => request<Application>(`/applications/${id}/accept`,  { method: "POST" }),
-  // decline: (id: number) => request<Application>(`/applications/${id}/decline`, { method: "POST" }),
-  // sign:    (id: number) => request<Application>(`/applications/${id}/sign`,    { method: "POST" }),
+  /**
+   * Принять предложение. alternative — номер варианта из offer.alternatives,
+   * без него принимаются основные условия.
+   */
+  accept: (id: number, alternative?: number) =>
+    request<Application>(`/applications/${id}/accept`, {
+      method: "POST",
+      body: JSON.stringify(alternative === undefined ? {} : { alternative }),
+    }),
+
+  decline: (id: number) => request<Application>(`/applications/${id}/decline`, { method: "POST" }),
+
+  sign: (id: number, code: string) =>
+    request<Application>(`/applications/${id}/sign`, {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    }),
+
+  provideInfo: (id: number) =>
+    request<Application>(`/applications/${id}/provide-info`, { method: "POST" }),
+
+  /**
+   * Загрузить документ. Для выписки из другого банка бэкенд дополнительно
+   * просит сумму поступлений по ней — по ней он сверяет выручку из анкеты.
+   */
+  uploadDocument: (
+    id: number,
+    docType: string,
+    file: File,
+    declared?: { turnover: number; months: number },
+  ) => {
+    const form = new FormData();
+    form.append("doc_type", docType);
+    form.append("file", file);
+    if (declared) {
+      form.append("declared_turnover", String(declared.turnover));
+      form.append("declared_months", String(declared.months));
+    }
+    return request<Application>(`/applications/${id}/documents`, { method: "POST", body: form });
+  },
+
+  /** Чат с поддержкой. Привязан к компании по ИНН, а не к заявке. */
+  chat: {
+    thread: (inn: string) => request<ChatThread>(`/chat?inn=${encodeURIComponent(inn)}`),
+
+    send: (inn: string, text: string) =>
+      request<ChatThread>(`/chat?inn=${encodeURIComponent(inn)}`, {
+        method: "POST",
+        body: JSON.stringify({ text }),
+      }),
+  },
+
+  /** Рабочее место сотрудника банка. */
+  backoffice: {
+    /** Очередь заявок. Без статуса — те, что ждут специалиста. */
+    queue: (status?: StatusCode) =>
+      request<QueueItem[]>(
+        `/backoffice/applications${status ? `?status=${encodeURIComponent(status)}` : ""}`,
+      ),
+
+    application: (id: number) => request<BackofficeApplication>(`/backoffice/applications/${id}`),
+
+    decide: (id: number, body: UnderwriterDecision) =>
+      request<BackofficeApplication>(`/backoffice/applications/${id}/decision`, {
+        method: "POST",
+        body: JSON.stringify(body),
+      }),
+
+    /** Диалоги с клиентами: сначала те, где ждут ответа. */
+    chats: () => request<ChatSummary[]>("/backoffice/chats"),
+
+    chat: (inn: string) => request<ChatThread>(`/backoffice/chats/${encodeURIComponent(inn)}`),
+
+    reply: (inn: string, text: string) =>
+      request<ChatThread>(`/backoffice/chats/${encodeURIComponent(inn)}`, {
+        method: "POST",
+        body: JSON.stringify({ text }),
+      }),
+  },
 };

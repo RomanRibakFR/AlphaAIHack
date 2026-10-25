@@ -1,13 +1,18 @@
 import { useState } from "react";
 import type { ReactElement } from "react";
 import { Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import ApplicationCard from "./screens/ApplicationCard";
-import Dashboard from "./screens/Dashboard";
-import NewApplication from "./screens/NewApplication";
+import ApplicationCard from "./cabinet/ApplicationCard";
+import CabinetLayout from "./cabinet/CabinetLayout";
+import Dashboard from "./cabinet/Dashboard";
+import NewApplication from "./cabinet/NewApplication";
 import StatePreview from "./screens/StatePreview";
-import Underwriter from "./screens/Underwriter";
+import ApplicationReview from "./underwriter/ApplicationReview";
+import Chats from "./underwriter/Chats";
+import Queue from "./underwriter/Queue";
+import UnderwriterLayout from "./underwriter/UnderwriterLayout";
 import UiKit from "./screens/UiKit";
 import AuthModal from "./landing/AuthModal";
+import NotFound from "./landing/NotFound";
 import Landing from "./landing/Landing";
 import { currentInn, signIn, signOut } from "./lib/session";
 
@@ -67,18 +72,24 @@ export default function App() {
     </>
   );
 
-  const cabinet = (
+  /** Экран кабинета в его оболочке: тёмная шапка, светлое полотно. */
+  const inCabinet = (screen: ReactElement) =>
+    inn === null ? (
+      <Navigate to="/login" replace />
+    ) : (
+      <CabinetLayout inn={inn} onSignOut={handleSignOut}>
+        {screen}
+      </CabinetLayout>
+    );
+
+  /** Рабочее место сотрудника: своя оболочка, вход по /staff. */
+  const inBackoffice = (screen: ReactElement) => <UnderwriterLayout>{screen}</UnderwriterLayout>;
+
+  /** Служебные экраны прототипа пока живут в старой обёртке. */
+  const inProto = (screen: ReactElement) => (
     <div className="layout">
       <Topbar inn={inn} onSignOut={handleSignOut} />
-
-      <Routes>
-        <Route path="/cabinet" element={guard((i) => <Dashboard inn={i} />)} />
-        <Route path="/new" element={guard((i) => <NewApplication inn={i} />)} />
-        <Route path="/application/:id" element={guard(() => <ApplicationCard />)} />
-        <Route path="/underwriter" element={<Underwriter />} />
-        <Route path="/preview" element={<StatePreview />} />
-        <Route path="*" element={<p>Такой страницы нет.</p>} />
-      </Routes>
+      {screen}
     </div>
   );
 
@@ -93,8 +104,22 @@ export default function App() {
         path="/staff"
         element={landingWith(<AuthModal mode="staff" onSignIn={handleSignIn} />)}
       />
+
+      {/* Разделы, которых в прототипе нет */}
+      <Route path="/private" element={<NotFound />} />
+      <Route path="/corporate" element={<NotFound />} />
+
+      <Route path="/cabinet" element={inCabinet(guard((i) => <Dashboard inn={i} />))} />
+      <Route path="/new" element={inCabinet(guard((i) => <NewApplication inn={i} />))} />
+      <Route path="/application/:id" element={inCabinet(<ApplicationCard />)} />
+      <Route path="/underwriter" element={inBackoffice(<Queue />)} />
+      <Route path="/underwriter/chats" element={inBackoffice(<Chats />)} />
+      <Route path="/underwriter/:id" element={inBackoffice(<ApplicationReview />)} />
+      <Route path="/preview" element={inProto(<StatePreview />)} />
       <Route path="/ui-kit" element={<UiKit />} />
-      <Route path="*" element={cabinet} />
+
+      {/* Любой незнакомый адрес — туда же */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
