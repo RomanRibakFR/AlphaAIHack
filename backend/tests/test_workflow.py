@@ -1,36 +1,35 @@
 import pytest
 
 from app.statuses import Actor, Status, TransitionError
-from app.workflow import change_status
+from app.workflow import fire
 
 
-def test_change_status_writes_history(session, draft):
-    change_status(session, draft, Status.SUBMITTED, Actor.CLIENT)
-    change_status(session, draft, Status.VALIDATION, Actor.SYSTEM, "автопроверка")
+def test_fire_writes_history_with_transition_id(session, draft):
+    fire(session, draft, "submit", Actor.CLIENT)
+    fire(session, draft, "processing_started", Actor.SYSTEM)
     session.commit()
 
     assert draft.status == Status.VALIDATION
     assert draft.submitted_at is not None
-    assert [(h.from_status, h.to_status, h.actor) for h in draft.history] == [
-        (Status.DRAFT, Status.SUBMITTED, Actor.CLIENT),
-        (Status.SUBMITTED, Status.VALIDATION, Actor.SYSTEM),
+    assert [(h.transition_id, h.from_status, h.to_status) for h in draft.history] == [
+        ("T01", Status.DRAFT, Status.SUBMITTED),
+        ("T02", Status.SUBMITTED, Status.VALIDATION),
     ]
-    assert draft.history[1].comment == "автопроверка"
 
 
-def test_bad_transition_changes_nothing(session, draft):
+def test_bad_event_changes_nothing(session, draft):
     with pytest.raises(TransitionError):
-        change_status(session, draft, Status.ISSUED, Actor.CLIENT)
-
+        fire(session, draft, "signed", Actor.CLIENT)
     assert draft.status == Status.DRAFT
     assert draft.history == []
 
 
-def test_resubmit_keeps_first_submitted_at(session, draft):
-    change_status(session, draft, Status.SUBMITTED, Actor.CLIENT)
-    first = draft.submitted_at
-    change_status(session, draft, Status.VALIDATION, Actor.SYSTEM)
-    change_status(session, draft, Status.NEEDS_INFO, Actor.SYSTEM)
-    change_status(session, draft, Status.SUBMITTED, Actor.CLIENT)
+def test_waiting_for_client_sets_deadline(session, draft):
+    for event, actor in [("submit", Actor.CLIENT), ("processing_started", Actor.SYSTEM), ("info_required", Actor.SYSTEM)]:
+        fire(session, draft, event, actor)
+    assert draft.status == Status.INFO_REQUESTED
+    assert (draft.deadline_at - draft.status_changed_at).days == 14  # из timeouts_days политики
 
-    assert draft.submitted_at == first
+    fire(session, draft, "cancelled", Actor.CLIENT, reason_code="client_withdrew")
+    assert draft.deadline_at is None
+    assert draft.history[-1].reason_code == "client_withdrew"

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.inn import is_valid_inn
-from app.registry import RegistryUnavailable, get_registry
-from app.schemas import RegistryCompany
+from app.registry import RegistryUnavailable, company_card, get_registry
+from app.schemas import CompanyCard
 
 router = APIRouter(prefix="/companies", tags=["Компании"])
 
@@ -16,10 +16,10 @@ def lookup_or_fail(inn: str, registry) -> dict:
         raise HTTPException(503, "Реестр временно недоступен, попробуйте позже")
     if data is None:
         raise HTTPException(404, "Компания с таким ИНН не найдена")
-    return data
+    return company_card(data)
 
 
-@router.get("/lookup", response_model=RegistryCompany)
+@router.get("/lookup", response_model=CompanyCard)
 def lookup(inn: str = Query(..., description="ИНН компании или ИП"), registry=Depends(get_registry)):
     """Данные компании из реестра — для автозаполнения анкеты."""
     return lookup_or_fail(inn, registry)

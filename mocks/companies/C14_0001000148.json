@@ -1,0 +1,205 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C14",
+    "title": "Интернет-магазин — бизнесу 7 месяцев, отказ с подсказкой",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 2000000,
+      "term_months": 12,
+      "purpose": "Закупка товара",
+      "declared_revenue_12m": 14400000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S03",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T08"
+      ],
+      "outcome": "REJECTED",
+      "reason": "SF04_BUSINESS_TOO_YOUNG",
+      "assumed_grade": null,
+      "assumed_pd": null,
+      "note": "В отказе подсказка: овердрафт доступен от 6 месяцев работы",
+      "features": {
+        "F1_business_age_months": 7,
+        "F2_avg_monthly_turnover": 1200000,
+        "F3_turnover_cv": 0.084,
+        "F4_debt_load": 0.0,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 1.67
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000148",
+    "kpp": "000101001",
+    "ogrn": "1260001000148",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Маркетплейс-Старт»",
+      "short_with_opf": "ООО «Маркетплейс-Старт»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2026-03-16",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "47.91",
+    "okved_name": "Торговля розничная по почте или по информационно-коммуникационной сети Интернет",
+    "management": {
+      "name": "Фёдорова Дарья Игоревна",
+      "inn": "000100014208",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2026-03-16"
+    },
+    "founders": [
+      {
+        "name": "Фёдорова Дарья Игоревна",
+        "inn": "000100014208",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2026-03-16"
+      }
+    ],
+    "address": {
+      "value": "190000, г. Санкт-Петербург, ул. Логистическая, д. 2"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 5,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000148",
+      "name": "ООО «Маркетплейс-Старт»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 1
+    }
+  },
+  "bank": {
+    "client_since": "2026-03-16",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2026-03",
+        "credit_total": 1167745,
+        "credit_net": 1104923,
+        "excluded": {
+          "own_transfers": 52541,
+          "loans_received": 0,
+          "refunds": 10281
+        },
+        "debit_total": 1079488,
+        "avg_balance": 153001
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 1302561,
+        "credit_net": 1184111,
+        "excluded": {
+          "own_transfers": 106882,
+          "loans_received": 0,
+          "refunds": 11568
+        },
+        "debit_total": 1169840,
+        "avg_balance": 195012
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 1445491,
+        "credit_net": 1316044,
+        "excluded": {
+          "own_transfers": 121124,
+          "loans_received": 0,
+          "refunds": 8323
+        },
+        "debit_total": 1258782,
+        "avg_balance": 341863
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 1291536,
+        "credit_net": 1220189,
+        "excluded": {
+          "own_transfers": 57578,
+          "loans_received": 0,
+          "refunds": 13769
+        },
+        "debit_total": 1140121,
+        "avg_balance": 207409
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 1466335,
+        "credit_net": 1356779,
+        "excluded": {
+          "own_transfers": 101138,
+          "loans_received": 0,
+          "refunds": 8418
+        },
+        "debit_total": 1307667,
+        "avg_balance": 171122
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 1291514,
+        "credit_net": 1165191,
+        "excluded": {
+          "own_transfers": 114425,
+          "loans_received": 0,
+          "refunds": 11898
+        },
+        "debit_total": 1164547,
+        "avg_balance": 176766
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 1134983,
+        "credit_net": 1052763,
+        "excluded": {
+          "own_transfers": 74726,
+          "loans_received": 0,
+          "refunds": 7494
+        },
+        "debit_total": 988385,
+        "avg_balance": 165202
+      }
+    ],
+    "own_loans": []
+  }
+}

@@ -1,41 +1,37 @@
+"""Каталог продуктов — из config/decision_policy.yaml, чтобы цифры в кабинете и в решении не разъезжались."""
 from decimal import Decimal
 
 from sqlalchemy import select
 
 from app.db import SessionLocal
 from app.models import Product
+from app.policy import policy
 
-# ставки и лимиты выдуманные, для демо
-PRODUCTS = [
-    dict(
-        code="overdraft",
-        name="Овердрафт",
-        description="Закрыть кассовый разрыв: уходите в минус по счёту в пределах лимита",
-        min_amount=Decimal("100000"), max_amount=Decimal("5000000"),
-        min_term_months=1, max_term_months=12,
-        base_rate=Decimal("18.50"), requires_collateral=False, min_business_age_months=6,
-    ),
-    dict(
-        code="working_capital",
-        name="Оборотный кредит",
-        description="Пополнить оборотные средства: закупка товара, сырья, зарплаты",
-        min_amount=Decimal("500000"), max_amount=Decimal("20000000"),
-        min_term_months=3, max_term_months=36,
-        base_rate=Decimal("17.00"), requires_collateral=False, min_business_age_months=12,
-    ),
-    dict(
-        code="investment",
-        name="Инвестиционный кредит",
-        description="Купить оборудование, транспорт или недвижимость для бизнеса",
-        min_amount=Decimal("1000000"), max_amount=Decimal("100000000"),
-        min_term_months=12, max_term_months=84,
-        base_rate=Decimal("15.50"), requires_collateral=True, min_business_age_months=24,
-    ),
-]
+DESCRIPTIONS = {
+    "OVERDRAFT": "Закрыть кассовый разрыв: уходите в минус по счёту в пределах лимита",
+    "WORKING_CAPITAL": "Пополнить оборотные средства без залога: закупка товара, сырья, зарплаты",
+    "INVESTMENT": "Купить оборудование, транспорт или недвижимость для бизнеса, под залог",
+}
+
+
+def products_from_policy() -> list[dict]:
+    p = policy()
+    cheapest = p["market"]["key_rate"] + p["pricing"]["bank_margin"]  # ставка при нулевом риске
+    rows = []
+    for code, prod in p["products"].items():
+        rows.append(dict(
+            code=code, name=prod["name"], description=DESCRIPTIONS.get(code, ""),
+            min_amount=Decimal(prod["amount_min"]), max_amount=Decimal(prod["amount_max"]),
+            min_term_months=prod["term_months_min"], max_term_months=prod["term_months_max"],
+            base_rate=Decimal(str(round(max(cheapest, prod["rate_floor"]) * 100, 2))),
+            max_rate=Decimal(str(round(prod["rate_cap"] * 100, 2))),
+            requires_collateral=prod["secured"], min_business_age_months=prod["min_business_age_months"],
+        ))
+    return rows
 
 
 def seed_products(session) -> None:
-    for data in PRODUCTS:
+    for data in products_from_policy():
         product = session.scalar(select(Product).where(Product.code == data["code"]))
         if product is None:
             session.add(Product(**data))

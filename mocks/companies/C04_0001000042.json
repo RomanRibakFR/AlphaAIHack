@@ -1,0 +1,329 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C04",
+    "title": "Стройматериалы — предложение с меньшей суммой",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 6000000,
+      "term_months": 24,
+      "purpose": "Закупка стройматериалов к весеннему сезону",
+      "declared_revenue_12m": 19800000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S02",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T11",
+        "T17",
+        "T19"
+      ],
+      "outcome": "COUNTER_OFFER",
+      "reason": "AMOUNT_REDUCED",
+      "assumed_grade": "B",
+      "assumed_pd": 0.05,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 88,
+        "F2_avg_monthly_turnover": 1500000,
+        "F3_turnover_cv": 0.106,
+        "F4_debt_load": 0.08,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 4.0
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000042",
+    "kpp": "000101001",
+    "ogrn": "1190001000045",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «СтройБаза Юг»",
+      "short_with_opf": "ООО «СтройБаза Юг»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2019-06-18",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "46.73",
+    "okved_name": "Торговля оптовая лесоматериалами, строительными материалами и санитарно-техническим оборудованием",
+    "management": {
+      "name": "Ткаченко Сергей Иванович",
+      "inn": "000100011239",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2019-06-18"
+    },
+    "founders": [
+      {
+        "name": "Ткаченко Сергей Иванович",
+        "inn": "000100011239",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2019-06-18"
+      }
+    ],
+    "address": {
+      "value": "350000, г. Краснодар, ул. Промышленная, д. 21"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 15,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000042",
+      "name": "ООО «СтройБаза Юг»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "b8004092-f9e2-4b92-9b38-eefa6bced784",
+        "account_type": "CREDIT_LINE",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-02-10",
+        "planned_close_at": "2027-02-10",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 1390000,
+        "rate": 0.19,
+        "outstanding": 269000,
+        "monthly_payment": 70000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "11111111111111111111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "ab4d6d46-b16b-48cb-8a29-62679cffeb71",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OWN_BANK",
+        "opened_at": "2024-11-05",
+        "planned_close_at": "2027-11-05",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 1400000,
+        "rate": 0.17,
+        "outstanding": 590000,
+        "monthly_payment": 50000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "11111111111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 2,
+      "last_24m": 6
+    }
+  },
+  "bank": {
+    "client_since": "2019-07-18",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 1472225,
+        "credit_net": 1357225,
+        "excluded": {
+          "own_transfers": 109179,
+          "loans_received": 0,
+          "refunds": 5821
+        },
+        "debit_total": 1265118,
+        "avg_balance": 200347
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 1493338,
+        "credit_net": 1364445,
+        "excluded": {
+          "own_transfers": 120813,
+          "loans_received": 0,
+          "refunds": 8080
+        },
+        "debit_total": 1301999,
+        "avg_balance": 192679
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 1531266,
+        "credit_net": 1458100,
+        "excluded": {
+          "own_transfers": 56088,
+          "loans_received": 0,
+          "refunds": 17078
+        },
+        "debit_total": 1361926,
+        "avg_balance": 433155
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 1248024,
+        "credit_net": 1162157,
+        "excluded": {
+          "own_transfers": 79792,
+          "loans_received": 0,
+          "refunds": 6075
+        },
+        "debit_total": 1082287,
+        "avg_balance": 323890
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 1582271,
+        "credit_net": 1480398,
+        "excluded": {
+          "own_transfers": 84796,
+          "loans_received": 0,
+          "refunds": 17077
+        },
+        "debit_total": 1383700,
+        "avg_balance": 390157
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 1846164,
+        "credit_net": 1699117,
+        "excluded": {
+          "own_transfers": 129581,
+          "loans_received": 0,
+          "refunds": 17466
+        },
+        "debit_total": 1646929,
+        "avg_balance": 423606
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 1662610,
+        "credit_net": 1559784,
+        "excluded": {
+          "own_transfers": 94846,
+          "loans_received": 0,
+          "refunds": 7980
+        },
+        "debit_total": 1467045,
+        "avg_balance": 319793
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 1629327,
+        "credit_net": 1502046,
+        "excluded": {
+          "own_transfers": 122498,
+          "loans_received": 0,
+          "refunds": 4783
+        },
+        "debit_total": 1415374,
+        "avg_balance": 428609
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 1931806,
+        "credit_net": 1796560,
+        "excluded": {
+          "own_transfers": 120892,
+          "loans_received": 0,
+          "refunds": 14354
+        },
+        "debit_total": 1758033,
+        "avg_balance": 263453
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 1565108,
+        "credit_net": 1466369,
+        "excluded": {
+          "own_transfers": 89200,
+          "loans_received": 0,
+          "refunds": 9539
+        },
+        "debit_total": 1448303,
+        "avg_balance": 305272
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 1652759,
+        "credit_net": 1520218,
+        "excluded": {
+          "own_transfers": 115408,
+          "loans_received": 0,
+          "refunds": 17133
+        },
+        "debit_total": 1472979,
+        "avg_balance": 400580
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 1766103,
+        "credit_net": 1633581,
+        "excluded": {
+          "own_transfers": 113492,
+          "loans_received": 0,
+          "refunds": 19030
+        },
+        "debit_total": 1581496,
+        "avg_balance": 269185
+      }
+    ],
+    "own_loans": [
+      {
+        "contract_uid": "ab4d6d46-b16b-48cb-8a29-62679cffeb71",
+        "product": "BUSINESS_LOAN",
+        "opened_at": "2024-11-05",
+        "amount": 1400000,
+        "outstanding": 590000,
+        "monthly_payment": 50000,
+        "current_overdue_days": 0
+      }
+    ]
+  }
+}

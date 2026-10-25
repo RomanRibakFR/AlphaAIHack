@@ -1,0 +1,305 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C02",
+    "title": "ИП в торговле — автоодобрение",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 1500000,
+      "term_months": 12,
+      "purpose": "Закупка товара к новогоднему сезону",
+      "declared_revenue_12m": 21600000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S01",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T10",
+        "T17",
+        "T19"
+      ],
+      "outcome": "AUTO_APPROVED",
+      "reason": null,
+      "assumed_grade": "A",
+      "assumed_pd": 0.02,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 68,
+        "F2_avg_monthly_turnover": 1800000,
+        "F3_turnover_cv": 0.089,
+        "F4_debt_load": 0.033,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 0.83
+      }
+    }
+  },
+  "egrul": {
+    "type": "INDIVIDUAL",
+    "inn": "000100000244",
+    "ogrn": "321000000000022",
+    "name": {
+      "full_with_opf": "Индивидуальный предприниматель Кузнецов Дмитрий Олегович",
+      "short_with_opf": "ИП Кузнецов Д. О."
+    },
+    "fio": {
+      "surname": "Кузнецов",
+      "name": "Дмитрий",
+      "patronymic": "Олегович"
+    },
+    "opf": {
+      "code": "50102",
+      "short": "ИП"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2021-02-20",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "47.11",
+    "okved_name": "Торговля розничная преимущественно пищевыми продуктами, включая напитки, и табачными изделиями в неспециализированных магазинах",
+    "address": {
+      "value": "г. Барнаул"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 4,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "INDIVIDUAL",
+      "inn": "000100000244",
+      "name": "ИП Кузнецов Д. О."
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "e638bca4-6bd7-4d89-987f-c91e855cdff8",
+        "account_type": "CAR_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2023-06-05",
+        "planned_close_at": "2028-06-05",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 1440000,
+        "rate": 0.16,
+        "outstanding": 611000,
+        "monthly_payment": 35000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "4706aca7-215d-4562-a4d0-15b2388fdce3",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-08-20",
+        "planned_close_at": "2027-08-20",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 500000,
+        "rate": 0.19,
+        "outstanding": 230000,
+        "monthly_payment": 25000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "11111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 4
+    }
+  },
+  "bank": {
+    "client_since": "2021-03-20",
+    "account_type": "40802",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 1711604,
+        "credit_net": 1632320,
+        "excluded": {
+          "own_transfers": 67538,
+          "loans_received": 0,
+          "refunds": 11746
+        },
+        "debit_total": 1603285,
+        "avg_balance": 470549
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 1824008,
+        "credit_net": 1719513,
+        "excluded": {
+          "own_transfers": 85401,
+          "loans_received": 0,
+          "refunds": 19094
+        },
+        "debit_total": 1715914,
+        "avg_balance": 368676
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 1712534,
+        "credit_net": 1582857,
+        "excluded": {
+          "own_transfers": 111600,
+          "loans_received": 0,
+          "refunds": 18077
+        },
+        "debit_total": 1527794,
+        "avg_balance": 272387
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 1751695,
+        "credit_net": 1607461,
+        "excluded": {
+          "own_transfers": 137947,
+          "loans_received": 0,
+          "refunds": 6287
+        },
+        "debit_total": 1587365,
+        "avg_balance": 379509
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 1853179,
+        "credit_net": 1733818,
+        "excluded": {
+          "own_transfers": 99502,
+          "loans_received": 0,
+          "refunds": 19859
+        },
+        "debit_total": 1696955,
+        "avg_balance": 256383
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 1975535,
+        "credit_net": 1844976,
+        "excluded": {
+          "own_transfers": 109179,
+          "loans_received": 0,
+          "refunds": 21380
+        },
+        "debit_total": 1728391,
+        "avg_balance": 490464
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 2083605,
+        "credit_net": 1931750,
+        "excluded": {
+          "own_transfers": 132196,
+          "loans_received": 0,
+          "refunds": 19659
+        },
+        "debit_total": 1938898,
+        "avg_balance": 261023
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 2262924,
+        "credit_net": 2120347,
+        "excluded": {
+          "own_transfers": 127004,
+          "loans_received": 0,
+          "refunds": 15573
+        },
+        "debit_total": 2055486,
+        "avg_balance": 574321
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 1949277,
+        "credit_net": 1876220,
+        "excluded": {
+          "own_transfers": 64388,
+          "loans_received": 0,
+          "refunds": 8669
+        },
+        "debit_total": 1857638,
+        "avg_balance": 502155
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 2219042,
+        "credit_net": 2016939,
+        "excluded": {
+          "own_transfers": 194384,
+          "loans_received": 0,
+          "refunds": 7719
+        },
+        "debit_total": 2009278,
+        "avg_balance": 245744
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 2004500,
+        "credit_net": 1838174,
+        "excluded": {
+          "own_transfers": 156992,
+          "loans_received": 0,
+          "refunds": 9334
+        },
+        "debit_total": 1844445,
+        "avg_balance": 430267
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 1810029,
+        "credit_net": 1695625,
+        "excluded": {
+          "own_transfers": 106922,
+          "loans_received": 0,
+          "refunds": 7482
+        },
+        "debit_total": 1697722,
+        "avg_balance": 323557
+      }
+    ],
+    "own_loans": []
+  }
+}

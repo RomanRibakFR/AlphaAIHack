@@ -1,0 +1,312 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C16",
+    "title": "ИП одежда — расхождение не снято, к специалисту",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 2000000,
+      "term_months": 24,
+      "purpose": "Закупка коллекции весна–лето",
+      "declared_revenue_12m": 36000000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": {
+        "doc_type": "other_bank_statement",
+        "turnover_12m": 6000000
+      }
+    },
+    "expected": {
+      "scenario_id": "S16",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T22",
+        "T05",
+        "T03",
+        "T07",
+        "T12",
+        "T14",
+        "T17",
+        "T19"
+      ],
+      "outcome": "MANUAL_REVIEW",
+      "reason": "M4_DATA_MISMATCH",
+      "assumed_grade": "B",
+      "assumed_pd": 0.04,
+      "note": "Заявлено 36 млн, по счёту 18 млн (+100%); с выпиской 24 млн, расхождение 50% — не снято",
+      "features": {
+        "F1_business_age_months": 71,
+        "F2_avg_monthly_turnover": 1500000,
+        "F3_turnover_cv": 0.112,
+        "F4_debt_load": 0.04,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 1.33
+      }
+    }
+  },
+  "egrul": {
+    "type": "INDIVIDUAL",
+    "inn": "000100001696",
+    "ogrn": "320000000000169",
+    "name": {
+      "full_with_opf": "Индивидуальный предприниматель Белова Ольга Сергеевна",
+      "short_with_opf": "ИП Белова О. С."
+    },
+    "fio": {
+      "surname": "Белова",
+      "name": "Ольга",
+      "patronymic": "Сергеевна"
+    },
+    "opf": {
+      "code": "50102",
+      "short": "ИП"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2020-11-02",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "47.71",
+    "okved_name": "Торговля розничная одеждой в специализированных магазинах",
+    "address": {
+      "value": "г. Красноярск"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "USN",
+    "employee_count": 5,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "INDIVIDUAL",
+      "inn": "000100001696",
+      "name": "ИП Белова О. С."
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "8bb0203c-63f4-422e-bac3-a3265d65b94b",
+        "account_type": "CREDIT_CARD",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2023-04-01",
+        "planned_close_at": "2026-04-01",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 300000,
+        "rate": 0.27,
+        "outstanding": 180000,
+        "monthly_payment": 15000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111111",
+        "collateral": false
+      },
+      {
+        "contract_uid": "2bc27e52-8f6d-4d28-bbf3-1fc4594437e3",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-09-15",
+        "planned_close_at": "2027-09-15",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 890000,
+        "rate": 0.19,
+        "outstanding": 451000,
+        "monthly_payment": 45000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "1111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 2,
+      "last_24m": 5
+    }
+  },
+  "bank": {
+    "client_since": "2020-12-02",
+    "account_type": "40802",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 1437872,
+        "credit_net": 1357744,
+        "excluded": {
+          "own_transfers": 71637,
+          "loans_received": 0,
+          "refunds": 8491
+        },
+        "debit_total": 1358257,
+        "avg_balance": 244147
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 1347038,
+        "credit_net": 1271990,
+        "excluded": {
+          "own_transfers": 64191,
+          "loans_received": 0,
+          "refunds": 10857
+        },
+        "debit_total": 1265644,
+        "avg_balance": 322690
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 1413164,
+        "credit_net": 1308758,
+        "excluded": {
+          "own_transfers": 98319,
+          "loans_received": 0,
+          "refunds": 6087
+        },
+        "debit_total": 1241662,
+        "avg_balance": 293925
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 1628724,
+        "credit_net": 1530652,
+        "excluded": {
+          "own_transfers": 82945,
+          "loans_received": 0,
+          "refunds": 15127
+        },
+        "debit_total": 1440300,
+        "avg_balance": 276231
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 1316920,
+        "credit_net": 1204647,
+        "excluded": {
+          "own_transfers": 104578,
+          "loans_received": 0,
+          "refunds": 7695
+        },
+        "debit_total": 1203578,
+        "avg_balance": 261828
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 1756056,
+        "credit_net": 1600275,
+        "excluded": {
+          "own_transfers": 142569,
+          "loans_received": 0,
+          "refunds": 13212
+        },
+        "debit_total": 1585762,
+        "avg_balance": 249155
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 1588334,
+        "credit_net": 1478551,
+        "excluded": {
+          "own_transfers": 104128,
+          "loans_received": 0,
+          "refunds": 5655
+        },
+        "debit_total": 1383782,
+        "avg_balance": 429997
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 1812709,
+        "credit_net": 1702118,
+        "excluded": {
+          "own_transfers": 97556,
+          "loans_received": 0,
+          "refunds": 13035
+        },
+        "debit_total": 1642325,
+        "avg_balance": 254116
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 1650223,
+        "credit_net": 1576874,
+        "excluded": {
+          "own_transfers": 66233,
+          "loans_received": 0,
+          "refunds": 7116
+        },
+        "debit_total": 1560725,
+        "avg_balance": 197206
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 1735117,
+        "credit_net": 1577882,
+        "excluded": {
+          "own_transfers": 146868,
+          "loans_received": 0,
+          "refunds": 10367
+        },
+        "debit_total": 1591761,
+        "avg_balance": 325286
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 1847236,
+        "credit_net": 1694308,
+        "excluded": {
+          "own_transfers": 146540,
+          "loans_received": 0,
+          "refunds": 6388
+        },
+        "debit_total": 1639217,
+        "avg_balance": 446246
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 1869503,
+        "credit_net": 1696201,
+        "excluded": {
+          "own_transfers": 160971,
+          "loans_received": 0,
+          "refunds": 12331
+        },
+        "debit_total": 1705547,
+        "avg_balance": 217803
+      }
+    ],
+    "own_loans": []
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C17",
+    "title": "Склад — бюро кредитных историй не отвечает, к специалисту",
+    "scenario": {
+      "product": "WORKING_CAPITAL",
+      "amount": 4000000,
+      "term_months": 24,
+      "purpose": "Модернизация стеллажного оборудования",
+      "declared_revenue_12m": 43300000,
+      "collateral": null,
+      "documents_at_submit": [],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S10",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T09",
+        "T14",
+        "T17",
+        "T19"
+      ],
+      "outcome": "MANUAL_REVIEW",
+      "reason": "M5_CHECKS_INCOMPLETE",
+      "assumed_grade": "A",
+      "assumed_pd": 0.02,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 141,
+        "F2_avg_monthly_turnover": 3500000,
+        "F3_turnover_cv": 0.053,
+        "F4_debt_load": 0.031,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 1.14
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000170",
+    "kpp": "000101001",
+    "ogrn": "1150001000170",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Склад-Сервис»",
+      "short_with_opf": "ООО «Склад-Сервис»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2015-01-19",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "52.10",
+    "okved_name": "Деятельность по складированию и хранению",
+    "management": {
+      "name": "Егоров Илья Дмитриевич",
+      "inn": "000100015184",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2015-01-19"
+    },
+    "founders": [
+      {
+        "name": "Егоров Илья Дмитриевич",
+        "inn": "000100015184",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2015-01-19"
+      }
+    ],
+    "address": {
+      "value": "443000, г. Самара, ул. Портовая, д. 6"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "OSNO",
+    "employee_count": 30,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000170",
+      "name": "ООО «Склад-Сервис»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "6d4cd6b5-a29c-4d38-a888-06527b37823b",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OTHER_BANK",
+        "opened_at": "2025-02-25",
+        "planned_close_at": "2028-02-25",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 3090000,
+        "rate": 0.17,
+        "outstanding": 1652000,
+        "monthly_payment": 110000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "1111111111111111111",
+        "collateral": false
+      }
+    ],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 3
+    },
+    "_mock": {
+      "mode": "unavailable"
+    }
+  },
+  "bank": {
+    "client_since": "2015-02-19",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 3787955,
+        "credit_net": 3520888,
+        "excluded": {
+          "own_transfers": 248223,
+          "loans_received": 0,
+          "refunds": 18844
+        },
+        "debit_total": 3480310,
+        "avg_balance": 717242
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 3679086,
+        "credit_net": 3513705,
+        "excluded": {
+          "own_transfers": 123733,
+          "loans_received": 0,
+          "refunds": 41648
+        },
+        "debit_total": 3446921,
+        "avg_balance": 581417
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 3534283,
+        "credit_net": 3364207,
+        "excluded": {
+          "own_transfers": 132408,
+          "loans_received": 0,
+          "refunds": 37668
+        },
+        "debit_total": 3160355,
+        "avg_balance": 670355
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 3783256,
+        "credit_net": 3576820,
+        "excluded": {
+          "own_transfers": 177348,
+          "loans_received": 0,
+          "refunds": 29088
+        },
+        "debit_total": 3368326,
+        "avg_balance": 675817
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 3725987,
+        "credit_net": 3535289,
+        "excluded": {
+          "own_transfers": 178020,
+          "loans_received": 0,
+          "refunds": 12678
+        },
+        "debit_total": 3508524,
+        "avg_balance": 621526
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 3201963,
+        "credit_net": 3079298,
+        "excluded": {
+          "own_transfers": 97883,
+          "loans_received": 0,
+          "refunds": 24782
+        },
+        "debit_total": 2874364,
+        "avg_balance": 479998
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 4061404,
+        "credit_net": 3780330,
+        "excluded": {
+          "own_transfers": 256437,
+          "loans_received": 0,
+          "refunds": 24637
+        },
+        "debit_total": 3675912,
+        "avg_balance": 729440
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 4060744,
+        "credit_net": 3695550,
+        "excluded": {
+          "own_transfers": 350684,
+          "loans_received": 0,
+          "refunds": 14510
+        },
+        "debit_total": 3473960,
+        "avg_balance": 632269
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 3627310,
+        "credit_net": 3351288,
+        "excluded": {
+          "own_transfers": 261248,
+          "loans_received": 0,
+          "refunds": 14774
+        },
+        "debit_total": 3243958,
+        "avg_balance": 744869
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 4117897,
+        "credit_net": 3736781,
+        "excluded": {
+          "own_transfers": 346038,
+          "loans_received": 0,
+          "refunds": 35078
+        },
+        "debit_total": 3695328,
+        "avg_balance": 662385
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 3667873,
+        "credit_net": 3463967,
+        "excluded": {
+          "own_transfers": 173812,
+          "loans_received": 0,
+          "refunds": 30094
+        },
+        "debit_total": 3282406,
+        "avg_balance": 756679
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 3515280,
+        "credit_net": 3381877,
+        "excluded": {
+          "own_transfers": 103958,
+          "loans_received": 0,
+          "refunds": 29445
+        },
+        "debit_total": 3319571,
+        "avg_balance": 616878
+      }
+    ],
+    "own_loans": []
+  }
+}

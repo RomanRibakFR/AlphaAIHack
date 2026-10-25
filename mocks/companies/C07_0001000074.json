@@ -1,0 +1,336 @@
+{
+  "format_version": "1.0",
+  "meta": {
+    "id": "C07",
+    "title": "Пекарня — инвестиционный кредит с залогом, к специалисту",
+    "scenario": {
+      "product": "INVESTMENT",
+      "amount": 20000000,
+      "term_months": 84,
+      "purpose": "Покупка новой линии выпечки",
+      "declared_revenue_12m": 61200000,
+      "collateral": {
+        "type": "REAL_ESTATE",
+        "description": "Производственное помещение, 1 200 м²",
+        "value": 35000000
+      },
+      "documents_at_submit": [
+        "financial_statements"
+      ],
+      "document_on_request": null
+    },
+    "expected": {
+      "scenario_id": "S05",
+      "path": [
+        "T01",
+        "T02",
+        "T03",
+        "T07",
+        "T12",
+        "T14",
+        "T17",
+        "T19"
+      ],
+      "outcome": "MANUAL_REVIEW",
+      "reason": "M3_COLLATERAL",
+      "assumed_grade": "B",
+      "assumed_pd": 0.03,
+      "note": null,
+      "features": {
+        "F1_business_age_months": 171,
+        "F2_avg_monthly_turnover": 5000000,
+        "F3_turnover_cv": 0.048,
+        "F4_debt_load": 0.04,
+        "F5_overdue_30plus_count_24m": 0,
+        "F5_max_overdue_days_24m": 0,
+        "F6_amount_to_turnover": 4.0
+      }
+    }
+  },
+  "egrul": {
+    "type": "LEGAL",
+    "inn": "0001000074",
+    "kpp": "000101001",
+    "ogrn": "1120001000074",
+    "name": {
+      "full_with_opf": "Общество с ограниченной ответственностью «Хлебный дом»",
+      "short_with_opf": "ООО «Хлебный дом»"
+    },
+    "opf": {
+      "code": "12300",
+      "short": "ООО"
+    },
+    "state": {
+      "status": "ACTIVE",
+      "code": null,
+      "registration_date": "2012-07-23",
+      "liquidation_date": null,
+      "actuality_date": "2026-10-20"
+    },
+    "okved": "10.71",
+    "okved_name": "Производство хлеба и мучных кондитерских изделий, тортов и пирожных недлительного хранения",
+    "management": {
+      "name": "Морозов Виктор Алексеевич",
+      "inn": "000100012112",
+      "post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+      "start_date": "2012-07-23"
+    },
+    "founders": [
+      {
+        "name": "Морозов Виктор Алексеевич",
+        "inn": "000100012112",
+        "type": "PHYSICAL",
+        "share": {
+          "type": "PERCENT",
+          "value": 100
+        },
+        "start_date": "2012-07-23"
+      }
+    ],
+    "address": {
+      "value": "620000, г. Екатеринбург, ул. Мельничная, д. 15"
+    },
+    "invalid": null
+  },
+  "fns": {
+    "tax_regime": "OSNO",
+    "employee_count": 85,
+    "employee_count_year": 2025,
+    "tax_debt": {
+      "has_debt": false,
+      "amount": 0,
+      "as_of": "2026-10-20"
+    },
+    "account_suspensions": [],
+    "no_reporting_over_year": false
+  },
+  "zsk": {
+    "risk_level": "GREEN",
+    "assigned_at": "2026-10-01"
+  },
+  "bki": {
+    "subject": {
+      "type": "LEGAL",
+      "inn": "0001000074",
+      "name": "ООО «Хлебный дом»"
+    },
+    "report_date": "2026-10-24",
+    "accounts": [
+      {
+        "contract_uid": "d6bc0d35-ccec-43e4-883f-b0efdb1ed801",
+        "account_type": "BUSINESS_LOAN",
+        "relationship": "BORROWER",
+        "creditor_kind": "OWN_BANK",
+        "opened_at": "2023-10-02",
+        "planned_close_at": "2028-10-02",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 5460000,
+        "rate": 0.15,
+        "outstanding": 2681000,
+        "monthly_payment": 130000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "111111111111111111111111",
+        "collateral": true
+      },
+      {
+        "contract_uid": "4fb0d79b-e313-4b3f-ac8d-a5bb98061e2b",
+        "account_type": "LEASING",
+        "relationship": "BORROWER",
+        "creditor_kind": "LEASING_COMPANY",
+        "opened_at": "2025-06-17",
+        "planned_close_at": "2028-06-17",
+        "status": "ACTIVE",
+        "closed_at": null,
+        "currency": "RUB",
+        "credit_limit": 1910000,
+        "rate": 0.19,
+        "outstanding": 1192000,
+        "monthly_payment": 70000,
+        "next_payment_date": "2026-11-10",
+        "overdue_amount": 0,
+        "current_overdue_days": 0,
+        "overdue_counts_24m": {
+          "d30_59": 0,
+          "d60_89": 0,
+          "d90_plus": 0
+        },
+        "payment_string": "1111111111111111",
+        "collateral": true
+      }
+    ],
+    "inquiries": {
+      "last_30d": 1,
+      "last_24m": 4
+    }
+  },
+  "bank": {
+    "client_since": "2012-08-23",
+    "account_type": "40702",
+    "turnover_months": [
+      {
+        "month": "2025-10",
+        "credit_total": 5422133,
+        "credit_net": 4903084,
+        "excluded": {
+          "own_transfers": 464570,
+          "loans_received": 0,
+          "refunds": 54479
+        },
+        "debit_total": 4607364,
+        "avg_balance": 1398028
+      },
+      {
+        "month": "2025-11",
+        "credit_total": 4866210,
+        "credit_net": 4483428,
+        "excluded": {
+          "own_transfers": 333353,
+          "loans_received": 0,
+          "refunds": 49429
+        },
+        "debit_total": 4507730,
+        "avg_balance": 1060496
+      },
+      {
+        "month": "2025-12",
+        "credit_total": 5182095,
+        "credit_net": 4908873,
+        "excluded": {
+          "own_transfers": 248429,
+          "loans_received": 0,
+          "refunds": 24793
+        },
+        "debit_total": 4575748,
+        "avg_balance": 1093486
+      },
+      {
+        "month": "2026-01",
+        "credit_total": 5650972,
+        "credit_net": 5391345,
+        "excluded": {
+          "own_transfers": 196247,
+          "loans_received": 0,
+          "refunds": 63380
+        },
+        "debit_total": 5035145,
+        "avg_balance": 1439139
+      },
+      {
+        "month": "2026-02",
+        "credit_total": 4965360,
+        "credit_net": 4751374,
+        "excluded": {
+          "own_transfers": 182906,
+          "loans_received": 0,
+          "refunds": 31080
+        },
+        "debit_total": 4708139,
+        "avg_balance": 798489
+      },
+      {
+        "month": "2026-03",
+        "credit_total": 5013674,
+        "credit_net": 4831530,
+        "excluded": {
+          "own_transfers": 155880,
+          "loans_received": 0,
+          "refunds": 26264
+        },
+        "debit_total": 4829814,
+        "avg_balance": 1345954
+      },
+      {
+        "month": "2026-04",
+        "credit_total": 5205631,
+        "credit_net": 4968624,
+        "excluded": {
+          "own_transfers": 213088,
+          "loans_received": 0,
+          "refunds": 23919
+        },
+        "debit_total": 4826121,
+        "avg_balance": 1039480
+      },
+      {
+        "month": "2026-05",
+        "credit_total": 5690414,
+        "credit_net": 5251193,
+        "excluded": {
+          "own_transfers": 380927,
+          "loans_received": 0,
+          "refunds": 58294
+        },
+        "debit_total": 5213009,
+        "avg_balance": 1084431
+      },
+      {
+        "month": "2026-06",
+        "credit_total": 5485571,
+        "credit_net": 5266148,
+        "excluded": {
+          "own_transfers": 200295,
+          "loans_received": 0,
+          "refunds": 19128
+        },
+        "debit_total": 5031802,
+        "avg_balance": 638863
+      },
+      {
+        "month": "2026-07",
+        "credit_total": 5554887,
+        "credit_net": 5167029,
+        "excluded": {
+          "own_transfers": 343288,
+          "loans_received": 0,
+          "refunds": 44570
+        },
+        "debit_total": 4908907,
+        "avg_balance": 1192892
+      },
+      {
+        "month": "2026-08",
+        "credit_total": 5314346,
+        "credit_net": 5003811,
+        "excluded": {
+          "own_transfers": 285699,
+          "loans_received": 0,
+          "refunds": 24836
+        },
+        "debit_total": 5003209,
+        "avg_balance": 859153
+      },
+      {
+        "month": "2026-09",
+        "credit_total": 5309692,
+        "credit_net": 5073561,
+        "excluded": {
+          "own_transfers": 186441,
+          "loans_received": 0,
+          "refunds": 49690
+        },
+        "debit_total": 4996513,
+        "avg_balance": 655562
+      }
+    ],
+    "own_loans": [
+      {
+        "contract_uid": "d6bc0d35-ccec-43e4-883f-b0efdb1ed801",
+        "product": "BUSINESS_LOAN",
+        "opened_at": "2023-10-02",
+        "amount": 5460000,
+        "outstanding": 2681000,
+        "monthly_payment": 130000,
+        "current_overdue_days": 0
+      }
+    ]
+  }
+}
