@@ -76,7 +76,7 @@ docker compose up --build
 ## Тестовые компании
 
 17 компаний, по одной на каждую ветку пути заявки. Полная таблица и что вводить в анкету —
-[docs/mocks-format.md, раздел 5](docs/mocks-format.md#5-тестовые-компании) и `meta.scenario` в файлах `mocks/companies/`.
+[docs/mocks-format.md, раздел 6](docs/mocks-format.md#6-тестовые-компании) и `meta.scenario` в файлах `mocks/companies/`.
 
 | ИНН | Компания | Запрос | Исход |
 | --- | --- | --- | --- |
