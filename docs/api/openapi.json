@@ -1,0 +1,2942 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Умный кредитный кабинет — API",
+    "version": "0.3.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "service"
+        ],
+        "summary": "Health",
+        "description": "Жив ли бэкенд и видит ли он БД и моки.",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Api Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "tags": [
+          "Продукты"
+        ],
+        "summary": "List Products",
+        "description": "Каталог кредитных продуктов.",
+        "operationId": "list_products_api_products_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProductOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Products Api Products Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat": {
+      "get": {
+        "tags": [
+          "Чат с поддержкой"
+        ],
+        "summary": "Client Thread",
+        "description": "Переписка компании с поддержкой. Открыли — значит прочитали.",
+        "operationId": "client_thread_api_chat_get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatThread"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Чат с поддержкой"
+        ],
+        "summary": "Client Send",
+        "description": "Клиент пишет в поддержку.",
+        "operationId": "client_send_api_chat_post",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatThread"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/backoffice/chats": {
+      "get": {
+        "tags": [
+          "Сотрудник банка"
+        ],
+        "summary": "Chats",
+        "description": "Диалоги, новые сверху: сначала те, где клиент ждёт ответа.",
+        "operationId": "chats_api_backoffice_chats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ChatSummary"
+                  },
+                  "type": "array",
+                  "title": "Response Chats Api Backoffice Chats Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/backoffice/chats/{inn}": {
+      "get": {
+        "tags": [
+          "Сотрудник банка"
+        ],
+        "summary": "Staff Thread",
+        "description": "Переписка с конкретной компанией. Открыли — вопросы считаются прочитанными.",
+        "operationId": "staff_thread_api_backoffice_chats__inn__get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatThread"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Сотрудник банка"
+        ],
+        "summary": "Staff Send",
+        "description": "Ответ поддержки.",
+        "operationId": "staff_send_api_backoffice_chats__inn__post",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatThread"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/companies/lookup": {
+      "get": {
+        "tags": [
+          "Компании"
+        ],
+        "summary": "Lookup",
+        "description": "Данные компании из реестра — для автозаполнения анкеты.",
+        "operationId": "lookup_api_companies_lookup_get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ИНН компании или ИП",
+              "title": "Inn"
+            },
+            "description": "ИНН компании или ИП"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyCard"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Create",
+        "description": "Создать черновик. Компанию подтягиваем из реестра по ИНН.",
+        "operationId": "create_api_applications_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "List For Company",
+        "description": "Заявки компании, свежие сверху. Пока без авторизации — по ИНН.",
+        "operationId": "list_for_company_api_applications_get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicationListItem"
+                  },
+                  "title": "Response List For Company Api Applications Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{app_id}": {
+      "get": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Get One",
+        "description": "Заявка целиком: статус, подшаги, запросы банка, предложение или причина отказа, кнопки, история.",
+        "operationId": "get_one_api_applications__app_id__get",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Update",
+        "description": "Автосохранение черновика: только изменённые поля. После отправки можно дописать только залог по запросу банка.",
+        "operationId": "update_api_applications__app_id__patch",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{app_id}/documents": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Upload Document",
+        "description": "Загрузить документ — при отправке или по запросу банка.",
+        "operationId": "upload_document_api_applications__app_id__documents_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_document_api_applications__app_id__documents_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{app_id}/submit": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Submit",
+        "description": "Отправить в банк (T01). Если анкета неполная — 422 со списком полей. Дальше заявку ведёт конвейер.",
+        "operationId": "submit_api_applications__app_id__submit_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{app_id}/provide-info": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Provide Info",
+        "description": "Клиент дополнил то, что запросил банк (T05) — заявка проходит проверки заново.",
+        "operationId": "provide_info_api_applications__app_id__provide_info_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{app_id}/cancel": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Cancel",
+        "description": "Отозвать заявку (T21, client_withdrew) — из любого незавершённого статуса.",
+        "operationId": "cancel_api_applications__app_id__cancel_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{app_id}/decline": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Decline",
+        "description": "Отказаться от предложения банка (T21, offer_declined).",
+        "operationId": "decline_api_applications__app_id__decline_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{app_id}/accept": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Accept",
+        "description": "Принять предложение (T17), можно выбрать один из вариантов. Дальше — подписание кодом.",
+        "operationId": "accept_api_applications__app_id__accept_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AcceptBody"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/applications/{app_id}/sign": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Sign",
+        "description": "Подписать договор кодом (T19). Подпись условная, выдача моделируется в той же операции.",
+        "operationId": "sign_api_applications__app_id__sign_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/backoffice/applications": {
+      "get": {
+        "tags": [
+          "Сотрудник банка"
+        ],
+        "summary": "Queue",
+        "description": "Очередь заявок. По умолчанию — те, что ждут специалиста.",
+        "operationId": "queue_api_backoffice_applications_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Status",
+              "default": "manual_review"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QueueItem"
+                  },
+                  "title": "Response Queue Api Backoffice Applications Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/backoffice/applications/{app_id}": {
+      "get": {
+        "tags": [
+          "Сотрудник банка"
+        ],
+        "summary": "Details",
+        "description": "Всё по заявке: анкета, ответы источников, признаки, вклад в оценку, рекомендация системы.",
+        "operationId": "details_api_backoffice_applications__app_id__get",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackofficeApplication"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/backoffice/applications/{app_id}/decision": {
+      "post": {
+        "tags": [
+          "Сотрудник банка"
+        ],
+        "summary": "Decide",
+        "description": "Решение специалиста (T14 одобрить / T15 отказать / T16 запросить данные). Комментарий обязателен.",
+        "operationId": "decide_api_backoffice_applications__app_id__decision_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "App Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnderwriterDecision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackofficeApplication"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AcceptBody": {
+        "properties": {
+          "alternative": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alternative",
+            "description": "Номер варианта из offer.alternatives; пусто — основной"
+          }
+        },
+        "type": "object",
+        "title": "AcceptBody"
+      },
+      "Actor": {
+        "type": "string",
+        "enum": [
+          "client",
+          "system",
+          "underwriter",
+          "timer"
+        ],
+        "title": "Actor"
+      },
+      "ApplicationCreate": {
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "term_months": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Term Months"
+          },
+          "purpose": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Purpose"
+          },
+          "annual_revenue": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Annual Revenue",
+            "description": "Выручка за последние 12 месяцев"
+          },
+          "collateral_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Type",
+            "description": "Вид залога, для инвестиционного кредита (REAL_ESTATE, EQUIPMENT, VEHICLE)"
+          },
+          "collateral_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Description"
+          },
+          "collateral_value": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Value",
+            "description": "Стоимость залога, ₽"
+          },
+          "inn": {
+            "type": "string",
+            "title": "Inn"
+          },
+          "product_code": {
+            "type": "string",
+            "title": "Product Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "inn",
+          "product_code"
+        ],
+        "title": "ApplicationCreate"
+      },
+      "ApplicationListItem": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusView"
+          },
+          "product": {
+            "$ref": "#/components/schemas/ProductShort"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "term_months": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Term Months"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "product",
+          "amount",
+          "term_months",
+          "updated_at"
+        ],
+        "title": "ApplicationListItem"
+      },
+      "ApplicationOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusView"
+          },
+          "review_steps": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ReviewStep"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Steps"
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyShort"
+          },
+          "product": {
+            "$ref": "#/components/schemas/ProductShort"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "term_months": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Term Months"
+          },
+          "purpose": {
+            "type": "string",
+            "title": "Purpose"
+          },
+          "annual_revenue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Annual Revenue"
+          },
+          "collateral_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Type"
+          },
+          "collateral_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Description"
+          },
+          "collateral_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Value"
+          },
+          "estimated_payment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Payment"
+          },
+          "available_actions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Available Actions"
+          },
+          "info_requests": {
+            "items": {
+              "$ref": "#/components/schemas/InfoRequestOut"
+            },
+            "type": "array",
+            "title": "Info Requests"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentOut"
+            },
+            "type": "array",
+            "title": "Documents"
+          },
+          "offer": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OfferOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rejection": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rejection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sign_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sign Code",
+            "description": "В реальном банке пришёл бы в SMS — у нас показываем в кабинете"
+          },
+          "contract_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contract Number"
+          },
+          "schedule": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Payment"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule"
+          },
+          "deadline_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deadline At"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/HistoryItem"
+            },
+            "type": "array",
+            "title": "History"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "submitted_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submitted At"
+          },
+          "issued_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "company",
+          "product",
+          "amount",
+          "term_months",
+          "purpose",
+          "annual_revenue",
+          "collateral_type",
+          "collateral_description",
+          "collateral_value",
+          "estimated_payment",
+          "available_actions",
+          "info_requests",
+          "documents",
+          "deadline_at",
+          "history",
+          "version",
+          "created_at",
+          "updated_at",
+          "submitted_at",
+          "issued_at"
+        ],
+        "title": "ApplicationOut"
+      },
+      "ApplicationUpdate": {
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "term_months": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Term Months"
+          },
+          "purpose": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Purpose"
+          },
+          "annual_revenue": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Annual Revenue",
+            "description": "Выручка за последние 12 месяцев"
+          },
+          "collateral_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Type",
+            "description": "Вид залога, для инвестиционного кредита (REAL_ESTATE, EQUIPMENT, VEHICLE)"
+          },
+          "collateral_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Description"
+          },
+          "collateral_value": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collateral Value",
+            "description": "Стоимость залога, ₽"
+          },
+          "product_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Code"
+          }
+        },
+        "type": "object",
+        "title": "ApplicationUpdate"
+      },
+      "BackofficeApplication": {
+        "properties": {
+          "application": {
+            "$ref": "#/components/schemas/ApplicationOut"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/CheckOut"
+            },
+            "type": "array",
+            "title": "Checks"
+          },
+          "decisions": {
+            "items": {
+              "$ref": "#/components/schemas/DecisionOut"
+            },
+            "type": "array",
+            "title": "Decisions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "application",
+          "checks",
+          "decisions"
+        ],
+        "title": "BackofficeApplication"
+      },
+      "Body_upload_document_api_applications__app_id__documents_post": {
+        "properties": {
+          "doc_type": {
+            "type": "string",
+            "title": "Doc Type",
+            "description": "financial_statements, other_bank_statement, other"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          },
+          "declared_turnover": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Declared Turnover",
+            "description": "Для выписки: сумма поступлений по ней, ₽"
+          },
+          "declared_months": {
+            "type": "integer",
+            "title": "Declared Months",
+            "description": "Для выписки: за сколько месяцев",
+            "default": 6
+          }
+        },
+        "type": "object",
+        "required": [
+          "doc_type",
+          "file"
+        ],
+        "title": "Body_upload_document_api_applications__app_id__documents_post"
+      },
+      "ChatIn": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "ChatIn"
+      },
+      "ChatMessageOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "author": {
+            "type": "string",
+            "enum": [
+              "client",
+              "support"
+            ],
+            "title": "Author"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "author",
+          "text",
+          "created_at"
+        ],
+        "title": "ChatMessageOut"
+      },
+      "ChatSummary": {
+        "properties": {
+          "inn": {
+            "type": "string",
+            "title": "Inn"
+          },
+          "company_name": {
+            "type": "string",
+            "title": "Company Name"
+          },
+          "last_text": {
+            "type": "string",
+            "title": "Last Text"
+          },
+          "last_author": {
+            "type": "string",
+            "enum": [
+              "client",
+              "support"
+            ],
+            "title": "Last Author"
+          },
+          "last_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last At"
+          },
+          "unread": {
+            "type": "integer",
+            "title": "Unread"
+          }
+        },
+        "type": "object",
+        "required": [
+          "inn",
+          "company_name",
+          "last_text",
+          "last_author",
+          "last_at",
+          "unread"
+        ],
+        "title": "ChatSummary"
+      },
+      "ChatThread": {
+        "properties": {
+          "inn": {
+            "type": "string",
+            "title": "Inn"
+          },
+          "company_name": {
+            "type": "string",
+            "title": "Company Name"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/ChatMessageOut"
+            },
+            "type": "array",
+            "title": "Messages"
+          },
+          "unread": {
+            "type": "integer",
+            "title": "Unread",
+            "description": "Сколько сообщений другой стороны ещё не прочитано"
+          }
+        },
+        "type": "object",
+        "required": [
+          "inn",
+          "company_name",
+          "messages",
+          "unread"
+        ],
+        "title": "ChatThread"
+      },
+      "CheckOut": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "attempts": {
+            "type": "integer",
+            "title": "Attempts"
+          },
+          "response": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Started At"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Finished At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source",
+          "status",
+          "attempts",
+          "response",
+          "error",
+          "started_at",
+          "finished_at"
+        ],
+        "title": "CheckOut"
+      },
+      "CompanyCard": {
+        "properties": {
+          "inn": {
+            "type": "string",
+            "title": "Inn"
+          },
+          "ogrn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ogrn"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ul",
+              "ip"
+            ],
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "okved": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Okved"
+          },
+          "okved_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Okved Name"
+          },
+          "registered_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Registered At"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "director": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Director"
+          }
+        },
+        "type": "object",
+        "required": [
+          "inn",
+          "kind",
+          "name",
+          "status"
+        ],
+        "title": "CompanyCard"
+      },
+      "CompanyShort": {
+        "properties": {
+          "inn": {
+            "type": "string",
+            "title": "Inn"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          }
+        },
+        "type": "object",
+        "required": [
+          "inn",
+          "name",
+          "kind"
+        ],
+        "title": "CompanyShort"
+      },
+      "DecisionOut": {
+        "properties": {
+          "outcome": {
+            "type": "string",
+            "title": "Outcome"
+          },
+          "policy_version": {
+            "type": "string",
+            "title": "Policy Version"
+          },
+          "model_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Version"
+          },
+          "pd": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pd"
+          },
+          "pd_at_requested_terms": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pd At Requested Terms"
+          },
+          "grade": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grade"
+          },
+          "lgd": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lgd"
+          },
+          "product_pd_max": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Pd Max"
+          },
+          "model_inputs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Model Inputs"
+          },
+          "features": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Features"
+          },
+          "contributions": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Contributions"
+          },
+          "clipping_warnings": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Clipping Warnings"
+          },
+          "stop_factors": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Stop Factors"
+          },
+          "manual_triggers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Manual Triggers"
+          },
+          "reason_codes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reason Codes"
+          },
+          "max_amount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Amount"
+          },
+          "limit_binding": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Binding"
+          },
+          "recommendation": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "advice": {
+            "type": "string",
+            "title": "Advice"
+          },
+          "decided_by": {
+            "$ref": "#/components/schemas/Actor"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome",
+          "policy_version",
+          "model_version",
+          "pd",
+          "pd_at_requested_terms",
+          "grade",
+          "lgd",
+          "product_pd_max",
+          "model_inputs",
+          "features",
+          "contributions",
+          "clipping_warnings",
+          "stop_factors",
+          "manual_triggers",
+          "reason_codes",
+          "max_amount",
+          "limit_binding",
+          "recommendation",
+          "reason",
+          "advice",
+          "decided_by",
+          "comment",
+          "created_at"
+        ],
+        "title": "DecisionOut"
+      },
+      "DocumentOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "doc_type": {
+            "type": "string",
+            "title": "Doc Type"
+          },
+          "filename": {
+            "type": "string",
+            "title": "Filename"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "declared_values": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Declared Values"
+          },
+          "uploaded_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Uploaded At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "doc_type",
+          "filename",
+          "size",
+          "declared_values",
+          "uploaded_at"
+        ],
+        "title": "DocumentOut"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HistoryItem": {
+        "properties": {
+          "transition_id": {
+            "type": "string",
+            "title": "Transition Id"
+          },
+          "from_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Status"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "to_status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "actor": {
+            "$ref": "#/components/schemas/Actor"
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason Code"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "transition_id",
+          "from_status",
+          "to_status",
+          "actor",
+          "reason_code",
+          "comment",
+          "created_at"
+        ],
+        "title": "HistoryItem"
+      },
+      "InfoRequestOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "reason_code": {
+            "type": "string",
+            "title": "Reason Code"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RequestItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "reason_code",
+          "items",
+          "created_at"
+        ],
+        "title": "InfoRequestOut"
+      },
+      "OfferOut": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "AS_REQUESTED",
+              "COUNTER"
+            ],
+            "title": "Type"
+          },
+          "counter_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Counter Kind"
+          },
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          },
+          "term_months": {
+            "type": "integer",
+            "title": "Term Months"
+          },
+          "requested_amount": {
+            "type": "string",
+            "title": "Requested Amount"
+          },
+          "requested_term_months": {
+            "type": "integer",
+            "title": "Requested Term Months"
+          },
+          "rate": {
+            "type": "string",
+            "title": "Rate",
+            "description": "% годовых"
+          },
+          "monthly_payment": {
+            "type": "string",
+            "title": "Monthly Payment"
+          },
+          "total_payment": {
+            "type": "string",
+            "title": "Total Payment"
+          },
+          "alternatives": {
+            "items": {
+              "$ref": "#/components/schemas/OfferVariant"
+            },
+            "type": "array",
+            "title": "Alternatives"
+          },
+          "conditions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Conditions"
+          },
+          "chosen_alternative": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chosen Alternative"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid Until"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "advice": {
+            "type": "string",
+            "title": "Advice"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "counter_kind",
+          "amount",
+          "term_months",
+          "requested_amount",
+          "requested_term_months",
+          "rate",
+          "monthly_payment",
+          "total_payment",
+          "alternatives",
+          "conditions",
+          "chosen_alternative",
+          "valid_until",
+          "reason",
+          "advice",
+          "text"
+        ],
+        "title": "OfferOut"
+      },
+      "OfferVariant": {
+        "properties": {
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          },
+          "term_months": {
+            "type": "integer",
+            "title": "Term Months"
+          },
+          "monthly_payment": {
+            "type": "string",
+            "title": "Monthly Payment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "term_months",
+          "monthly_payment"
+        ],
+        "title": "OfferVariant"
+      },
+      "Payment": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "payment": {
+            "type": "string",
+            "title": "Payment"
+          },
+          "principal": {
+            "type": "string",
+            "title": "Principal"
+          },
+          "interest": {
+            "type": "string",
+            "title": "Interest"
+          },
+          "balance": {
+            "type": "string",
+            "title": "Balance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "n",
+          "date",
+          "payment",
+          "principal",
+          "interest",
+          "balance"
+        ],
+        "title": "Payment"
+      },
+      "ProductOut": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "min_amount": {
+            "type": "string",
+            "title": "Min Amount"
+          },
+          "max_amount": {
+            "type": "string",
+            "title": "Max Amount"
+          },
+          "min_term_months": {
+            "type": "integer",
+            "title": "Min Term Months"
+          },
+          "max_term_months": {
+            "type": "integer",
+            "title": "Max Term Months"
+          },
+          "base_rate": {
+            "type": "string",
+            "title": "Base Rate",
+            "description": "Ставка от, % годовых"
+          },
+          "max_rate": {
+            "type": "string",
+            "title": "Max Rate",
+            "description": "Ставка до, % годовых"
+          },
+          "requires_collateral": {
+            "type": "boolean",
+            "title": "Requires Collateral"
+          },
+          "min_business_age_months": {
+            "type": "integer",
+            "title": "Min Business Age Months"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "description",
+          "min_amount",
+          "max_amount",
+          "min_term_months",
+          "max_term_months",
+          "base_rate",
+          "max_rate",
+          "requires_collateral",
+          "min_business_age_months"
+        ],
+        "title": "ProductOut"
+      },
+      "ProductShort": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "title": "ProductShort"
+      },
+      "QueueItem": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyShort"
+          },
+          "product": {
+            "$ref": "#/components/schemas/ProductShort"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "term_months": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Term Months"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "pd": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pd"
+          },
+          "grade": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grade"
+          },
+          "triggers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Triggers",
+            "description": "Почему заявка у специалиста"
+          },
+          "submitted_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submitted At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "company",
+          "product",
+          "amount",
+          "term_months",
+          "status",
+          "pd",
+          "grade",
+          "triggers",
+          "submitted_at"
+        ],
+        "title": "QueueItem"
+      },
+      "Rejection": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "advice": {
+            "type": "string",
+            "title": "Advice"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason",
+          "advice",
+          "text"
+        ],
+        "title": "Rejection"
+      },
+      "RequestItem": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "document",
+              "field"
+            ],
+            "title": "Kind"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "code",
+          "title",
+          "message"
+        ],
+        "title": "RequestItem"
+      },
+      "ReviewStep": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "done",
+              "current",
+              "pending"
+            ],
+            "title": "State"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "title",
+          "state"
+        ],
+        "title": "ReviewStep"
+      },
+      "SignBody": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "SignBody"
+      },
+      "Status": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "submitted",
+          "validation",
+          "info_requested",
+          "checks",
+          "scoring",
+          "manual_review",
+          "offer_proposed",
+          "signing",
+          "issued",
+          "rejected",
+          "cancelled",
+          "expired"
+        ],
+        "title": "Status"
+      },
+      "StatusView": {
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "hint": {
+            "type": "string",
+            "title": "Hint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "title",
+          "hint"
+        ],
+        "title": "StatusView"
+      },
+      "UnderwriterDecision": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "reject",
+              "request_info"
+            ],
+            "title": "Action"
+          },
+          "comment": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Comment",
+            "description": "Комментарий специалиста — обязателен (внутренний)"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount",
+            "description": "approve: сумма; по умолчанию — рекомендация системы"
+          },
+          "term_months": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Term Months"
+          },
+          "rate": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate",
+            "description": "approve: % годовых; по умолчанию — рекомендация системы"
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason Code",
+            "description": "reject: код причины"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "reject: причина для клиента"
+          },
+          "advice": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Advice",
+            "description": "reject: что можно сделать"
+          },
+          "items": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Items",
+            "description": "request_info: other_bank_statement, financial_statements, other, collateral"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "request_info: что и зачем нужно — увидит клиент"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action",
+          "comment"
+        ],
+        "title": "UnderwriterDecision"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

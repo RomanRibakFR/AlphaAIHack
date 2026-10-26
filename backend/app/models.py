@@ -131,7 +131,7 @@ class CheckResult(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     application_id: Mapped[int] = mapped_column(ForeignKey("applications.id"), index=True)
     run: Mapped[int]
-    source: Mapped[str] = mapped_column(String(20))  # egrul, fns, zsk, bank, bki
+    source: Mapped[str] = mapped_column(String(20))  # egrul, fns, zsk, bank, gir_bo, bki
     status: Mapped[str] = mapped_column(String(20))  # ok, not_found, unavailable
     attempts: Mapped[int]
     response: Mapped[dict | None] = mapped_column(JSON)
