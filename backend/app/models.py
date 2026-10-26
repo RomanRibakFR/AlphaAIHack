@@ -150,10 +150,15 @@ class Decision(Base):
     outcome: Mapped[str] = mapped_column(String(20))  # AUTO_APPROVED, COUNTER_OFFER, MANUAL_REVIEW, REJECTED
     policy_version: Mapped[str] = mapped_column(String(20))
     model_version: Mapped[str | None] = mapped_column(String(40))
-    pd: Mapped[Decimal | None] = mapped_column(Numeric(6, 4))
+    pd: Mapped[Decimal | None] = mapped_column(Numeric(8, 6))
+    pd_at_requested_terms: Mapped[Decimal | None] = mapped_column(Numeric(8, 6))  # если условия подобраны другие
     grade: Mapped[str | None] = mapped_column(String(1))
-    features: Mapped[dict] = mapped_column(JSON, default=dict)
-    contributions: Mapped[dict] = mapped_column(JSON, default=dict)
+    lgd: Mapped[Decimal | None] = mapped_column(Numeric(6, 4))
+    product_pd_max: Mapped[Decimal | None] = mapped_column(Numeric(6, 4))  # граница C/D для продукта и залога
+    model_inputs: Mapped[dict] = mapped_column(JSON, default=dict)  # сырой вход score.py — решение можно пересчитать
+    features: Mapped[dict] = mapped_column(JSON, default=dict)  # признаки модели
+    contributions: Mapped[dict] = mapped_column(JSON, default=dict)  # вклад признака в логит
+    clipping_warnings: Mapped[list] = mapped_column(JSON, default=list)  # что модель обрезала до границ обучения
     stop_factors: Mapped[list] = mapped_column(JSON, default=list)
     manual_triggers: Mapped[list] = mapped_column(JSON, default=list)
     reason_codes: Mapped[list] = mapped_column(JSON, default=list)
@@ -196,7 +201,7 @@ class InfoRequest(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     application_id: Mapped[int] = mapped_column(ForeignKey("applications.id"), index=True)
-    reason_code: Mapped[str] = mapped_column(String(40))  # V02_COLLATERAL, V03_FINANCIAL_STATEMENTS, DATA_MISMATCH, UNDERWRITER
+    reason_code: Mapped[str] = mapped_column(String(40))  # V02_COLLATERAL, DATA_MISMATCH, UNDERWRITER
     items: Mapped[list] = mapped_column(JSON)  # [{kind: document|field, code, title, message}]
     requested_by: Mapped[Actor] = mapped_column(str_enum(Actor))
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())

@@ -239,11 +239,20 @@ export type Decision = {
   policy_version: string;
   model_version: string | null;
   pd: string | null;
+  /** PD на запрошенных условиях, если система подобрала другие. */
+  pd_at_requested_terms: string | null;
   grade: string | null;
-  /** Значения признаков F1…F6, по которым считалась оценка. */
+  lgd: string | null;
+  /** Граница C/D для продукта: выше риск не покрыть рыночной ставкой. */
+  product_pd_max: string | null;
+  /** Сырой вход score.py — по нему решение можно пересчитать. */
+  model_inputs: Record<string, unknown>;
+  /** Признаки модели PD, по которым считалась оценка. */
   features: Record<string, number>;
-  /** Вклад каждого признака в оценку: плюс повышает риск, минус понижает. */
+  /** Вклад каждого признака в логит: плюс повышает риск, минус понижает. */
   contributions: Record<string, number>;
+  /** Признаки, которые модель обрезала до границ обучающих данных. */
+  clipping_warnings: Array<Record<string, unknown>>;
   stop_factors: Array<Record<string, unknown>>;
   manual_triggers: string[];
   reason_codes: string[];

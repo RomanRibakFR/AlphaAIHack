@@ -12,60 +12,40 @@ export const MANUAL_TRIGGERS: Record<string, string> = {
   M3_COLLATERAL: "Кредит с залогом — залог требует оценки",
   M4_DATA_MISMATCH: "Выручка в анкете не подтверждена выпиской",
   M5_CHECKS_INCOMPLETE: "Внешний источник не ответил",
-  M6_MODEL_UNAVAILABLE: "Модель оценки риска недоступна",
+  M6_MODEL_UNAVAILABLE: "Модель оценки риска недоступна или для неё нет данных",
   M7_REVIEWED_BEFORE: "Заявку уже рассматривал специалист",
+  M8_OUT_OF_MODEL_SCOPE: "Категория бизнеса вне области модели (не микро и не малое)",
 };
 
-/** Признаки модели — названия и единицы из docs/decision-policy.md. */
+/**
+ * Признаки модели PD задачи 2 — названия из docs/decision-policy.md, раздел 5.1.
+ * У ИП 11 признаков, у юрлица ещё 8 из отчётности; показываем те, что пришли в решении.
+ */
 export const FEATURES: Array<{
   key: string;
-  contribution: string;
   title: string;
   hint: string;
-  format: "months" | "money" | "share" | "ratio" | "count";
+  format: "years" | "share" | "ratio" | "months" | "flag";
 }> = [
-  {
-    key: "F1_business_age_months",
-    contribution: "F1",
-    title: "Срок ведения бизнеса",
-    hint: "месяцев с даты регистрации · ЕГРЮЛ",
-    format: "months",
-  },
-  {
-    key: "F2_avg_monthly_turnover",
-    contribution: "F2",
-    title: "Обороты по счёту",
-    hint: "среднемесячные поступления за 12 мес. · банк",
-    format: "money",
-  },
-  {
-    key: "F3_turnover_cv",
-    contribution: "F3",
-    title: "Стабильность оборотов",
-    hint: "коэффициент вариации, больше — неровнее · банк",
-    format: "ratio",
-  },
-  {
-    key: "F4_debt_load",
-    contribution: "F4",
-    title: "Долговая нагрузка",
-    hint: "платежи по кредитам к обороту · БКИ",
-    format: "share",
-  },
-  {
-    key: "F5_overdue_30plus_count_24m",
-    contribution: "F5",
-    title: "Прошлые просрочки",
-    hint: "случаев 30+ дней за 24 мес. · БКИ",
-    format: "count",
-  },
-  {
-    key: "F6_amount_to_turnover",
-    contribution: "F6",
-    title: "Сумма к оборотам",
-    hint: "запрошенная сумма к среднемесячному обороту",
-    format: "ratio",
-  },
+  { key: "cash_buffer_months", title: "Денежный резерв", hint: "остаток на счёте к расходам и платежам, месяцев", format: "months" },
+  { key: "debt_coverage", title: "Покрытие долговых платежей", hint: "(поступления − расходы) / все платежи по кредитам", format: "ratio" },
+  { key: "cash_operating_margin", title: "Денежная маржа", hint: "доля поступлений, остающаяся после расходов", format: "share" },
+  { key: "receipts_growth", title: "Динамика поступлений", hint: "последние 3 мес. к предыдущим 3", format: "share" },
+  { key: "receipts_cv", title: "Колебания поступлений", hint: "коэффициент вариации за 12 мес.", format: "share" },
+  { key: "largest_customer_share", title: "Концентрация покупателей", hint: "доля крупнейшего покупателя, без эквайринга", format: "share" },
+  { key: "business_age_years", title: "Возраст бизнеса", hint: "лет с даты регистрации · ЕГРЮЛ", format: "years" },
+  { key: "is_small_business", title: "Малое предприятие", hint: "реестр МСП: малое, а не микро", format: "flag" },
+  { key: "industry_manufacturing", title: "Отрасль: производство", hint: "ОКВЭД2 10–33", format: "flag" },
+  { key: "industry_construction", title: "Отрасль: строительство", hint: "ОКВЭД2 41–43", format: "flag" },
+  { key: "industry_trade", title: "Отрасль: торговля", hint: "ОКВЭД2 45–47", format: "flag" },
+  { key: "equity_assets", title: "Капитал к активам", hint: "строки 1300 / 1600 · ГИР БО", format: "share" },
+  { key: "current_ratio", title: "Текущая ликвидность", hint: "строки 1200 / 1500 · ГИР БО", format: "ratio" },
+  { key: "net_margin", title: "Чистая рентабельность", hint: "строки 2400 / 2110 · ГИР БО", format: "share" },
+  { key: "asset_turnover", title: "Оборачиваемость активов", hint: "строки 2110 / 1600 · ГИР БО", format: "ratio" },
+  { key: "short_term_liabilities_assets", title: "Краткосрочные обязательства к активам", hint: "строки 1500 / 1600 · ГИР БО", format: "share" },
+  { key: "expenses_revenue", title: "Расходы к выручке", hint: "строки 2120 / 2110 · ГИР БО", format: "ratio" },
+  { key: "expenses_missing", title: "Нет строки 2120", hint: "расходы заменены медианой обучения", format: "flag" },
+  { key: "simplified_reporting", title: "Упрощённая отчётность", hint: "форма отчётности · ГИР БО", format: "flag" },
 ];
 
 /** Внешние источники — как их называют люди. */
@@ -75,6 +55,7 @@ export const SOURCES: Record<string, string> = {
   zsk: "ЗСК (115-ФЗ)",
   bki: "Бюро кредитных историй",
   bank: "Данные банка",
+  gir_bo: "ГИР БО (отчётность)",
 };
 
 /** Что ответил источник. */
@@ -88,8 +69,8 @@ export const CHECK_STATUS: Record<string, { label: string; tone: "ok" | "warn" |
 
 /** Что ограничило лимит — из docs/decision-policy.md. */
 export const LIMIT_BINDING: Record<string, string> = {
-  payment_capacity: "платёжеспособность",
-  turnover_cap: "потолок к оборотам",
+  new_payment: "новый платёж ≤ 10% поступлений",
+  total_debt_service: "вся нагрузка ≤ 17% поступлений",
   turnover_share: "доля оборота (овердрафт)",
   product_max: "максимум продукта",
   collateral: "стоимость залога",

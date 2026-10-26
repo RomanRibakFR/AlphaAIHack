@@ -1,0 +1,60 @@
+---
+title: Жизненный цикл кредитной заявки (docs/application-states.md)
+---
+stateDiagram-v2
+    direction TB
+
+    state "Черновик<br/>DRAFT" as DRAFT
+    state "Подана<br/>SUBMITTED" as SUBMITTED
+    state "Проверка полноты<br/>VALIDATION" as VALIDATION
+    state "Нужны уточнения<br/>INFO_REQUESTED" as INFO_REQUESTED
+    state "Проверки и источники<br/>CHECKS" as CHECKS
+    state "Оценка и решение<br/>SCORING" as SCORING
+    state "У специалиста<br/>MANUAL_REVIEW" as MANUAL_REVIEW
+    state "Предложение<br/>OFFER_PROPOSED" as OFFER_PROPOSED
+    state "Подписание<br/>SIGNING" as SIGNING
+    state "Кредит выдан<br/>ISSUED" as ISSUED
+    state "Отказ<br/>REJECTED" as REJECTED
+    state "Срок истёк<br/>EXPIRED" as EXPIRED
+    state "Отменена<br/>CANCELLED" as CANCELLED
+
+    [*] --> DRAFT
+    DRAFT --> SUBMITTED : T01 отправлена
+    SUBMITTED --> VALIDATION : T02
+    VALIDATION --> CHECKS : T03 данные полные
+    VALIDATION --> INFO_REQUESTED : T04 не хватает данных
+    INFO_REQUESTED --> VALIDATION : T05 клиент дополнил
+    INFO_REQUESTED --> EXPIRED : T06 срок истёк
+    CHECKS --> SCORING : T07 проверки пройдены
+    CHECKS --> REJECTED : T08 стоп-фактор
+    CHECKS --> MANUAL_REVIEW : T09 источник недоступен
+    CHECKS --> INFO_REQUESTED : T22 анкета ≠ счёт
+    SCORING --> OFFER_PROPOSED : T10 одобрено
+    SCORING --> OFFER_PROPOSED : T11 иные условия
+    SCORING --> MANUAL_REVIEW : T12 нужен специалист
+    SCORING --> REJECTED : T13 риск или нагрузка
+    MANUAL_REVIEW --> OFFER_PROPOSED : T14 одобрено
+    MANUAL_REVIEW --> REJECTED : T15 отказ
+    MANUAL_REVIEW --> INFO_REQUESTED : T16 запрос данных
+    OFFER_PROPOSED --> SIGNING : T17 клиент принял
+    OFFER_PROPOSED --> EXPIRED : T18 срок истёк
+    SIGNING --> ISSUED : T19 подписано, выдано
+    SIGNING --> EXPIRED : T20 срок истёк
+
+    note right of CANCELLED
+        T21: клиент может отменить заявку из любого
+        нефинального статуса. Зелёный и красные —
+        финальные статусы, из них выхода нет
+    end note
+
+    classDef client fill:#EEEDFE,stroke:#534AB7,color:#26215C
+    classDef system fill:#F1EFE8,stroke:#5F5E5A,color:#2C2C2A
+    classDef specialist fill:#FAEEDA,stroke:#854F0B,color:#412402
+    classDef success fill:#EAF3DE,stroke:#3B6D11,color:#173404
+    classDef fail fill:#FCEBEB,stroke:#A32D2D,color:#501313
+
+    class DRAFT,INFO_REQUESTED,OFFER_PROPOSED,SIGNING client
+    class SUBMITTED,VALIDATION,CHECKS,SCORING system
+    class MANUAL_REVIEW specialist
+    class ISSUED success
+    class REJECTED,EXPIRED,CANCELLED fail

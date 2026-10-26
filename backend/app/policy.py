@@ -24,11 +24,6 @@ def policy() -> dict:
     return yaml.safe_load((config_dir() / "decision_policy.yaml").read_text(encoding="utf-8"))
 
 
-@lru_cache
-def pd_model_config() -> dict:
-    return yaml.safe_load((config_dir() / "pd_model.yaml").read_text(encoding="utf-8"))
-
-
 def product(code: str) -> dict:
     return policy()["products"][code]
 

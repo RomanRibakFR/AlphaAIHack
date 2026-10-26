@@ -89,10 +89,8 @@ def problems_for_info(app: Application) -> list[Problem]:
 
 
 def monthly_payment(product_code: str, amount, rate_percent, term: int) -> Decimal:
-    prod = product_policy(product_code)
+    # аннуитет для всех продуктов: овердрафт — как 12 равных платежей (docs/decision-policy.md, раздел 5.3)
     r = Decimal(rate_percent) / 1200
-    if prod["limit_rule"] == "turnover_share":  # овердрафт: проценты каждый месяц, тело в конце
-        return (Decimal(amount) * r).quantize(CENT, ROUND_HALF_UP)
     return (Decimal(amount) * r / (1 - (1 + r) ** -term)).quantize(CENT, ROUND_HALF_UP)
 
 
@@ -120,14 +118,10 @@ def chosen_terms(offer: Offer) -> tuple[Decimal, int, Decimal]:
 def payment_schedule(offer: Offer, start: date) -> list[Payment]:
     amount, term, payment = chosen_terms(offer)
     r = offer.rate / Decimal(1200)
-    interest_only = product_policy(offer.product_code)["limit_rule"] == "turnover_share"
     balance, rows = amount, []
     for n in range(1, term + 1):
         interest = (balance * r).quantize(CENT, ROUND_HALF_UP)
-        if interest_only:
-            principal = balance if n == term else Decimal(0)
-        else:
-            principal = balance if n == term else payment - interest
+        principal = balance if n == term else payment - interest
         balance -= principal
         rows.append(Payment(n=n, date=add_months(start, n), payment=principal + interest,
                             principal=principal, interest=interest, balance=balance))

@@ -1,0 +1,1683 @@
+{
+  "info": {
+    "_postman_id": "fc16f3ef-6ca6-5306-a65e-15d30c0f5f6e",
+    "name": "Кредитный конвейер — мок-сервис внешних источников",
+    "description": "Запросы к мок-сервису (по умолчанию http://localhost:8001). Маршруты и формат — docs/mocks-format.md. В каждом запросе есть тесты: статус ответа и отсутствие служебных полей meta/_mock.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "mocks_url",
+      "value": "http://localhost:8001"
+    },
+    {
+      "key": "inn",
+      "value": "0001000010"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Одна компания — все источники (переменная inn)",
+      "description": "Поменяйте переменную коллекции `inn` на ИНН нужной компании (список — mocks/README.md).",
+      "item": [
+        {
+          "name": "ЕГРЮЛ / ЕГРИП",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('ИНН совпадает', () => pm.expect(pm.response.json().inn).to.eql(pm.variables.get('inn')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/{{inn}}",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "{{inn}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ФНС",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('есть категория МСП', () => pm.expect(pm.response.json().msp_register).to.have.property('category'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/fns/{{inn}}",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "fns",
+                "{{inn}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ЗСК",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('уровень риска из списка', () => pm.expect(['GREEN','YELLOW','RED']).to.include(pm.response.json().risk_level));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/zsk/{{inn}}",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "zsk",
+                "{{inn}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "БКИ",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('есть договоры', () => pm.expect(pm.response.json().accounts).to.be.an('array'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/bki/{{inn}}",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "bki",
+                "{{inn}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Расчётный счёт",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('обороты за месяцы и остаток на дату заявки', () => {",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b.turnover_months.length).to.be.within(6, 12);",
+                  "  pm.expect(b.current_balance).to.be.a('number');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/bank/{{inn}}",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "bank",
+                "{{inn}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ГИР БО (отчётность юрлица)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 для юрлица с отчётностью или 404 для ИП', () => pm.expect([200, 404]).to.include(pm.response.code));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/{{inn}}",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "{{inn}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Особые случаи",
+      "item": [
+        {
+          "name": "C17: БКИ недоступно → 503",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('503 Service Unavailable', () => pm.response.to.have.status(503));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/bki/0001000170",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "bki",
+                "0001000170"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C17: остальные источники отвечают",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000170",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000170"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Неизвестный ИНН → 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('404 Not Found', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001099999",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001099999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ИП: отчётности нет → 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('404 Not Found', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/000100000244",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "000100000244"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C14: компания 2026 года, отчётности ещё нет → 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('404 Not Found', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000148",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000148"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Все тестовые компании",
+      "item": [
+        {
+          "name": "C01 ООО «Утренний кофе» — AUTO_APPROVED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C01', () => pm.expect(pm.response.json().inn).to.eql('0001000010'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000010",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000010"
+              ]
+            },
+            "description": "Кофейня — автоодобрение. Ожидаемый исход: AUTO_APPROVED (—)."
+          },
+          "response": []
+        },
+        {
+          "name": "C01 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(28500000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000010",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000010"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C02 ИП Кузнецов Д. О. — AUTO_APPROVED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C02', () => pm.expect(pm.response.json().inn).to.eql('000100000244'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/000100000244",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "000100000244"
+              ]
+            },
+            "description": "ИП в торговле — автоодобрение. Ожидаемый исход: AUTO_APPROVED (—)."
+          },
+          "response": []
+        },
+        {
+          "name": "C03 ООО «Сибирский маршрут» — COUNTER_OFFER",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C03', () => pm.expect(pm.response.json().inn).to.eql('0001000035'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000035",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000035"
+              ]
+            },
+            "description": "Перевозчик — предложение с бо́льшим сроком. Ожидаемый исход: COUNTER_OFFER (TERM_EXTENDED)."
+          },
+          "response": []
+        },
+        {
+          "name": "C03 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(45600000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000035",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000035"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C04 ООО «СтройБаза Юг» — COUNTER_OFFER",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C04', () => pm.expect(pm.response.json().inn).to.eql('0001000042'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000042",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000042"
+              ]
+            },
+            "description": "Стройматериалы — предложение с меньшей суммой. Ожидаемый исход: COUNTER_OFFER (AMOUNT_REDUCED)."
+          },
+          "response": []
+        },
+        {
+          "name": "C04 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(17100000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000042",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000042"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C05 ООО «Мастерская Кедр» — MANUAL_REVIEW",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C05', () => pm.expect(pm.response.json().inn).to.eql('0001000050'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000050",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000050"
+              ]
+            },
+            "description": "Мебельная мастерская — пограничная оценка, к специалисту. Ожидаемый исход: MANUAL_REVIEW (M1_GREY_ZONE)."
+          },
+          "response": []
+        },
+        {
+          "name": "C05 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(22800000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000050",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000050"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C06 ООО «Цифровые решения» — MANUAL_REVIEW",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C06', () => pm.expect(pm.response.json().inn).to.eql('0001000067'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000067",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000067"
+              ]
+            },
+            "description": "IT-компания — крупная сумма, к специалисту. Ожидаемый исход: MANUAL_REVIEW (M2_LARGE_AMOUNT)."
+          },
+          "response": []
+        },
+        {
+          "name": "C06 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(74100000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000067",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000067"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C07 ООО «Хлебный дом» — MANUAL_REVIEW",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C07', () => pm.expect(pm.response.json().inn).to.eql('0001000074'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000074",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000074"
+              ]
+            },
+            "description": "Пекарня — инвестиционный кредит с залогом, к специалисту. Ожидаемый исход: MANUAL_REVIEW (M3_COLLATERAL)."
+          },
+          "response": []
+        },
+        {
+          "name": "C07 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(57000000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000074",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000074"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C08 ООО «Оптовик Плюс» — COUNTER_OFFER",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C08', () => pm.expect(pm.response.json().inn).to.eql('0001000081'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000081",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000081"
+              ]
+            },
+            "description": "Оптовая торговля — овердрафт меньше запрошенного. Ожидаемый исход: COUNTER_OFFER (AMOUNT_REDUCED)."
+          },
+          "response": []
+        },
+        {
+          "name": "C08 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(45600000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000081",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000081"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C09 ООО «Салон Лаванда» — REJECTED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C09', () => pm.expect(pm.response.json().inn).to.eql('0001000099'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000099",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000099"
+              ]
+            },
+            "description": "Салон красоты — кредитная нагрузка уже предельная, отказ. Ожидаемый исход: REJECTED (NO_VIABLE_OFFER)."
+          },
+          "response": []
+        },
+        {
+          "name": "C09 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(11400000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000099",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000099"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C10 ООО «Монолит-Строй» — REJECTED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C10', () => pm.expect(pm.response.json().inn).to.eql('0001000109'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000109",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000109"
+              ]
+            },
+            "description": "Стройка — высокий риск, отказ. Ожидаемый исход: REJECTED (HIGH_RISK)."
+          },
+          "response": []
+        },
+        {
+          "name": "C10 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(5000000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000109",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000109"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C11 ИП Захаров И. П. — REJECTED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C11', () => pm.expect(pm.response.json().inn).to.eql('000100001128'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/000100001128",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "000100001128"
+              ]
+            },
+            "description": "ИП автосервис — долг по налогам, отказ. Ожидаемый исход: REJECTED (SF03_TAX_DEBT)."
+          },
+          "response": []
+        },
+        {
+          "name": "C12 ООО «Ресторан Полёт» — REJECTED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C12', () => pm.expect(pm.response.json().inn).to.eql('0001000123'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000123",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000123"
+              ]
+            },
+            "description": "Ресторан — текущая просрочка, отказ. Ожидаемый исход: REJECTED (SF02_CURRENT_OVERDUE)."
+          },
+          "response": []
+        },
+        {
+          "name": "C12 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(25080000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000123",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000123"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C13 ООО «Реклама Медиа Групп» — REJECTED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C13', () => pm.expect(pm.response.json().inn).to.eql('0001000130'));",
+                  "pm.test('статус LIQUIDATING', () => pm.expect(pm.response.json().state.status).to.eql('LIQUIDATING'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000130",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000130"
+              ]
+            },
+            "description": "Рекламное агентство — в ликвидации, отказ. Ожидаемый исход: REJECTED (SF01_COMPANY_INACTIVE)."
+          },
+          "response": []
+        },
+        {
+          "name": "C13 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(7980000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000130",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000130"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C14 ООО «Маркетплейс-Старт» — REJECTED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C14', () => pm.expect(pm.response.json().inn).to.eql('0001000148'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000148",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000148"
+              ]
+            },
+            "description": "Интернет-магазин — бизнесу 7 месяцев, отказ с подсказкой. Ожидаемый исход: REJECTED (SF04_BUSINESS_TOO_YOUNG)."
+          },
+          "response": []
+        },
+        {
+          "name": "C15 ООО «Продовольственная компания Обь» — AUTO_APPROVED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C15', () => pm.expect(pm.response.json().inn).to.eql('0001000155'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000155",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000155"
+              ]
+            },
+            "description": "Продукты оптом — расхождение снято выпиской, автоодобрение. Ожидаемый исход: AUTO_APPROVED (—)."
+          },
+          "response": []
+        },
+        {
+          "name": "C15 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(45000000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000155",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000155"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "C16 ИП Белова О. С. — MANUAL_REVIEW",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C16', () => pm.expect(pm.response.json().inn).to.eql('000100001696'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/000100001696",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "000100001696"
+              ]
+            },
+            "description": "ИП одежда — расхождение не снято, к специалисту. Ожидаемый исход: MANUAL_REVIEW (M4_DATA_MISMATCH)."
+          },
+          "response": []
+        },
+        {
+          "name": "C17 ООО «Склад-Сервис» — MANUAL_REVIEW",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('это C17', () => pm.expect(pm.response.json().inn).to.eql('0001000170'));",
+                  "pm.test('статус ACTIVE', () => pm.expect(pm.response.json().state.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/egrul/0001000170",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "egrul",
+                "0001000170"
+              ]
+            },
+            "description": "Склад — бюро кредитных историй не отвечает, к специалисту. Ожидаемый исход: MANUAL_REVIEW (M5_CHECKS_INCOMPLETE)."
+          },
+          "response": []
+        },
+        {
+          "name": "C17 ГИР БО",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('служебные поля не отдаются', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('meta');",
+                  "  pm.expect(body).to.not.have.property('_mock');",
+                  "});",
+                  "pm.test('выручка 2025', () => pm.expect(pm.response.json().lines['2110']).to.eql(39900000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{mocks_url}}/gir-bo/0001000170",
+              "host": [
+                "{{mocks_url}}"
+              ],
+              "path": [
+                "gir-bo",
+                "0001000170"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
