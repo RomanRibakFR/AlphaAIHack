@@ -1,0 +1,517 @@
+{
+  "schema_version": "synthetic-cashflow-pd-logit-v1",
+  "model_id": "synthetic_cashflow_90dpd_ip_logit_v1_external099_micro_v2",
+  "created_date": "2026-10-25",
+  "segment": "ip",
+  "horizon_months": 12,
+  "target": "simulated_90dpd_12m",
+  "operational_target": "NEW-loan unpaid installment reaches90calendar days within next12months. In the monthly simulator, all payments occur on month_end: check prior unpaid installments BEFORE each month_end payment and record an absorbing default event, even if paid on that date. FIFO allocation. No real bankruptcy outcome used.",
+  "fit_status": "SYNTHETIC_SIMULATOR",
+  "synthetic_warning": "SYNTHETIC_SIMULATOR: probability and quality metrics describe an invented cashflow/repayment world. They do not establish real Russian IP/UL credit PD or model quality.",
+  "target_warning": "No real credit delinquency or real bankruptcy target entered fitting",
+  "feature_order": [
+    "business_age_years",
+    "is_small_business",
+    "industry_manufacturing",
+    "industry_construction",
+    "industry_trade",
+    "debt_coverage",
+    "receipts_growth",
+    "receipts_cv",
+    "cash_buffer_months",
+    "largest_customer_share",
+    "cash_operating_margin"
+  ],
+  "common_features": [
+    "business_age_years",
+    "is_small_business",
+    "industry_manufacturing",
+    "industry_construction",
+    "industry_trade",
+    "debt_coverage",
+    "receipts_growth",
+    "receipts_cv",
+    "cash_buffer_months",
+    "largest_customer_share",
+    "cash_operating_margin"
+  ],
+  "additional_features": [],
+  "feature_labels": {
+    "business_age_years": "Возраст бизнеса, годы",
+    "is_small_business": "Малое предприятие (не микро)",
+    "industry_manufacturing": "Обрабатывающие производства, ОКВЭД2 10–33",
+    "industry_construction": "Строительство, ОКВЭД2 41–43",
+    "industry_trade": "Торговля, ОКВЭД2 45–47",
+    "debt_coverage": "Денежный поток / платежи по долгам",
+    "receipts_growth": "Рост поступлений за 6 месяцев",
+    "receipts_cv": "Колебания месячных поступлений",
+    "cash_buffer_months": "Денежный резерв, месяцев выплат",
+    "largest_customer_share": "Доля крупнейшего покупателя",
+    "cash_operating_margin": "Операционная денежная маржа"
+  },
+  "preprocessing": {
+    "clip_quantiles": [
+      0.005,
+      0.995
+    ],
+    "clip_enabled": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "clip_low": [
+      0.1067761806981519,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -1.6813846521743216,
+      -0.3225747421805026,
+      0.03596850630345351,
+      0.048086485700025126,
+      0.11328720230422688,
+      -0.10329190660912389
+    ],
+    "clip_high": [
+      23.663258042436684,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      11.737747742330987,
+      0.5066037102063602,
+      0.4013199224553112,
+      5.879526888645373,
+      0.6715220887405785,
+      0.4116349422128494
+    ],
+    "transforms": [
+      "log1p",
+      "identity",
+      "identity",
+      "identity",
+      "identity",
+      "asinh",
+      "asinh",
+      "log1p",
+      "log1p",
+      "identity",
+      "asinh"
+    ],
+    "mean": [
+      1.5746669139565093,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0556471367578237,
+      0.00896576938032021,
+      0.12256383717033208,
+      0.7375916785766509,
+      0.3166070627214096,
+      0.1296208681482796
+    ],
+    "scale": [
+      0.861250885854647,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.8408495776699517,
+      0.12364464164952668,
+      0.054616997444193766,
+      0.506023725689595,
+      0.11954641705299926,
+      0.11220799067080615
+    ],
+    "impute_median": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "fit_scope": "TRAIN or current CV-fit fold only",
+    "binary_handling": "identity, no clip/center/scale",
+    "imputation_strategy": "Only missing expenses_revenue: observed current TRAIN median; separate missing flag."
+  },
+  "coefficients": [
+    -0.02408278769119198,
+    0.12189579918230228,
+    -0.18931305301987136,
+    -0.06399267860088508,
+    -0.05854610221536432,
+    -1.2205621095815136,
+    -0.35971050022824197,
+    0.08388787083629147,
+    -2.594213601401662,
+    0.14880477435525166,
+    -0.6287385093733393
+  ],
+  "intercept_raw": -3.5838623647275436,
+  "intercept_final": -4.484366139409423,
+  "calibration_status": "EXTERNAL_TARGET_099_MICRO_SCENARIO_NOT_EMPIRICAL",
+  "calibration": {
+    "method": "external_target_mean_intercept_only",
+    "offset": -0.9005037746818796,
+    "additional_offset_from_parent": -0.8510845574380937,
+    "slope": 1.0,
+    "fit_split": "synthetic calibration: micro businesses only",
+    "target_probability": 0.099,
+    "reference_rows": 2973,
+    "reference_scope": "is_small_business==0",
+    "reference_mean_before": 0.15382952748835854,
+    "reference_mean_after": 0.09900000000000002,
+    "observed_rate": 0.15433333333333332,
+    "observed_rate_scope": "Unchanged original ALL synthetic calibration outcome rate; not external9.9%",
+    "source": "User-provided Polina research benchmark, source/event/horizon verification pending",
+    "empirically_validated_against_real_defaults": false,
+    "note": "Small enterprises receive the same logit shift; no separate empirical small-business target exists."
+  },
+  "C": 1.0,
+  "quality_flags": [
+    "SYNTHETIC_DATA_ONLY_NOT_REAL_PD_VALIDATION",
+    "EXTERNAL099_SOURCE_EVENT_HORIZON_UNVERIFIED",
+    "MICRO_REFERENCE_ONLY_SMALL_NOT_EXTERNALLY_CALIBRATED"
+  ],
+  "empirical_quality_status": "NOT_EMPIRICAL_REAL_BORROWER_VALIDATION",
+  "fit_slices": {
+    "train": {
+      "rows": 14000,
+      "source_groups": 14000,
+      "events": 2195,
+      "event_rate": 0.15678571428571428
+    },
+    "calibration": {
+      "rows": 3000,
+      "source_groups": 3000,
+      "events": 463,
+      "event_rate": 0.15433333333333332
+    },
+    "test": {
+      "rows": 3000,
+      "source_groups": 3000,
+      "events": 461,
+      "event_rate": 0.15366666666666667
+    }
+  },
+  "training_protocol": {
+    "purpose": "SYNTHETIC_SIMULATOR",
+    "warning": "SYNTHETIC_SIMULATOR: probability and quality metrics describe an invented cashflow/repayment world. They do not establish real Russian IP/UL credit PD or model quality.",
+    "seed": 2026102502,
+    "target": "simulated_90dpd_12m",
+    "target_definition": "NEW-loan unpaid installment reaches90calendar days within next12months. In the monthly simulator, all payments occur on month_end: check prior unpaid installments BEFORE each month_end payment and record an absorbing default event, even if paid on that date. FIFO allocation. No real bankruptcy outcome used.",
+    "source_input": "D:\\CodexData\\alfa-credit-open-data\\outputs\\synthetic_cashflow_pd\\synthetic_ip.csv.gz",
+    "source_input_sha256": "73d6e6678be2a2775a61e9275ba0f41c3deafd8e1bbf5782539e7a2b97f64cfc",
+    "source_files": {
+      "protocol_sha256": "2c3914fd5a84a328b107090a78d4bf601fc4d1dd62ffa87bd970013b8dc68f71",
+      "training_spec_sha256": "5836df804e02be9d232fdd7221484083fef063e1ed409d396b22f7081cd4725a",
+      "trainer_sha256": "977a4069dd1b508bc8abdd0012772cd5c3e5613dd0f718f10f5b104db93f72ed",
+      "metric_helpers_sha256": "0b4ad876651bb2c9cc2d8014fb60f53fa94c31b4d386f5aabfbdfac52019f136",
+      "inference_template_source_sha256": "2823108bac001de705e3ee3443cbce513588f65db16387ec285c4a6161480382",
+      "generation_audit.json_sha256": "8035f3e6542cfbbd05847f968acd81c0b9e67d6d8bf9cbd267d981f659324d6b",
+      "independent_generation_verification.json_sha256": "76b267ee1dcda2368378bee7cd1df0e51056ba26cbe18a6ff4c9af87c96c6ae7",
+      "generation_config.json_sha256": "cb133b63f50ce300d58e89cc49d9043b88ca638033cb37ad66b7ed73c123b662",
+      "source_manifest.json_sha256": "cd3ce106d6ba810244f439c589e18c59e155ee8b252fa59d55bf31656e49bf84",
+      "schema.json_sha256": "df2fd3c6b7f8fda478a7072dbd79125390d046ef209f34656fa33718dd09c6c7",
+      "frozen_protocol.json_sha256": "2c3914fd5a84a328b107090a78d4bf601fc4d1dd62ffa87bd970013b8dc68f71",
+      "training_spec_target_amendment_sha256": "911451d7877d7c2d5f0c88d5c0d197a09e0d981aba0432c66cb7b395e17384b8"
+    },
+    "generator_protocol": {
+      "version": "synthetic-cashflow-v1",
+      "date": "2026-10-25",
+      "status": "PREDECLARED_BEFORE_GENERATION",
+      "purpose": "Demonstration of two nested logistic credit PD models under an explicit synthetic business and repayment simulator. Not empirical Russian IP credit-risk validation.",
+      "root": "D:/CodexData/alfa-credit-open-data",
+      "out": "D:/CodexData/alfa-credit-open-data/outputs/synthetic_cashflow_pd",
+      "counts": {
+        "ip": 20000,
+        "ul": 20000
+      },
+      "seed": 2026102502,
+      "split": {
+        "train": 0.7,
+        "calibration": 0.15,
+        "test": 0.15,
+        "unit": "one fictional borrower per distinct sampled source INN; no source group crosses split"
+      },
+      "target": "simulated_90dpd_12m",
+      "target_definition": "NEW-loan unpaid installment reaches90calendar days within next12months. In the monthly simulator, all payments occur on month_end: check prior unpaid installments BEFORE each month_end payment and record an absorbing default event, even if paid on that date. FIFO allocation. No real bankruptcy outcome used.",
+      "real_sources": {
+        "ip_registry": "outputs/shared_pd_retraining/ip_cohort.csv, observation2018-10-01 only; use registry covariates, exclude target and future facts",
+        "ul_profiles": "outputs/shared_pd_retraining/ul_enriched_cohort.csv and outputs/ul_cohort_expanded/ul_training_raw_financials.csv joined by INN+observation_date;2018baseline uses2017financials. Never use real target. IP cash scales/latent business margins may sample UL micro/small profiles as stated proxy, not actual IP finances."
+      },
+      "identity": "Fictional IDs SYN_IP_x/SYN_UL_x. Preserve source row references or salted hashes separately for audit; never export synthetic default as a claim about an identified real entrepreneur.",
+      "common_features": [
+        "business_age_years",
+        "is_small_business",
+        "industry_manufacturing",
+        "industry_construction",
+        "industry_trade",
+        "debt_coverage",
+        "receipts_growth",
+        "receipts_cv",
+        "cash_buffer_months",
+        "largest_customer_share",
+        "cash_operating_margin"
+      ],
+      "ul_additional": [
+        "equity_assets",
+        "current_ratio",
+        "net_margin",
+        "asset_turnover",
+        "short_term_liabilities_assets",
+        "expenses_revenue",
+        "expenses_missing",
+        "simplified_reporting"
+      ],
+      "common_raw_inputs": [
+        "business_age_years",
+        "msp_category",
+        "okved_main",
+        "monthly_receipts_rub",
+        "monthly_operating_outflows_rub",
+        "existing_monthly_debt_service_rub",
+        "new_monthly_debt_service_rub",
+        "receipts_growth_6m_pct",
+        "receipts_cv_pct",
+        "cash_reserve_rub",
+        "largest_customer_share_pct"
+      ],
+      "cash_feature_definitions": {
+        "debt_coverage": "(mean historical clean monthly receipts - mean historical operating cash outflows)/(existing+new monthly loan payments); payments>0",
+        "receipts_growth": "mean receipts of last3historicalmonths / mean receipts of preceding3historicalmonths -1; raw percentage divided100",
+        "receipts_cv": "std(ddof0) of12historical monthly receipts / mean; raw percentage divided100",
+        "cash_buffer_months": "opening cash reserve / (mean monthly operating cash outflows + existing monthly debtservice + new monthly debtservice)",
+        "largest_customer_share": "simulated largest share of customer receipts, raw percentage divided100",
+        "cash_operating_margin": "(mean receipts - mean operating cash outflows)/mean receipts"
+      },
+      "annual_financial_raw": [
+        "unit",
+        "assets",
+        "equity",
+        "current_assets",
+        "current_liabilities",
+        "revenue",
+        "net_profit",
+        "report_form",
+        "ordinary_expenses"
+      ],
+      "simulation": {
+        "months_history": 12,
+        "months_future": 12,
+        "fictional_baseline": "2026-10-01",
+        "history_calendar": "2025-10 through2026-09",
+        "future_calendar": "2026-10 through2027-09",
+        "monetary_scale": "sampled historical RFSD revenue/12; bounds100000..20000000RUB/month are simulator assumptions, not actual2026 borrower revenues",
+        "historical_monthly_trend": "Normal(0,0.012), clipped[-.035,.035]; future trend=.7*historicaltrend+Normal(0,.006).",
+        "receipts_volatility": "lognormal median.12,log-sd.45, clipped[.04,.45]; independent monthly lognormal innovations adjusted to mean1.",
+        "cash_margin": "clipped sampled RFSD net_margin[-.10,.25] +Normal(.08,.04), final clip[-.05,.45]; explicitly a proxy+assumption, not equality of net profit and cashflow.",
+        "operating_costs": "Costs use fixed/variable components. Variable share Uniform(.35,.8); remaining fixed. Monthly independent cost noise sd.03; future fixed-cost inflation.003/month is a simulation setting, not a macro forecast.",
+        "customer_concentration": ".1+.75*Beta(2,5); largest-customer share influences size of an exogenous future receipts loss.",
+        "reserve": "(mean historical operating outflows + existing monthly debtservice) * clip(lognormal(log(.9),1.15),.03,6) months. Borrower PD buffer feature includes NEW loan service in denominator; benchmark reserve distribution does not. Approximate US marginal benchmark13/27/62days, not Russia calibration.",
+        "debtservice": "existing monthly service=mean receipts*Uniform(0,.07); NEW monthly service=mean receipts*Uniform(.01,.10); no dependence on future target.",
+        "future_shock": "10% of borrowers independently get a shock month Uniform1..9. Persistent receipts loss proportional to largest-customer share; cap loss at80%. This probability is an expert simulation setting.",
+        "emergency_liquidity": "A one-off optional owner liquidity line related to nonnegative latent source equity/assets may be implemented only if its exact formula is frozen in generator metadata before fitting; otherwise omit.",
+        "repayment_waterfall": "Opening reserve + monthly operating cashflow. Unfunded operating shortfalls carry forward. Any available cash next pays prior operating shortfalls and existing loan service, then NEW-loan overdue/current installments FIFO, remainder retained. No negative available cash spent. Store monthly due/paid/arrears/cash for independent replay.",
+        "label_generation": "Before each month_end payment, inspect prior unpaid installments: calendar-day age>=90 sets absorbing default=1, even if cured at that payment. Then settle FIFO and retain after-payment ledger. Independently of any fitted/expert PD equation; never condition generated history on final y.",
+        "all_assumptions": "Parameters above are scenario settings. They are not estimated Russian IP default mechanisms or banking PD calibration."
+      },
+      "training": {
+        "algorithm": "L2 logistic regression",
+        "C_grid": [
+          0.001,
+          0.01,
+          0.1,
+          1,
+          10
+        ],
+        "select": "train-only3fold grouped-source CV logloss, reportAUC; no class weights/SMOTE",
+        "calibration": "intercept only, separate synthetic calibration split",
+        "test": "frozen synthetic model on held-out fictional borrowers; all metrics explicitly SYNTHETIC",
+        "preprocessing": "fold/train-only0.5/99.5clipping,log1p/asinh andstandardization; binary0/1identity. Expense ratio only train-median imputation+missingflag. No fake zero for missing."
+      },
+      "amendments": [
+        {
+          "date": "2026-10-25",
+          "stage": "Before first generation or fitting",
+          "change": "Reserve marginal log-sd .7 ->1.15; sampling denominator includes existing but excludes NEW debtservice. No test/Gini used.",
+          "source": "https://www.jpmorganchase.com/institute/all-topics/business-growth-and-entrepreneurship/report-cash-flows-balances-and-buffer-days",
+          "benchmark": "597000 US small businesses,2015; cashbufferdays13/27/62 at25/50/75percentiles. Illustrative marginal, not Russian IP calibration."
+        }
+      ],
+      "validations": [
+        "No real outcome column used in generation; independent deterministic regeneration by seed; disjoint source-group splits.",
+        "Replay at least100 entire monthly repayment paths independently, including forced90+ and cure boundary cases; verify calendar-day threshold.",
+        "Feature extraction from historical months only. New payment and opening reserve known at baseline. No future cashflow/default information in predictors.",
+        "Compare financial marginal distributions with sampled source and existing Kaggle benchmarks without claiming validation of Russian IP cashflows or credit PD.",
+        "Stress checks with same future innovations: more cash reserve cannot cause earlier default; increasing new-loan payment cannot improve repayment.",
+        "Held-out synthetic AUC/Gini/KS/PR/calibration plus recovery/conditional checks. Do not tune simulator to a desired test Gini."
+      ],
+      "deliverables": [
+        "generator.py+fullconfiguration+source_manifest",
+        "synthetic_ip.csv.gz",
+        "synthetic_ul.csv.gz",
+        "monthly_history_and_future.csv.gz",
+        "generation_audit.json",
+        "independent_generation_verification.json",
+        "ip/ul/model.json,coefficients.csv,score.py,scorer.js,metrics.json",
+        "manual_calculator.html",
+        "DATA_AND_LIMITATIONS.md"
+      ]
+    },
+    "feature_order_frozen_before_test": [
+      "business_age_years",
+      "is_small_business",
+      "industry_manufacturing",
+      "industry_construction",
+      "industry_trade",
+      "debt_coverage",
+      "receipts_growth",
+      "receipts_cv",
+      "cash_buffer_months",
+      "largest_customer_share",
+      "cash_operating_margin"
+    ],
+    "algorithm": "Unweighted L2 logistic regression,lbfgs;noSMOTE/classweights",
+    "C_grid": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "C_selection": "TRAIN-only3fold source-group CV weightedlogloss",
+    "calibration": "Initial synthetic calibration followed by external9.9% target-mean shift fitted only on micro calibration covariates; no new outcomes fitted.",
+    "preprocessing": "Each CV-fit fold or final TRAIN only; observed median expense imputation+missingflag;continuous clip.005/.995,transforms,scaling;binaryidentity",
+    "confidence": "100source-group bootstrap replicates conditional on frozen fits;not model-refit uncertainty",
+    "test": "Held-out fictional borrowers;no proof of real-world PD quality",
+    "versions": {
+      "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+      "numpy": "2.3.5",
+      "pandas": "3.0.1",
+      "scipy": "1.16.3",
+      "sklearn": "1.7.2"
+    },
+    "parent_calibration": "Separate synthetic calibration intercept only",
+    "external_target_rebasing": {
+      "created_date": "2026-10-25",
+      "status": "PREDECLARED_BEFORE_REBASING",
+      "operation": "External-target mean intercept-only scenario; no model refit",
+      "target_probability": 0.099,
+      "target_scope": "micro business only: is_small_business ==0",
+      "reference_part": "Original synthetic CALIBRATION, separately for IP and UL",
+      "equation": "mean(sigmoid(original_final_logit + delta), micro_calibration) =0.099",
+      "source": "Human user: Polina research benchmark9.9%; source, period and event semantics not yet independently verified",
+      "not_empirical_calibration": true,
+      "unchanged": [
+        "coefficients",
+        "preprocessing",
+        "C",
+        "feature definitions",
+        "source data",
+        "synthetic labels",
+        "original model files"
+      ],
+      "small_business_treatment": "One global shift per IP/UL model also affects small enterprises, preserving their relative learned log odds. No separate small-business external target is asserted.",
+      "threshold15pct": "External decision-policy boundary in supplied mocks; not a model parameter or synthetic prevalence.",
+      "test_rule": "Freeze new JSON and hash before scoring test; no test mean fitting or label changes",
+      "outputs": [
+        "versioned model files",
+        "intercept changes",
+        "before/after per-split all/micro/small means and medians",
+        "fraction strictly above15%",
+        "synthetic-outcome metrics",
+        "invariance verification"
+      ],
+      "code_sha256": "bd648f7c88b767c7290d5b0e60c6a63dad9c8dfbc670eabf3a9296a3ee703d9f"
+    }
+  },
+  "raw_input_contract": {
+    "common": [
+      "business_age_years",
+      "msp_category",
+      "okved_main",
+      "monthly_receipts_rub",
+      "monthly_operating_outflows_rub",
+      "existing_monthly_debt_service_rub",
+      "new_monthly_debt_service_rub",
+      "receipts_growth_6m_pct",
+      "receipts_cv_pct",
+      "cash_reserve_rub",
+      "largest_customer_share_pct"
+    ],
+    "annual_financial": [],
+    "cash_units": "Common cash fields alwaysRUB;percentinputsdivide100;ULannual financial unit independent",
+    "optional_expense": "ordinary_expenses magnitude ornull;null usesTRAINmedian expense ratio+flag1"
+  },
+  "limitations": [
+    "All repayment outcomes andcashflows simulated under declared assumptions.",
+    "Good synthetic Gini only shows ability to approximate this simulator;not real Russian IP/UL default predictability.",
+    "No real approval thresholds or bank calibration.",
+    "Annual RFSDsourceprofiles calibrate scales/margins only;not observed IP cashflow.",
+    "Expense line2120scope differs full/simplified;explicit reportform andmissingflag.",
+    "External9.9% benchmark is user-provided and not yet verified as annual credit90+PD.",
+    "Rebased average probability equals9.9% only in the specified micro calibration reference, not automatically in every future population.",
+    "All original synthetic default labels remain unchanged; this is not an empirically validated real-PD model."
+  ],
+  "parent_model": {
+    "path": "D:\\CodexData\\alfa-credit-open-data\\outputs\\synthetic_cashflow_pd\\models\\ip\\model.json",
+    "sha256": "2107507954d9e7594f156f02de1ada167a9e3420a3be12417923c33bceadd442",
+    "model_id": "synthetic_cashflow_90dpd_ip_logit_v1",
+    "intercept_final": -3.633281581971329,
+    "calibration": {
+      "method": "intercept_only",
+      "offset": -0.04941921724378548,
+      "slope": 1,
+      "fit_split": "synthetic calibration",
+      "observed_rate": 0.15433333333333332
+    }
+  },
+  "external_target_rebasing_protocol": {
+    "created_date": "2026-10-25",
+    "status": "PREDECLARED_BEFORE_REBASING",
+    "operation": "External-target mean intercept-only scenario; no model refit",
+    "target_probability": 0.099,
+    "target_scope": "micro business only: is_small_business ==0",
+    "reference_part": "Original synthetic CALIBRATION, separately for IP and UL",
+    "equation": "mean(sigmoid(original_final_logit + delta), micro_calibration) =0.099",
+    "source": "Human user: Polina research benchmark9.9%; source, period and event semantics not yet independently verified",
+    "not_empirical_calibration": true,
+    "unchanged": [
+      "coefficients",
+      "preprocessing",
+      "C",
+      "feature definitions",
+      "source data",
+      "synthetic labels",
+      "original model files"
+    ],
+    "small_business_treatment": "One global shift per IP/UL model also affects small enterprises, preserving their relative learned log odds. No separate small-business external target is asserted.",
+    "threshold15pct": "External decision-policy boundary in supplied mocks; not a model parameter or synthetic prevalence.",
+    "test_rule": "Freeze new JSON and hash before scoring test; no test mean fitting or label changes",
+    "outputs": [
+      "versioned model files",
+      "intercept changes",
+      "before/after per-split all/micro/small means and medians",
+      "fraction strictly above15%",
+      "synthetic-outcome metrics",
+      "invariance verification"
+    ],
+    "code_sha256": "bd648f7c88b767c7290d5b0e60c6a63dad9c8dfbc670eabf3a9296a3ee703d9f"
+  }
+}

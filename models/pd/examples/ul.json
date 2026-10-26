@@ -1,0 +1,22 @@
+{
+  "business_age_years": 8.53388090349076,
+  "msp_category": "small",
+  "okved_main": "56.10",
+  "monthly_receipts_rub": 2500000.0,
+  "monthly_operating_outflows_rub": 2099999.8333333335,
+  "existing_monthly_debt_service_rub": 100000.0,
+  "new_monthly_debt_service_rub": 160114.5608857116,
+  "receipts_growth_6m_pct": 3.000009208215748,
+  "receipts_cv_pct": 5.201064984584087,
+  "cash_reserve_rub": 3960000.0,
+  "largest_customer_share_pct": 12.0,
+  "unit": "rub",
+  "report_form": "full",
+  "assets": 11400000.0,
+  "equity": 5130000.0,
+  "current_assets": 6384000.0,
+  "current_liabilities": 3990000.0,
+  "revenue": 28500000.0,
+  "net_profit": 2280000.0,
+  "ordinary_expenses": 18525000.0
+}

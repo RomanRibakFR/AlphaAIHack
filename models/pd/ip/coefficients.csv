@@ -1,0 +1,12 @@
+feature,label,coefficient,transform,clip_enabled,clip_low,clip_high,mean,scale,impute_median,weight_origin
+business_age_years,"Возраст бизнеса, годы",-0.02408278769119198,log1p,True,0.1067761806981519,23.663258042436684,1.5746669139565093,0.861250885854647,,learned_synthetic_outcomes
+is_small_business,Малое предприятие (не микро),0.12189579918230228,identity,False,0.0,1.0,0.0,1.0,,learned_synthetic_outcomes
+industry_manufacturing,"Обрабатывающие производства, ОКВЭД2 10–33",-0.18931305301987136,identity,False,0.0,1.0,0.0,1.0,,learned_synthetic_outcomes
+industry_construction,"Строительство, ОКВЭД2 41–43",-0.06399267860088508,identity,False,0.0,1.0,0.0,1.0,,learned_synthetic_outcomes
+industry_trade,"Торговля, ОКВЭД2 45–47",-0.05854610221536432,identity,False,0.0,1.0,0.0,1.0,,learned_synthetic_outcomes
+debt_coverage,Денежный поток / платежи по долгам,-1.2205621095815136,asinh,True,-1.6813846521743216,11.737747742330987,1.0556471367578237,0.8408495776699517,,learned_synthetic_outcomes
+receipts_growth,Рост поступлений за 6 месяцев,-0.35971050022824197,asinh,True,-0.3225747421805026,0.5066037102063602,0.00896576938032021,0.12364464164952668,,learned_synthetic_outcomes
+receipts_cv,Колебания месячных поступлений,0.08388787083629147,log1p,True,0.03596850630345351,0.4013199224553112,0.12256383717033208,0.054616997444193766,,learned_synthetic_outcomes
+cash_buffer_months,"Денежный резерв, месяцев выплат",-2.594213601401662,log1p,True,0.048086485700025126,5.879526888645373,0.7375916785766509,0.506023725689595,,learned_synthetic_outcomes
+largest_customer_share,Доля крупнейшего покупателя,0.14880477435525166,identity,True,0.11328720230422688,0.6715220887405785,0.3166070627214096,0.11954641705299926,,learned_synthetic_outcomes
+cash_operating_margin,Операционная денежная маржа,-0.6287385093733393,asinh,True,-0.10329190660912389,0.4116349422128494,0.1296208681482796,0.11220799067080615,,learned_synthetic_outcomes
