@@ -1,5 +1,5 @@
 {
-  "format_version": "1.0",
+  "format_version": "2.0",
   "meta": {
     "id": "C16",
     "title": "ИП одежда — расхождение не снято, к специалисту",
@@ -10,7 +10,6 @@
       "purpose": "Закупка коллекции весна–лето",
       "declared_revenue_12m": 36000000,
       "collateral": null,
-      "documents_at_submit": [],
       "document_on_request": {
         "doc_type": "other_bank_statement",
         "turnover_12m": 6000000
@@ -33,17 +32,41 @@
       ],
       "outcome": "MANUAL_REVIEW",
       "reason": "M4_DATA_MISMATCH",
-      "assumed_grade": "B",
-      "assumed_pd": 0.04,
-      "note": "Заявлено 36 млн, по счёту 18 млн (+100%); с выпиской 24 млн, расхождение 50% — не снято",
-      "features": {
-        "F1_business_age_months": 71,
-        "F2_avg_monthly_turnover": 1500000,
-        "F3_turnover_cv": 0.112,
-        "F4_debt_load": 0.04,
-        "F5_overdue_30plus_count_24m": 0,
-        "F5_max_overdue_days_24m": 0,
-        "F6_amount_to_turnover": 1.33
+      "grade": "B",
+      "note": "Заявлено 36 млн, по нашему счёту 18 млн (+100%); с выпиской 24 млн, расхождение 50% — не снято",
+      "model": {
+        "segment": "ip",
+        "model_id": "synthetic_cashflow_90dpd_ip_logit_v1_external099_micro_v2",
+        "pd": 0.07615257415765928,
+        "grade": "B",
+        "lgd": 0.4,
+        "product_pd_max": 0.25,
+        "inputs": {
+          "business_age_years": 5.973990417522245,
+          "msp_category": "micro",
+          "okved_main": "47.71",
+          "monthly_receipts_rub": 1499999.9166666667,
+          "monthly_operating_outflows_rub": 1319999.8333333333,
+          "existing_monthly_debt_service_rub": 60000.0,
+          "new_monthly_debt_service_rub": 106743.0405904744,
+          "receipts_growth_6m_pct": 0.0,
+          "receipts_cv_pct": 5.540338838331726,
+          "cash_reserve_rub": 565800.0,
+          "largest_customer_share_pct": 14.00000077777782
+        },
+        "top_risk_factors": [
+          "cash_buffer_months",
+          "debt_coverage"
+        ],
+        "clipped_features": []
+      },
+      "offer": {
+        "type": "AS_REQUESTED",
+        "amount": 2000000,
+        "term_months": 24,
+        "rate": 0.18,
+        "monthly_payment": 99848,
+        "limit_binding": "new_payment"
       }
     }
   },
@@ -82,6 +105,10 @@
     "tax_regime": "USN",
     "employee_count": 5,
     "employee_count_year": 2025,
+    "msp_register": {
+      "category": "MICRO",
+      "included_at": "2021-01-02"
+    },
     "tax_debt": {
       "has_debt": false,
       "amount": 0,
@@ -103,7 +130,7 @@
     "report_date": "2026-10-24",
     "accounts": [
       {
-        "contract_uid": "8bb0203c-63f4-422e-bac3-a3265d65b94b",
+        "contract_uid": "fb7c2360-72de-4f0a-9d28-35f2bce8a792",
         "account_type": "CREDIT_CARD",
         "relationship": "BORROWER",
         "creditor_kind": "OTHER_BANK",
@@ -128,7 +155,7 @@
         "collateral": false
       },
       {
-        "contract_uid": "2bc27e52-8f6d-4d28-bbf3-1fc4594437e3",
+        "contract_uid": "d526ca59-e016-4638-8d72-7223e4727ace",
         "account_type": "BUSINESS_LOAN",
         "relationship": "BORROWER",
         "creditor_kind": "OTHER_BANK",
@@ -161,152 +188,219 @@
   "bank": {
     "client_since": "2020-12-02",
     "account_type": "40802",
+    "current_balance": 565800,
+    "current_balance_date": "2026-10-24",
     "turnover_months": [
       {
         "month": "2025-10",
-        "credit_total": 1437872,
-        "credit_net": 1357744,
+        "credit_total": 1585265,
+        "credit_net": 1497313,
         "excluded": {
-          "own_transfers": 71637,
+          "own_transfers": 78197,
           "loans_received": 0,
-          "refunds": 8491
+          "refunds": 9755
         },
-        "debit_total": 1358257,
-        "avg_balance": 244147
+        "debit_total": 1536038,
+        "debit_operating": 1352654,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 138384,
+        "balance_open": 509220,
+        "balance_close": 558447
       },
       {
         "month": "2025-11",
-        "credit_total": 1347038,
-        "credit_net": 1271990,
+        "credit_total": 1850424,
+        "credit_net": 1710915,
         "excluded": {
-          "own_transfers": 64191,
+          "own_transfers": 126260,
           "loans_received": 0,
-          "refunds": 10857
+          "refunds": 13249
         },
-        "debit_total": 1265644,
-        "avg_balance": 322690
+        "debit_total": 1947919,
+        "debit_operating": 1477175,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 425744,
+        "balance_open": 558447,
+        "balance_close": 460952
       },
       {
         "month": "2025-12",
-        "credit_total": 1413164,
-        "credit_net": 1308758,
+        "credit_total": 1619636,
+        "credit_net": 1556775,
         "excluded": {
-          "own_transfers": 98319,
+          "own_transfers": 54627,
           "loans_received": 0,
-          "refunds": 6087
+          "refunds": 8234
         },
-        "debit_total": 1241662,
-        "avg_balance": 293925
+        "debit_total": 1542552,
+        "debit_operating": 1355939,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 141613,
+        "balance_open": 460952,
+        "balance_close": 538036
       },
       {
         "month": "2026-01",
-        "credit_total": 1628724,
-        "credit_net": 1530652,
+        "credit_total": 1620352,
+        "credit_net": 1482613,
         "excluded": {
-          "own_transfers": 82945,
+          "own_transfers": 123805,
           "loans_received": 0,
-          "refunds": 15127
+          "refunds": 13934
         },
-        "debit_total": 1440300,
-        "avg_balance": 276231
+        "debit_total": 1658135,
+        "debit_operating": 1307980,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 305155,
+        "balance_open": 538036,
+        "balance_close": 500253
       },
       {
         "month": "2026-02",
-        "credit_total": 1316920,
-        "credit_net": 1204647,
+        "credit_total": 1554767,
+        "credit_net": 1490600,
         "excluded": {
-          "own_transfers": 104578,
+          "own_transfers": 54829,
           "loans_received": 0,
-          "refunds": 7695
+          "refunds": 9338
         },
-        "debit_total": 1203578,
-        "avg_balance": 261828
+        "debit_total": 1493430,
+        "debit_operating": 1307371,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 141059,
+        "balance_open": 500253,
+        "balance_close": 561590
       },
       {
         "month": "2026-03",
-        "credit_total": 1756056,
-        "credit_net": 1600275,
+        "credit_total": 1675572,
+        "credit_net": 1555725,
         "excluded": {
-          "own_transfers": 142569,
+          "own_transfers": 104381,
           "loans_received": 0,
-          "refunds": 13212
+          "refunds": 15466
         },
-        "debit_total": 1585762,
-        "avg_balance": 249155
+        "debit_total": 1599357,
+        "debit_operating": 1337684,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 216673,
+        "balance_open": 561590,
+        "balance_close": 637805
       },
       {
         "month": "2026-04",
-        "credit_total": 1588334,
-        "credit_net": 1478551,
+        "credit_total": 1402703,
+        "credit_net": 1352845,
         "excluded": {
-          "own_transfers": 104128,
+          "own_transfers": 43568,
           "loans_received": 0,
-          "refunds": 5655
+          "refunds": 6290
         },
-        "debit_total": 1383782,
-        "avg_balance": 429997
+        "debit_total": 1494374,
+        "debit_operating": 1203423,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 245951,
+        "balance_open": 637805,
+        "balance_close": 546134
       },
       {
         "month": "2026-05",
-        "credit_total": 1812709,
-        "credit_net": 1702118,
+        "credit_total": 1634634,
+        "credit_net": 1518433,
         "excluded": {
-          "own_transfers": 97556,
+          "own_transfers": 107542,
           "loans_received": 0,
-          "refunds": 13035
+          "refunds": 8659
         },
-        "debit_total": 1642325,
-        "avg_balance": 254116
+        "debit_total": 1617459,
+        "debit_operating": 1291959,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 280500,
+        "balance_open": 546134,
+        "balance_close": 563309
       },
       {
         "month": "2026-06",
-        "credit_total": 1650223,
-        "credit_net": 1576874,
+        "credit_total": 1621019,
+        "credit_net": 1481751,
         "excluded": {
-          "own_transfers": 66233,
+          "own_transfers": 133998,
           "loans_received": 0,
-          "refunds": 7116
+          "refunds": 5270
         },
-        "debit_total": 1560725,
-        "avg_balance": 197206
+        "debit_total": 1550393,
+        "debit_operating": 1324899,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 180494,
+        "balance_open": 563309,
+        "balance_close": 633935
       },
       {
         "month": "2026-07",
-        "credit_total": 1735117,
-        "credit_net": 1577882,
+        "credit_total": 1556375,
+        "credit_net": 1462556,
         "excluded": {
-          "own_transfers": 146868,
+          "own_transfers": 79830,
           "loans_received": 0,
-          "refunds": 10367
+          "refunds": 13989
         },
-        "debit_total": 1591761,
-        "avg_balance": 325286
+        "debit_total": 1592826,
+        "debit_operating": 1303825,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 244001,
+        "balance_open": 633935,
+        "balance_close": 597484
       },
       {
         "month": "2026-08",
-        "credit_total": 1847236,
-        "credit_net": 1694308,
+        "credit_total": 1534398,
+        "credit_net": 1414106,
         "excluded": {
-          "own_transfers": 146540,
+          "own_transfers": 108840,
           "loans_received": 0,
-          "refunds": 6388
+          "refunds": 11452
         },
-        "debit_total": 1639217,
-        "avg_balance": 446246
+        "debit_total": 1580991,
+        "debit_operating": 1267193,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 268798,
+        "balance_open": 597484,
+        "balance_close": 550891
       },
       {
         "month": "2026-09",
-        "credit_total": 1869503,
-        "credit_net": 1696201,
+        "credit_total": 1569791,
+        "credit_net": 1476367,
         "excluded": {
-          "own_transfers": 160971,
+          "own_transfers": 81200,
           "loans_received": 0,
-          "refunds": 12331
+          "refunds": 12224
         },
-        "debit_total": 1705547,
-        "avg_balance": 217803
+        "debit_total": 1482464,
+        "debit_operating": 1309896,
+        "debit_debt_service": 45000,
+        "debit_own_transfers": 127568,
+        "balance_open": 550891,
+        "balance_close": 638218
+      }
+    ],
+    "top_payers_12m": [
+      {
+        "name": "Оплаты покупателей картами и через СБП (эквайринг)",
+        "inn": null,
+        "kind": "RETAIL_ACQUIRING",
+        "amount": 14399999,
+        "share": 0.8
+      },
+      {
+        "name": "ООО «Корпоративная форма»",
+        "inn": "0001006608",
+        "kind": "LEGAL",
+        "amount": 2520000,
+        "share": 0.14
       }
     ],
     "own_loans": []
-  }
+  },
+  "financials": null
 }

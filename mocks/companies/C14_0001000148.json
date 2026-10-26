@@ -1,5 +1,5 @@
 {
-  "format_version": "1.0",
+  "format_version": "2.0",
   "meta": {
     "id": "C14",
     "title": "Интернет-магазин — бизнесу 7 месяцев, отказ с подсказкой",
@@ -10,7 +10,6 @@
       "purpose": "Закупка товара",
       "declared_revenue_12m": 14400000,
       "collateral": null,
-      "documents_at_submit": [],
       "document_on_request": null
     },
     "expected": {
@@ -23,18 +22,10 @@
       ],
       "outcome": "REJECTED",
       "reason": "SF04_BUSINESS_TOO_YOUNG",
-      "assumed_grade": null,
-      "assumed_pd": null,
-      "note": "В отказе подсказка: овердрафт доступен от 6 месяцев работы",
-      "features": {
-        "F1_business_age_months": 7,
-        "F2_avg_monthly_turnover": 1200000,
-        "F3_turnover_cv": 0.084,
-        "F4_debt_load": 0.0,
-        "F5_overdue_30plus_count_24m": 0,
-        "F5_max_overdue_days_24m": 0,
-        "F6_amount_to_turnover": 1.67
-      }
+      "grade": null,
+      "note": "В отказе подсказка: овердрафт доступен от 6 месяцев работы. Отчётности за 2025 год нет — компания зарегистрирована в 2026",
+      "model": null,
+      "offer": null
     }
   },
   "egrul": {
@@ -86,6 +77,10 @@
     "tax_regime": "USN",
     "employee_count": 5,
     "employee_count_year": 2025,
+    "msp_register": {
+      "category": "MICRO",
+      "included_at": "2026-05-16"
+    },
     "tax_debt": {
       "has_debt": false,
       "amount": 0,
@@ -114,92 +109,132 @@
   "bank": {
     "client_since": "2026-03-16",
     "account_type": "40702",
+    "current_balance": 648000,
+    "current_balance_date": "2026-10-24",
     "turnover_months": [
       {
         "month": "2026-03",
-        "credit_total": 1167745,
-        "credit_net": 1104923,
+        "credit_total": 1076154,
+        "credit_net": 1034571,
         "excluded": {
-          "own_transfers": 52541,
+          "own_transfers": 37734,
           "loans_received": 0,
-          "refunds": 10281
+          "refunds": 3849
         },
-        "debit_total": 1079488,
-        "avg_balance": 153001
+        "debit_total": 992024,
+        "debit_operating": 992024,
+        "debit_debt_service": 0,
+        "debit_own_transfers": 0,
+        "balance_open": 583200,
+        "balance_close": 667330
       },
       {
         "month": "2026-04",
-        "credit_total": 1302561,
-        "credit_net": 1184111,
+        "credit_total": 1244526,
+        "credit_net": 1177627,
         "excluded": {
-          "own_transfers": 106882,
+          "own_transfers": 55379,
           "loans_received": 0,
-          "refunds": 11568
+          "refunds": 11520
         },
-        "debit_total": 1169840,
-        "avg_balance": 195012
+        "debit_total": 1342631,
+        "debit_operating": 1091972,
+        "debit_debt_service": 0,
+        "debit_own_transfers": 250659,
+        "balance_open": 667330,
+        "balance_close": 569225
       },
       {
         "month": "2026-05",
-        "credit_total": 1445491,
-        "credit_net": 1316044,
+        "credit_total": 1370048,
+        "credit_net": 1299003,
         "excluded": {
-          "own_transfers": 121124,
+          "own_transfers": 59612,
           "loans_received": 0,
-          "refunds": 8323
+          "refunds": 11433
         },
-        "debit_total": 1258782,
-        "avg_balance": 341863
+        "debit_total": 1218098,
+        "debit_operating": 1153574,
+        "debit_debt_service": 0,
+        "debit_own_transfers": 64524,
+        "balance_open": 569225,
+        "balance_close": 721175
       },
       {
         "month": "2026-06",
-        "credit_total": 1291536,
-        "credit_net": 1220189,
+        "credit_total": 1003647,
+        "credit_net": 949150,
         "excluded": {
-          "own_transfers": 57578,
+          "own_transfers": 45765,
           "loans_received": 0,
-          "refunds": 13769
+          "refunds": 8732
         },
-        "debit_total": 1140121,
-        "avg_balance": 207409
+        "debit_total": 1102674,
+        "debit_operating": 976705,
+        "debit_debt_service": 0,
+        "debit_own_transfers": 125969,
+        "balance_open": 721175,
+        "balance_close": 622148
       },
       {
         "month": "2026-07",
-        "credit_total": 1466335,
-        "credit_net": 1356779,
+        "credit_total": 1195976,
+        "credit_net": 1121157,
         "excluded": {
-          "own_transfers": 101138,
+          "own_transfers": 66615,
           "loans_received": 0,
-          "refunds": 8418
+          "refunds": 8204
         },
-        "debit_total": 1307667,
-        "avg_balance": 171122
+        "debit_total": 1160121,
+        "debit_operating": 1024576,
+        "debit_debt_service": 0,
+        "debit_own_transfers": 135545,
+        "balance_open": 622148,
+        "balance_close": 658003
       },
       {
         "month": "2026-08",
-        "credit_total": 1291514,
-        "credit_net": 1165191,
+        "credit_total": 1513542,
+        "credit_net": 1388201,
         "excluded": {
-          "own_transfers": 114425,
+          "own_transfers": 116384,
           "loans_received": 0,
-          "refunds": 11898
+          "refunds": 8957
         },
-        "debit_total": 1164547,
-        "avg_balance": 176766
+        "debit_total": 1494066,
+        "debit_operating": 1134737,
+        "debit_debt_service": 0,
+        "debit_own_transfers": 359329,
+        "balance_open": 658003,
+        "balance_close": 677479
       },
       {
         "month": "2026-09",
-        "credit_total": 1134983,
-        "credit_net": 1052763,
+        "credit_total": 1563235,
+        "credit_net": 1430291,
         "excluded": {
-          "own_transfers": 74726,
+          "own_transfers": 125101,
           "loans_received": 0,
-          "refunds": 7494
+          "refunds": 7843
         },
-        "debit_total": 988385,
-        "avg_balance": 165202
+        "debit_total": 1625114,
+        "debit_operating": 1186413,
+        "debit_debt_service": 0,
+        "debit_own_transfers": 438701,
+        "balance_open": 677479,
+        "balance_close": 615600
+      }
+    ],
+    "top_payers_12m": [
+      {
+        "name": "ООО «Маркетплейс Площадка»",
+        "inn": "0001006407",
+        "kind": "LEGAL",
+        "amount": 7140000,
+        "share": 0.85
       }
     ],
     "own_loans": []
-  }
+  },
+  "financials": null
 }

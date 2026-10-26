@@ -1,18 +1,33 @@
 # Кредитная политика: параметры автоматического решения по заявке.
-# Описание логики — docs/decision-policy.md. Все числа — допущения прототипа,
-# меняются здесь без правки кода. Версия политики сохраняется в каждом решении.
+# Описание логики — docs/decision-policy.md (раздел 11 — откуда взято каждое число).
+# Числа меняются здесь без правки кода. Версия политики сохраняется в каждом решении.
 
-version: "0.1-draft"
+version: "0.2"
 
 market:
   key_rate: 0.14            # ключевая ставка Банка России, сохранена 23.10.2026
   key_rate_date: "2026-10-23"
 
-# Ставка = ключевая + маржа банка + PD × LGD (ожидаемый убыток),
-# затем ограничивается диапазоном продукта и округляется до 0,1 п.п.
+# Ставка = ключевая + маржа + PD × LGD (ожидаемый убыток за год),
+# затем ограничивается коридором продукта и округляется до 0,1 п.п.
 pricing:
-  bank_margin: 0.01         # операционные расходы и прибыль банка
+  bank_margin: 0.01         # экспертно: расходы и доход банка; итоговые ставки сверены с рыночным коридором
   rate_rounding: 0.001
+
+# Доля потерь при дефолте (LGD) — базовый подход ПВР Базель III, CRE32.6, CRE32.10–11
+lgd:
+  unsecured: 0.40           # старшие необеспеченные требования к нефинансовым компаниям (CRE32.6)
+  secured_real_estate: 0.20 # обеспеченная недвижимостью часть (CRE32.11)
+  real_estate_haircut: 0.40 # дисконт к стоимости недвижимости (CRE32.11)
+
+# Модель PD задачи 2 (models/pd/<ip|ul>/model.json, версия external099_micro_v2)
+model:
+  ip_path: models/pd/ip/model.json
+  ul_path: models/pd/ul/model.json
+  application_date: "2026-10-24"   # дата, на которую считаются возраст бизнеса и данные
+  # Платёж по новому кредиту для модели и лимитов считается по ПОТОЛКУ ставки продукта:
+  # консервативно и без замкнутого круга «ставка зависит от PD, PD — от платежа».
+  stress_rate: rate_cap
 
 products:
   OVERDRAFT:
@@ -20,14 +35,12 @@ products:
     secured: false
     amount_min: 100000
     amount_max: 10000000
-    term_months_min: 12     # лимит устанавливается на 12 месяцев
+    term_months_min: 12     # лимит на 12 месяцев; для модели — как 12 равных платежей
     term_months_max: 12
     min_business_age_months: 6
     rate_floor: 0.13
     rate_cap: 0.22
-    lgd: 0.60
-    limit_rule: turnover_share
-    turnover_share: 0.50    # лимит ≤ 50% среднемесячного оборота (рынок 30–70%)
+    turnover_share: 0.50    # лимит ≤ 50% среднемесячных очищенных поступлений (рынок 30–70%)
 
   WORKING_CAPITAL:
     name: "Оборотный кредит без залога"
@@ -39,9 +52,6 @@ products:
     min_business_age_months: 9
     rate_floor: 0.14
     rate_cap: 0.25
-    lgd: 0.60
-    limit_rule: payment_capacity
-    max_amount_to_monthly_turnover: 4   # сумма ≤ 4 среднемесячных оборотов
 
   INVESTMENT:
     name: "Инвестиционный кредит с залогом"
@@ -53,40 +63,44 @@ products:
     min_business_age_months: 12
     rate_floor: 0.14
     rate_cap: 0.22
-    lgd: 0.30               # залог снижает потери банка при дефолте
-    limit_rule: payment_capacity
-    max_ltv: 0.70           # сумма ≤ 70% стоимости залога
+    max_ltv: 0.60           # = 1 − дисконт 40%: после дисконта залог покрывает весь кредит
 
-# Границы классов риска по PD из модели (задача 2). Подбираются после калибровки модели.
+# Классы риска по PD модели. A/B/C — рыночные ориентиры НКР (13.07.2026, стр. 5):
+# доля вышедших в дефолт за 12 месяцев — малый бизнес 5,9%, микробизнес 9,9%.
+# Граница C/D у каждого продукта своя: PD, при которой ставка по формуле упирается в потолок продукта,
+# pd_max = (rate_cap − key_rate − bank_margin) / LGD. Выше неё риск нельзя оценить рыночной ставкой.
 risk_grades:
-  - {grade: A, pd_max: 0.03, route: auto}
-  - {grade: B, pd_max: 0.08, route: auto}
-  - {grade: C, pd_max: 0.15, route: manual}   # серая зона — к специалисту
-  - {grade: D, pd_max: 1.00, route: reject}
+  A: {pd_below: 0.059, route: auto}     # ниже средней дефолтности малого бизнеса
+  B: {pd_below: 0.099, route: auto}     # ниже средней дефолтности микробизнеса
+  C: {pd_below: product_pd_max, route: manual}
+  D: {route: reject}
 
 limits:
-  max_debt_service_to_turnover: 0.20   # все платежи по кредитам ≤ 20% среднемесячного оборота
+  # Область применимости модели: в обучающих данных новый платёж был 1–10% поступлений,
+  # а все платежи по кредитам (действующие 0–7% + новый) — не больше 17%. Дальше — экстраполяция.
+  max_new_payment_share: 0.10
+  max_total_debt_service_share: 0.17
   amount_rounding: 10000               # суммы округляются вниз до 10 000 ₽
   term_step_months: 6                  # при подборе срока перебираем 6, 12, 18, … месяцев
   min_counter_offer_share: 0.30        # предложение меньше 30% запрошенного не делаем
 
 manual_review:
-  auto_approval_max_amount: 10000000   # запросы выше 10 млн ₽ решает специалист
-
-validation:
-  financial_statements_required_above: 10000000   # для суммы выше — отчётность за последний год
+  auto_approval_max_amount: 10000000   # экспертно: риск-аппетит на автоматическое решение
 
 data_mismatch:
-  tolerance: 0.30           # выручка из анкеты выше оборотов по счёту больше чем на 30% → запрос документа
+  tolerance: 0.30           # выручка в анкете выше оборотов по счёту больше чем на 30% → запрос выписки
   document_type: other_bank_statement
 
+msp:
+  allowed_categories: [MICRO, SMALL]   # модель обучена на микро- и малых предприятиях
+
 stop_factors:
-  - {code: SF01_COMPANY_INACTIVE,  source: egrul,    enabled: true}
-  - {code: SF02_CURRENT_OVERDUE,   source: bki,      enabled: true}
-  - {code: SF03_TAX_DEBT,          source: fns,      enabled: true, tax_debt_threshold: 10000}
-  - {code: SF04_BUSINESS_TOO_YOUNG, source: egrul,   enabled: true}
-  - {code: SF05_ZSK_RED,           source: zsk,      enabled: true}
-  - {code: SF06_EGRUL_UNRELIABLE,  source: egrul,    enabled: true}
+  - {code: SF01_COMPANY_INACTIVE,   source: egrul, enabled: true}
+  - {code: SF02_CURRENT_OVERDUE,    source: bki,   enabled: true}
+  - {code: SF03_TAX_DEBT,           source: fns,   enabled: true, tax_debt_threshold: 10000}
+  - {code: SF04_BUSINESS_TOO_YOUNG, source: egrul, enabled: true}
+  - {code: SF05_ZSK_RED,            source: zsk,   enabled: true}
+  - {code: SF06_EGRUL_UNRELIABLE,   source: egrul, enabled: true}
 
 timeouts_days:
   info_requested: 14
