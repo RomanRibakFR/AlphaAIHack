@@ -1,0 +1,353 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Моки внешних источников",
+    "description": "ЕГРЮЛ/ЕГРИП, ФНС, ЗСК, БКИ, ГИР БО и внутренние данные банка — на синтетических данных из mocks/companies. Компаний загружено: 17.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "service"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/egrul/{inn}": {
+      "get": {
+        "tags": [
+          "ЕГРЮЛ / ЕГРИП"
+        ],
+        "summary": "Egrul",
+        "description": "Сведения из госреестра: статус, дата регистрации, ОКВЭД, руководитель.",
+        "operationId": "egrul_egrul__inn__get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Egrul Egrul  Inn  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fns/{inn}": {
+      "get": {
+        "tags": [
+          "ФНС"
+        ],
+        "summary": "Fns",
+        "description": "Налоговая задолженность, приостановления операций по счетам.",
+        "operationId": "fns_fns__inn__get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Fns Fns  Inn  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zsk/{inn}": {
+      "get": {
+        "tags": [
+          "ЗСК (115-ФЗ)"
+        ],
+        "summary": "Zsk",
+        "description": "Уровень риска на платформе «Знай своего клиента».",
+        "operationId": "zsk_zsk__inn__get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Zsk Zsk  Inn  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bki/{inn}": {
+      "get": {
+        "tags": [
+          "БКИ"
+        ],
+        "summary": "Bki",
+        "description": "Кредитный отчёт: договоры, платежи, просрочки.",
+        "operationId": "bki_bki__inn__get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Bki Bki  Inn  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bank/{inn}": {
+      "get": {
+        "tags": [
+          "Данные банка"
+        ],
+        "summary": "Bank",
+        "description": "Обороты по расчётному счёту за 12 месяцев и кредиты в нашем банке.",
+        "operationId": "bank_bank__inn__get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Bank Bank  Inn  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gir-bo/{inn}": {
+      "get": {
+        "tags": [
+          "ГИР БО"
+        ],
+        "summary": "Gir Bo",
+        "description": "Бухгалтерская отчётность юрлица за прошлый год. У ИП отчётности нет — 404.",
+        "operationId": "gir_bo_gir_bo__inn__get",
+        "parameters": [
+          {
+            "name": "inn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Inn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Gir Bo Gir Bo  Inn  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

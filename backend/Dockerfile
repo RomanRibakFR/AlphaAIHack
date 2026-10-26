@@ -5,8 +5,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 WORKDIR /app
-COPY backend/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/requirements.lock .
+RUN pip install --no-cache-dir -r requirements.lock
 
 COPY backend/ .
 COPY config/ config/
