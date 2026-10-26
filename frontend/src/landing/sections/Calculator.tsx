@@ -14,22 +14,14 @@ const AMOUNT_STEP = 100_000;
 
 const rub = (v: number) => `${Math.round(v).toLocaleString("ru-RU")} ₽`;
 
-/** Аннуитет — та же формула, что считает бэкенд в applications.py. */
+/**
+ * Аннуитет — та же формула, что считает бэкенд в applications.py. Для всех
+ * продуктов: овердрафт банк считает как 12 равных платежей (политика, раздел 5.3).
+ */
 function annuity(principal: number, annualRate: number, termMonths: number) {
   const i = annualRate / 100 / 12;
   if (i === 0) return principal / termMonths;
   return (principal * i) / (1 - Math.pow(1 + i, -termMonths));
-}
-
-/**
- * Овердрафт гасится иначе: каждый месяц платят только проценты, тело
- * возвращают в конце. Бэкенд считает именно так (limit_rule turnover_share),
- * и аннуитет здесь завысил бы платёж в несколько раз.
- */
-const INTEREST_ONLY = "OVERDRAFT";
-
-function interestOnly(principal: number, annualRate: number) {
-  return (principal * annualRate) / 100 / 12;
 }
 
 const clamp = (v: number, min: number, max: number) =>
@@ -85,14 +77,8 @@ function Panel({ products }: { products: Product[] }) {
   );
   const fixedTerm = product.min_term_months === product.max_term_months;
 
-  const interestOnlyProduct = product.code === INTEREST_ONLY;
-  const payment = interestOnlyProduct
-    ? interestOnly(safeAmount, rateValue)
-    : annuity(safeAmount, rateValue, safeTerm);
-  // У овердрафта тело возвращают в конце, поэтому к процентам добавляем сумму
-  const total = interestOnlyProduct
-    ? payment * safeTerm + safeAmount
-    : payment * safeTerm;
+  const payment = annuity(safeAmount, rateValue, safeTerm);
+  const total = payment * safeTerm;
 
   /** Ticker: при движении слайдера платёж добегает до нового значения. */
   const shownPayment = useCountUp(payment, { duration: 320 });
@@ -187,7 +173,7 @@ function Panel({ products }: { products: Product[] }) {
 
         <div className="lp-calc-result">
           <Text view="primary-small" color={SECONDARY}>
-            {interestOnlyProduct ? "Проценты в месяц" : "Ежемесячный платёж"}
+            Ежемесячный платёж
           </Text>
           <Text view="promo-h2" tag="div" style={{ marginTop: 4 }}>
             {rub(shownPayment)}

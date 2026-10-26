@@ -1,24 +1,27 @@
 import type { Decision } from "../../api/types";
 import { Text } from "../../ui/primitives";
-import { money, months } from "../../lib/format";
 import { FEATURES } from "../content";
 import Grade from "./Grade";
 
 const SECONDARY = "var(--color-light-text-secondary)";
 
+const pct = (v: string) =>
+  `${(Number(v) * 100).toLocaleString("ru-RU", { maximumFractionDigits: 2 })}%`;
+
 function value(raw: number | undefined, format: string): string {
   if (raw === undefined) return "—";
+  const num = (v: number, digits = 2) => v.toLocaleString("ru-RU", { maximumFractionDigits: digits });
   switch (format) {
+    case "years":
+      return `${num(raw, 1)} г.`;
     case "months":
-      return months(raw);
-    case "money":
-      return money(String(raw));
+      return `${num(raw, 1)} мес.`;
     case "share":
-      return `${(raw * 100).toLocaleString("ru-RU", { maximumFractionDigits: 1 })}%`;
-    case "count":
-      return String(raw);
+      return `${num(raw * 100, 1)}%`;
+    case "flag":
+      return raw ? "да" : "нет";
     default:
-      return raw.toLocaleString("ru-RU", { maximumFractionDigits: 3 });
+      return num(raw);
   }
 }
 
@@ -31,11 +34,12 @@ function value(raw: number | undefined, format: string): string {
  * Числа берём из решения как есть, сами ничего не считаем.
  */
 export default function Scoring({ decision }: { decision: Decision }) {
-  const rows = FEATURES.map((f) => ({
+  const rows = FEATURES.filter((f) => f.key in decision.contributions).map((f) => ({
     ...f,
     raw: decision.features[f.key],
-    weight: decision.contributions[f.contribution] ?? 0,
+    weight: decision.contributions[f.key] ?? 0,
   }));
+  const clipped = decision.clipping_warnings.map((w) => String(w.feature));
   const scale = Math.max(...rows.map((r) => Math.abs(r.weight)), 0.001);
 
   return (
@@ -86,6 +90,20 @@ export default function Scoring({ decision }: { decision: Decision }) {
           })}
         </tbody>
       </table>
+
+      {decision.lgd !== null && decision.product_pd_max !== null && (
+        <Text view="secondary-medium" color={SECONDARY} style={{ marginTop: 12 }}>
+          LGD {pct(decision.lgd)} · граница отказа для продукта — PD {pct(decision.product_pd_max)}
+          {decision.pd_at_requested_terms !== null &&
+            ` · на запрошенных условиях PD была бы ${pct(decision.pd_at_requested_terms)}`}
+        </Text>
+      )}
+      {clipped.length > 0 && (
+        <Text view="secondary-medium" color={SECONDARY} style={{ marginTop: 8 }}>
+          Вне диапазона обучения, модель взяла границу:{" "}
+          {clipped.map((k) => FEATURES.find((f) => f.key === k)?.title ?? k).join(", ")}
+        </Text>
+      )}
 
       <div className="uw-legend">
         <span>

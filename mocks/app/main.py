@@ -14,7 +14,7 @@ DATA_DIR = Path(os.getenv("MOCKS_DATA_DIR", Path(__file__).resolve().parent.pare
 TIMEOUT_SLEEP = 30  # «не отвечаем» — дольше любого разумного таймаута бэкенда
 
 # задержки по умолчанию, как у живых сервисов — чтобы в кабинете было видно подшаги
-DEFAULT_DELAY_MS = {"egrul": 300, "fns": 200, "zsk": 200, "bank": 100, "bki": 1500}
+DEFAULT_DELAY_MS = {"egrul": 300, "fns": 200, "zsk": 200, "bank": 100, "financials": 200, "bki": 1500}
 if os.getenv("MOCKS_NO_DELAY"):
     DEFAULT_DELAY_MS = {k: 0 for k in DEFAULT_DELAY_MS}
 
@@ -33,7 +33,7 @@ app = FastAPI(
     title="Моки внешних источников",
     version="1.0.0",
     description=(
-        "ЕГРЮЛ/ЕГРИП, ФНС, ЗСК, БКИ и внутренние данные банка — на синтетических данных из mocks/companies. "
+        "ЕГРЮЛ/ЕГРИП, ФНС, ЗСК, БКИ, ГИР БО и внутренние данные банка — на синтетических данных из mocks/companies. "
         f"Компаний загружено: {len(COMPANIES)}."
     ),
 )
@@ -44,6 +44,8 @@ async def section(inn: str, name: str) -> dict:
     if company is None:
         raise HTTPException(404, f"Нет сведений по ИНН {inn}")
 
+    if company[name] is None:  # у ИП нет бухгалтерской отчётности
+        raise HTTPException(404, f"{name}: нет сведений по ИНН {inn}")
     data = copy.deepcopy(company[name])
     mock = data.pop("_mock", {})
     delay = mock.get("delay_ms", DEFAULT_DELAY_MS[name])
@@ -93,3 +95,9 @@ async def bki(inn: str) -> dict:
 async def bank(inn: str) -> dict:
     """Обороты по расчётному счёту за 12 месяцев и кредиты в нашем банке."""
     return await section(inn, "bank")
+
+
+@app.get("/gir-bo/{inn}", tags=["ГИР БО"])
+async def gir_bo(inn: str) -> dict:
+    """Бухгалтерская отчётность юрлица за прошлый год. У ИП отчётности нет — 404."""
+    return await section(inn, "financials")

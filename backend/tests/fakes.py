@@ -32,9 +32,15 @@ def registry(inn):
     return {k: v for k, v in d["egrul"].items() if k != "_mock"} if d else None
 
 
+SECTIONS = {"gir_bo": "financials"}  # маршрут /gir-bo/{inn} отдаёт раздел financials
+
+
 def fetch(source, inn):
     t = datetime(2026, 10, 24, 12, 0)
-    section = dict(companies()[inn][source])
+    raw = companies()[inn][SECTIONS.get(source, source)]
+    if raw is None:  # у ИП нет бухгалтерской отчётности — мок отвечает 404
+        return Fetched(source, "not_found", 1, None, "404", t, t)
+    section = dict(raw)
     mode = section.pop("_mock", {}).get("mode", "ok")
     if mode in ("unavailable", "timeout"):
         return Fetched(source, "unavailable", 3, None, f"{source}: {mode}", t, t)

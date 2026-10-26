@@ -32,11 +32,8 @@ def statement_of(app: Application) -> dict | None:
 
 
 def validation_requests(app: Application) -> list[str]:
-    """Правила V02/V03: чего не хватает для этого продукта и суммы."""
+    """Правило V02: чего не хватает для этого продукта. Отчётность юрлица банк берёт сам из ГИР БО."""
     missing = []
-    has = {d.doc_type for d in app.documents}
-    if app.amount > policy()["validation"]["financial_statements_required_above"] and "financial_statements" not in has:
-        missing.append("V03_FINANCIAL_STATEMENTS")
     if product_policy(app.product.code)["secured"] and not (app.collateral_type and app.collateral_value):
         missing.append("V02_COLLATERAL")
     return missing
@@ -84,7 +81,8 @@ def run_checks(session: Session, app: Application, fetch) -> None:
         session.commit()
 
     data = {s: app.data(s) for s in external.SOURCES}
-    failed = [s for s, c in app.current_checks().items() if c.status != "ok"]
+    failed = [s for s, c in app.current_checks().items()
+              if c.status != "ok" and not (s in external.OPTIONAL and c.status == "not_found")]
     prod = product_policy(app.product.code)
 
     stops = stop_factors(data, prod, today())
@@ -127,6 +125,10 @@ def sf04_texts(sf: dict, app: Application) -> tuple[str, str]:
     return reason.format(age=sf["age"], min_age=sf["min_age"]), advice.format(date=ready.strftime("%d.%m.%Y"), alt=alt)
 
 
+def dec(x: float | None, digits: int) -> Decimal | None:
+    return None if x is None else Decimal(str(round(x, digits)))
+
+
 def run_scoring(session: Session, app: Application) -> None:
     data = {s: app.data(s) for s in external.SOURCES}
     req = Request(
@@ -140,12 +142,14 @@ def run_scoring(session: Session, app: Application) -> None:
 
     add_decision(
         app, r.outcome, model_version=r.model_version,
-        pd=Decimal(str(round(r.pd, 4))) if r.pd is not None else None, grade=r.grade,
-        features=r.features, contributions=r.contributions, manual_triggers=r.manual_triggers,
+        pd=dec(r.pd, 6), pd_at_requested_terms=dec(r.pd_at_requested_terms, 6), grade=r.grade,
+        lgd=dec(r.lgd, 4), product_pd_max=dec(r.product_pd_max, 4), model_inputs=r.model_inputs,
+        features=r.features, contributions=r.contributions, clipping_warnings=r.clipping_warnings,
+        manual_triggers=r.manual_triggers,
         reason_codes=r.reason_codes, max_amount=r.max_amount, limit_binding=r.limit_binding,
         recommendation=offer_dict(r.offer) if r.outcome == "MANUAL_REVIEW" else None,
         reason=r.reason, advice=r.advice,
-        comment=f"PD {r.pd:.2%}, класс {r.grade}" if r.pd is not None else None,
+        comment=f"PD {r.pd:.2%}, класс {r.grade}" if r.pd is not None else r.comment,
     )
     if r.outcome == "REJECTED":
         fire(session, app, "auto_rejected", Actor.SYSTEM, r.reason_codes[0])

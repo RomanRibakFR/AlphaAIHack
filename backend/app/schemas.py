@@ -233,9 +233,14 @@ class DecisionOut(BaseModel):
     policy_version: str
     model_version: str | None
     pd: Decimal | None
+    pd_at_requested_terms: Decimal | None
     grade: str | None
+    lgd: Decimal | None
+    product_pd_max: Decimal | None
+    model_inputs: dict
     features: dict
     contributions: dict
+    clipping_warnings: list[dict]
     stop_factors: list[dict]
     manual_triggers: list[str]
     reason_codes: list[str]

@@ -1,14 +1,13 @@
 """
-Что извлекаем из ответов источников: признаки модели F1–F6, стоп-факторы SF01–SF06,
-сверку выручки из анкеты с оборотами по счёту. Правила — docs/decision-policy.md, разделы 4–5.
+Что извлекаем из ответов источников: вход модели PD, стоп-факторы SF01–SF06,
+сверку выручки из анкеты с оборотами по счёту. Правила — docs/decision-policy.md, разделы 4–5,
+вход модели — docs/mocks-format.md, раздел 5 (эталон — model_inputs в mocks/check_mocks.py).
 """
+import statistics
 from dataclasses import dataclass
 from datetime import date
 
 from app.policy import policy, stop_factor
-
-# дни просрочки по кодам строки платёжной дисциплины (как в НБКИ)
-CODE_DAYS = {"A": 29, "B": 7, "C": 29, "С": 29, "2": 59, "3": 89, "4": 119, "5": 120}
 
 
 def months_between(start: date, end: date) -> int:
@@ -21,8 +20,7 @@ def business_age_months(egrul: dict, today: date) -> int:
 
 def avg_turnover(bank: dict) -> float:
     # только очищенные поступления: переводы себе и полученные кредиты — не выручка
-    rows = bank["turnover_months"]
-    return sum(r["credit_net"] for r in rows) / len(rows)
+    return statistics.fmean(r["credit_net"] for r in bank["turnover_months"])
 
 
 def current_payments(bki: dict) -> float:
@@ -30,21 +28,42 @@ def current_payments(bki: dict) -> float:
     return sum(a["monthly_payment"] for a in bki["accounts"] if a["status"] == "ACTIVE" and a["relationship"] == "BORROWER")
 
 
-def features(egrul: dict, bki: dict, bank: dict, amount: float, today: date) -> dict:
+def model_inputs(data: dict, new_payment: float, today: date) -> dict:
+    """Вход модели PD в формате score.py. new_payment — платёж по новому кредиту по потолку ставки продукта."""
+    egrul, fns, bank = data["egrul"], data["fns"], data["bank"]
     rows = bank["turnover_months"]
-    avg = avg_turnover(bank)
-    cv = (sum((r["credit_net"] - avg) ** 2 for r in rows) / len(rows)) ** 0.5 / avg
-    accounts = bki["accounts"]
-    codes = "".join(a["payment_string"] for a in accounts)
-    return {
-        "F1_business_age_months": business_age_months(egrul, today),
-        "F2_avg_monthly_turnover": round(avg),
-        "F3_turnover_cv": round(cv, 3),
-        "F4_debt_load": round(current_payments(bki) / avg, 3),
-        "F5_overdue_30plus_count_24m": sum(sum(a["overdue_counts_24m"].values()) for a in accounts),
-        "F5_max_overdue_days_24m": max([CODE_DAYS.get(c, 0) for c in codes] or [0]),
-        "F6_amount_to_turnover": round(amount / avg, 2),
+    net = [r["credit_net"] for r in rows]
+    receipts = statistics.fmean(net)
+    # оплаты физлиц картами — тысячи людей, а не один покупатель
+    customers = [p["amount"] for p in bank["top_payers_12m"] if p["kind"] != "RETAIL_ACQUIRING"]
+    inputs = {
+        "business_age_years": (today - date.fromisoformat(egrul["state"]["registration_date"])).days / 365.25,
+        "msp_category": (fns["msp_register"]["category"] or "").lower(),
+        "okved_main": egrul["okved"],
+        "monthly_receipts_rub": receipts,
+        "monthly_operating_outflows_rub": statistics.fmean(r["debit_operating"] for r in rows),
+        "existing_monthly_debt_service_rub": float(current_payments(data["bki"])),
+        "new_monthly_debt_service_rub": new_payment,
+        "receipts_growth_6m_pct": (statistics.fmean(net[-3:]) / statistics.fmean(net[-6:-3]) - 1) * 100,
+        "receipts_cv_pct": statistics.pstdev(net) / receipts * 100,
+        "cash_reserve_rub": float(bank["current_balance"]),
+        "largest_customer_share_pct": max(customers, default=0) / sum(net) * 100,
     }
+    fin = data.get("gir_bo")
+    if egrul["type"] == "LEGAL" and fin:  # без отчётности модель юрлица не считается → M6
+        lines = fin["lines"]
+        inputs.update({
+            "unit": "rub",
+            "report_form": fin["report_form"].lower(),
+            "assets": float(lines["1600"]),
+            "equity": float(lines["1300"]),
+            "current_assets": float(lines["1200"]),
+            "current_liabilities": float(lines["1500"]),
+            "revenue": float(lines["2110"]),
+            "net_profit": float(lines["2400"]),
+            "ordinary_expenses": None if lines["2120"] is None else float(lines["2120"]),
+        })
+    return inputs
 
 
 def stop_factors(data: dict, product: dict, today: date) -> list[dict]:
@@ -89,24 +108,20 @@ class Revenue:
     mismatch: float  # насколько заявленная выручка выше подтверждённой
     needs_document: bool  # расхождение есть, а документа ещё нет
     unresolved: bool  # документ есть, но расхождение осталось
-    monthly_for_limits: float  # каким оборотом считать лимит
 
 
 def revenue_check(bank: dict, declared: float, statement: dict | None) -> Revenue:
-    """Сверка анкеты и счёта (раздел 4.3 политики)."""
+    """Сверка анкеты и счёта (раздел 4.3 политики). Выписка подтверждает анкету, но лимит не увеличивает."""
     tol = policy()["data_mismatch"]["tolerance"]
     bank_annual = avg_turnover(bank) * 12
     ratio = declared / bank_annual - 1
 
     if ratio <= tol:
-        return Revenue(bank_annual, declared, None, ratio, False, False, bank_annual / 12)
+        return Revenue(bank_annual, declared, None, ratio, False, False)
     if statement is None:
-        return Revenue(bank_annual, declared, None, ratio, True, False, bank_annual / 12)
+        return Revenue(bank_annual, declared, None, ratio, True, False)
 
     statement_annual = statement["turnover"] * 12 / statement.get("months", 12)
-    verified = bank_annual + statement_annual
-    ratio_after = declared / verified - 1
-    if ratio_after <= tol:
-        return Revenue(bank_annual, declared, statement_annual, ratio_after, False, False, verified / 12)
-    # документ не снял расхождение — лимит только по нашим оборотам, решает специалист (M4)
-    return Revenue(bank_annual, declared, statement_annual, ratio_after, False, True, bank_annual / 12)
+    ratio_after = declared / (bank_annual + statement_annual) - 1
+    # документ не снял расхождение — решает специалист (M4)
+    return Revenue(bank_annual, declared, statement_annual, ratio_after, False, ratio_after > tol)
